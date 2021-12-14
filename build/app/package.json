@@ -1,7 +1,7 @@
 {
   "name": "clockotron",
   "productName": "Clockotron",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "Clockotron talks time directly to vMix text inputs",
   "main": "./dist/main/main.js",
   "author": {

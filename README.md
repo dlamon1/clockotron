@@ -2,6 +2,14 @@
 
 Clockotron provides the ability to manipulate the time of a countdown timer. It talks directly to Vmix text inputs.
 
+## Installation
+
+==> Download an install file from the Releases tab, link: https://github.com/dlamon1/clockotron/releases/tag/v0.7.3
+
+or
+
+==> Clone or fork this repo, use yarn for everything
+
 ## How it works
 
 The timer runs in the Clockotron software and sends the current time values to a Vmix Text Input via a socket connection. We have a Companion module (in version 2.2.\*\*) that is designed to give you a keypad style control over the current time, input the time you want and press enter.

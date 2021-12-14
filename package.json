@@ -2,7 +2,7 @@
   "name": "clockotron",
   "productName": "Clockotron",
   "description": "Clockotron talks time directly to vMix text inputs",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "scripts": {
     "build": "concurrently \"yarn build:main\" \"yarn build:renderer\"",
     "build:main": "cross-env NODE_ENV=production webpack --config ./.erb/configs/webpack.config.main.prod.babel.js",
@@ -89,13 +89,13 @@
     "publish": {
       "provider": "github",
       "owner": "dlamon1",
-      "repo": "clockotrondev",
+      "repo": "clockotron",
       "releaseType": "release"
     }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dlamon1/clockotrondev"
+    "url": "git+https://github.com/dlamon1/clockotron"
   },
   "author": {
     "name": "LEAD LED, LLC",
