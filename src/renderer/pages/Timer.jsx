@@ -7,9 +7,10 @@ import ClockFormated from '../components/ClockFormated.jsx';
 import TimeUp from '../components/TimeUp.jsx';
 import TimeDown from '../components/TimeDown.jsx';
 import PlayPause from '../components/PlayPause.jsx';
-import PostThings from '../components/PostThings2.jsx';
+import PostThings from '../components/PostThings.jsx';
 import Color from '../components/Color.jsx';
 import Refresh from 'renderer/components/Refresh.jsx';
+import DirectionOptions from '../components/DirectionOptions.jsx';
 
 import { useGlobalStore } from 'renderer/utils/Store';
 
@@ -26,7 +27,9 @@ const TOD = observer((props) => {
       <ClockFormated timerIndex={timerIndex} />
       <TimeDown timerIndex={timerIndex} />
       <PlayPause timerIndex={timerIndex} />
-      <Color timerIndex={timerIndex} />
+      <DirectionOptions timerIndex={timerIndex} />
+      <Color timerIndex={timerIndex} isDown={true} />
+      {/* <Color timerIndex={timerIndex} isDown={false} /> */}
       <PostThings timerIndex={timerIndex} />
     </>
   );

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { observer } from 'mobx-react';
 import { GithubPicker } from 'react-color';
 
 import Grid from '@material-ui/core/Grid';
@@ -13,6 +14,8 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Paper from '@material-ui/core/Paper';
 
+import { useGlobalStore } from '../utils/Store.jsx';
+
 const colors = [
   '#FF0000',
   '#DB3E00',
@@ -24,19 +27,20 @@ const colors = [
   '#000',
 ];
 
-const Transport = (props) => {
-  const { color, colorFun, colorTime, setColorTime } = props;
+const Transport = observer((props) => {
+  const { timerIndex, colorIndex } = props;
+  const gs = useGlobalStore();
+  const color = gs.timers[timerIndex].colors[colorIndex];
   const [fontColor, setFontColor] = useState('black');
   const [unit, setUnit] = useState(1);
-  const [time, setTime] = useState(0);
+  const [time, setTime] = useState(color.time);
   const [title, setTitle] = useState('00:00:00');
 
   const pickColor = (x) => {
-    colorFun(x);
+    color.setColor(x);
   };
 
-  function formatTime(x) {
-    // console.log(x)
+  const formatTime = (x) => {
     let time = [];
     time.push(Math.floor(x / 3600));
     time.push(Math.floor((x / 60) % 60));
@@ -62,35 +66,41 @@ const Transport = (props) => {
       return y;
     }
     setTitle(timePrint);
-  }
+  };
 
   useEffect(() => {
-    if (color == '#000000' || color == '#5300eb' || color == '#1b46f2') {
+    if (
+      color.color == '#000000' ||
+      color.color == '#5300eb' ||
+      color.color == '#1b46f2'
+    ) {
       setFontColor('#fff');
     } else {
       setFontColor('#000');
     }
-  }, [color]);
+  }, [color.color]);
 
   useEffect(() => {
-    setColorTime(time * unit);
+    color.setTime(time * unit);
     formatTime(time * unit);
   }, [unit, time]);
 
   useEffect(() => {
-    formatTime(colorTime);
-    setColorTime(colorTime);
+    formatTime(color.time);
+    color.setTime(color.time);
   }, []);
 
   return (
-    <Accordion style={{ backgroundColor: color, maxWidth: '85%' }}>
+    <Accordion style={{ backgroundColor: color.color, maxWidth: '85%' }}>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon style={{ color: fontColor }} />}
         aria-controls="panel1a-content"
         id="panel1a-header"
         style={{ backgroundColor: '' }}
       >
-        <Typography style={{ color: fontColor }}>{title} ON CLOCK</Typography>
+        <Typography style={{ color: fontColor, fontWeight: 600 }}>
+          UNDER {title}
+        </Typography>
       </AccordionSummary>
       <AccordionDetails>
         <Paper
@@ -150,6 +160,6 @@ const Transport = (props) => {
       </AccordionDetails>
     </Accordion>
   );
-};
+});
 
 export default Transport;

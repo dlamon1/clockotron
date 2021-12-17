@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import ClockFormatedTOD from '../components/ClockFormatedTOD';
 import TextInputList from '../components/TextInputList';
 import ColorTOD from '../components/ColorTOD';
-import PostThings from '../components/PostThings2';
+import PostThings from '../components/PostThings';
 
 import { useGlobalStore } from 'renderer/utils/Store';
 

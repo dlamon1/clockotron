@@ -57,7 +57,6 @@ const TextInputList = observer((props) => {
 
   async function setInputs() {
     let jsonObj = parser.parse(gs.xmlRaw, options);
-    console.log(jsonObj);
     let list = jsonObj.vmix.inputs.input;
 
     let filtered = list.filter(
@@ -69,7 +68,6 @@ const TextInputList = observer((props) => {
   useEffect(() => {
     gs.xmlRaw ? setInputs() : null;
     // setInputs();
-    console.log('new xml text input');
   }, [gs.xmlRaw]);
 
   return (

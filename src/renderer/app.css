@@ -1,0 +1,12 @@
+/* html {
+  overflow: scroll;
+  overflow-x: hidden;
+} */
+::-webkit-scrollbar {
+  width: 0; /* Remove scrollbar space */
+  background: transparent;
+  /* optional: just make scrollbar invisible; */
+}
+.app::-webkit-scrollbar {
+  display: none;
+}

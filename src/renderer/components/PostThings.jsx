@@ -4,8 +4,9 @@ import { observer } from 'mobx-react';
 import { useGlobalStore } from '../utils/Store.jsx';
 
 const PostThings = observer((props) => {
-  let { value } = props;
+  let { value, timerIndex } = props;
   const gs = useGlobalStore();
+  let timer = gs.timers[timerIndex];
 
   async function postTimes(time, input, text) {
     window.electron.vmix.postTime(input, text, time);
@@ -18,63 +19,23 @@ const PostThings = observer((props) => {
 
   useEffect(() => {
     try {
-      gs.ip && gs.input && gs.text && gs.color
-        ? postColor(gs.input, gs.text, gs.color)
+      gs.ip && timer.input && timer.text && timer.color
+        ? postColor(timer.input, timer.text, timer.color)
         : null;
     } catch (err) {
       console.log(err);
     }
-  }, [gs.color, gs.text]);
+  }, [timer.color, timer.text]);
 
   useEffect(() => {
     try {
-      gs.ip && gs.inputVideo && gs.textVideo && gs.colorVideo
-        ? postColor(gs.inputVideo, gs.textVideo, gs.colorVideo)
+      gs.ip && timer.input && timer.text && timer.color
+        ? postTimes(timer.formatedTime, timer.input, timer.text)
         : null;
     } catch (err) {
       console.log(err);
     }
-  }, [gs.colorVideo, gs.textVideo]);
-
-  useEffect(() => {
-    try {
-      gs.ip && gs.inputTOD && gs.textTOD && gs.colorTOD
-        ? postColor(gs.inputTOD, gs.textTOD, gs.colorTOD)
-        : null;
-    } catch (err) {
-      console.log(err);
-    }
-  }, [gs.colorTOD, gs.textTOD]);
-
-  useEffect(() => {
-    try {
-      gs.ip && gs.input && gs.text && gs.color
-        ? postTimes(gs.formatedTime, gs.input, gs.text)
-        : null;
-    } catch (err) {
-      console.log(err);
-    }
-  }, [gs.formatedTime, gs.text]);
-
-  useEffect(() => {
-    try {
-      gs.ip && gs.inputVideo && gs.textVideo && gs.colorVideo
-        ? postTimes(gs.formatedTimeVideo, gs.inputVideo, gs.textVideo)
-        : null;
-    } catch (err) {
-      console.log(err);
-    }
-  }, [gs.formatedTimeVideo, gs.textVideo]);
-
-  useEffect(() => {
-    try {
-      gs.ip && gs.inputTOD && gs.textTOD && gs.colorTOD
-        ? postTimes(gs.formatedTimeTOD, gs.inputTOD, gs.textTOD)
-        : null;
-    } catch (err) {
-      console.log(err);
-    }
-  }, [gs.formatedTimeTOD, gs.textTOD]);
+  }, [timer.formatedTime, timer.text]);
   return <></>;
 });
 

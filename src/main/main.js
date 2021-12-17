@@ -19,8 +19,6 @@ import { runNetConnections } from './api';
 import dotenv from 'dotenv';
 dotenv.config();
 
-console.log(process.env);
-
 let mainWindow;
 let isDev = false;
 let connection = null;
@@ -59,7 +57,7 @@ const getAssetPath = (...paths) => {
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 360,
-    height: 950,
+    height: 1080,
     x: 0,
     y: 0,
     show: false,

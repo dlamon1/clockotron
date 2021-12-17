@@ -16,6 +16,10 @@ const PlayPause = observer((props) => {
   const [speed, setSpeed] = useState(100);
   const [realRemaing, setRealRemaining] = useState('');
 
+  const timerRef = useRef(null);
+  const interval = useRef(1000);
+  const directionRef = useRef(-1);
+
   let start = () => {
     toggle();
   };
@@ -34,6 +38,12 @@ const PlayPause = observer((props) => {
   let resetApi = () => {
     reset();
   };
+
+  useEffect(() => {
+    timer.isCountingDown
+      ? (directionRef.current = -1)
+      : (directionRef.current = 1);
+  }, [timer.isCountingDown]);
 
   useEffect(() => {
     let x = Math.floor((gs.timers[timerIndex].currentSeconds / speed) * 100);
@@ -90,36 +100,39 @@ const PlayPause = observer((props) => {
     };
   }, []);
 
-  const timerRef = useRef(null);
-  const interval = useRef(1000);
-
   function update() {
     timer.setCurrentSeconds(timer.currentSeconds - 1);
     clockTime();
   }
 
   function clockTime() {
-    if (timer.currentSeconds > 0) {
-      timer.setCurrentSeconds(timer.currentSeconds - 1);
+    if (timer.currentSeconds + directionRef.current > -1) {
+      timer.setCurrentSeconds(timer.currentSeconds + directionRef.current);
 
-      const start = document.timeline
+      const startTime = document.timeline
         ? document.timeline.currentTime
         : performance.now();
 
       function scheduleFrame(time) {
-        const elapsed = time - start;
+        const elapsed = time - startTime;
         const roundedElapsed =
           Math.round(elapsed / interval.current) * interval.current;
-        const targetNext = start + roundedElapsed + interval.current;
+        const targetNext = startTime + roundedElapsed + interval.current;
         const delay = (targetNext - performance.now()) * 1;
         timerRef.current = setTimeout(() => clockTime(), delay);
       }
 
-      scheduleFrame(start);
+      scheduleFrame(startTime);
     } else {
-      timer.setIsRunning(false);
-      clearTimeout(timerRef.current);
-      setButtonState('start');
+      if (timer.countUpAfterDownReachesZero) {
+        directionRef.current = 1;
+        timer.setIsCountingDown(false);
+        clockTime();
+      } else {
+        timer.setIsRunning(false);
+        clearTimeout(timerRef.current);
+        setButtonState('start');
+      }
     }
   }
 
@@ -134,7 +147,7 @@ const PlayPause = observer((props) => {
   }
 
   function toggle() {
-    if (timer.currentSeconds > 0) {
+    if (timer.currentSeconds + directionRef.current > -1) {
       timer.isRunning ? stopClock() : startClock();
     }
   }
@@ -189,7 +202,7 @@ const PlayPause = observer((props) => {
       <Grid item xs={12} style={{ marginTop: 5 }}>
         <Grid container justifyContent="center" alignItems="center">
           <Typography color="primary" style={{ fontSize: 18 }}>
-            Approx Remaining: {realRemaing}
+            Approx Remain : {realRemaing}
           </Typography>
         </Grid>
       </Grid>

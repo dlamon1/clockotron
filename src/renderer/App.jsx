@@ -19,6 +19,8 @@ import TOD from './pages/TOD';
 import Timer from './pages/Timer';
 import Video from './pages/Video';
 
+import './app.css';
+
 const App = observer(() => {
   const [value, setValue] = useState(2);
   const gs = useGlobalStore();
@@ -64,6 +66,7 @@ const App = observer(() => {
   return (
     <>
       <Grid
+        id="app"
         container
         style={{
           backgroundColor: '#202020',

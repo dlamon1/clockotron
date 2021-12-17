@@ -6,7 +6,7 @@ import { useGlobalStore } from '../utils/Store.jsx';
 import TextInputList from '../components/TextInputList.jsx';
 import ClockInput from '../components/ClockInput.jsx';
 import ClockFormated from '../components/ClockFormated.jsx';
-import PostThings from '../components/PostThings2.jsx';
+import PostThings from '../components/PostThings.jsx';
 import Color from '../components/Color.jsx';
 import VideoReader from '../components/VideoReader.jsx';
 
