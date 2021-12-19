@@ -12,11 +12,23 @@ import Color from '../components/Color.jsx';
 import Refresh from 'renderer/components/Refresh.jsx';
 import DirectionOptions from '../components/DirectionOptions.jsx';
 
+import Button from '@material-ui/core/Button';
+
 import { useGlobalStore } from 'renderer/utils/Store';
 
 const TOD = observer((props) => {
   const { value, timerIndex } = props;
   const gs = useGlobalStore();
+
+  const toggle = () => {
+    window.electron.vmix.multiviewLayerToggle(3, 1);
+  };
+  const on = () => {
+    window.electron.vmix.multiviewLayerOn(3, 1);
+  };
+  const off = () => {
+    window.electron.vmix.multiviewLayerOff(3, 1);
+  };
 
   return (
     <>

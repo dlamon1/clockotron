@@ -28,7 +28,7 @@ export class Timer {
     this.addColor('#00FF50', 100000000, true);
     this.addColor('#FCCB00', 60, true);
     this.addColor('#FF0000', 30, true);
-    this.addColor('#FFF', 10, true);
+    this.addColor('#FFF', 0, true);
     this.addColor('#00FF50', 100000000, false);
     this.addColor('#FCCB00', 60, false);
     this.addColor('#FF0000', 30, false);

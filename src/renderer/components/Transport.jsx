@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import { GithubPicker } from 'react-color';
 
+import LayerToggle from './LayerToggle';
+
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Accordion from '@material-ui/core/Accordion';
@@ -15,6 +17,7 @@ import Select from '@material-ui/core/Select';
 import Paper from '@material-ui/core/Paper';
 
 import { useGlobalStore } from '../utils/Store.jsx';
+import { formatTime } from 'renderer/utils/formatTime';
 
 const colors = [
   '#FF0000',
@@ -40,34 +43,6 @@ const Transport = observer((props) => {
     color.setColor(x);
   };
 
-  const formatTime = (x) => {
-    let time = [];
-    time.push(Math.floor(x / 3600));
-    time.push(Math.floor((x / 60) % 60));
-    time.push(x % 60);
-    let timePrint = add0(time[0]) + ':' + add0(time[1]) + ':' + add0(time[2]);
-
-    function add0(x) {
-      let y;
-      let l = String(x).split('');
-      switch (l.length) {
-        case 0:
-          y = '00';
-          break;
-        case 1:
-          y = '0' + String(x);
-          break;
-        case 2:
-          y = String(x);
-          break;
-        default:
-          break;
-      }
-      return y;
-    }
-    setTitle(timePrint);
-  };
-
   useEffect(() => {
     if (
       color.color == '#000000' ||
@@ -82,11 +57,13 @@ const Transport = observer((props) => {
 
   useEffect(() => {
     color.setTime(time * unit);
-    formatTime(time * unit);
+    let res = formatTime(time * unit);
+    setTitle(res);
   }, [unit, time]);
 
   useEffect(() => {
-    formatTime(color.time);
+    let res = formatTime(color.time);
+    setTitle(res);
     color.setTime(color.time);
   }, []);
 
@@ -99,7 +76,7 @@ const Transport = observer((props) => {
         style={{ backgroundColor: '' }}
       >
         <Typography style={{ color: fontColor, fontWeight: 600 }}>
-          UNDER {title}
+          At {title}
         </Typography>
       </AccordionSummary>
       <AccordionDetails>
@@ -114,11 +91,7 @@ const Transport = observer((props) => {
         >
           <Grid container style={{ backgroundColor: '' }}>
             <Grid item xs={12} style={{ marginTop: 0 }}>
-              <Grid
-                container
-                justifyContent="space-between"
-                alignItems="center"
-              >
+              <Grid container justifyContent="space-around" alignItems="center">
                 <TextField
                   label="Time"
                   id="filled-size-small"
@@ -156,6 +129,19 @@ const Transport = observer((props) => {
               </Grid>
             </Grid>
           </Grid>
+
+          {/* Toggle On Off */}
+          {/* Toggle On Off */}
+          {/* Toggle On Off */}
+          <Grid container style={{ backgroundColor: '', marginTop: 10 }}>
+            <Grid item xs={12} style={{ marginTop: 0 }}>
+              <LayerToggle timerIndex={timerIndex} colorIndex={colorIndex} />
+            </Grid>
+            <Grid item xs={12} style={{ marginTop: 10 }}></Grid>
+          </Grid>
+          {/* Toggle On Off */}
+          {/* Toggle On Off */}
+          {/* Toggle On Off */}
         </Paper>
       </AccordionDetails>
     </Accordion>

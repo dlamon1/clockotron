@@ -95,6 +95,17 @@ export function socket(mainWindow, connection) {
     ]);
   }
 
+  function vmixLayerReq(fun, input, value) {
+    console.log(fun, input, value);
+    connection.send([
+      {
+        Function: fun,
+        Input: input,
+        Value: value,
+      },
+    ]);
+  }
+
   function requestXmlData() {
     let msg = {
       type: 'requestXmlData',
@@ -123,13 +134,16 @@ export function socket(mainWindow, connection) {
     vmixPostReq('SetTextColour', input, name, value);
   });
 
+  ipcMain.handle('multiviewLayer', async (__, cmd, input, layer) => {
+    vmixLayerReq(cmd, input, layer);
+  });
+
   ipcMain.handle('socket-reqXml-inputList', () => {
     xmlReqSwitch = 1;
     requestXmlData();
   });
 
   ipcMain.handle('socket-reqXml-videoReader', () => {
-    // xmlReqSwitch = 2;
     requestXmlData();
   });
 

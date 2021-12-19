@@ -41,7 +41,7 @@ const Color2 = observer((props) => {
     let newColor = '#fff';
     for (let i = 0; i < filteredArray.length; i++) {
       newColor = filteredArray[i].color;
-      if (timer.currentSeconds < filteredArray[i].time) {
+      if (timer.currentSeconds <= filteredArray[i].time) {
         break;
       }
     }

@@ -29,6 +29,9 @@ contextBridge.exposeInMainWorld('electron', {
     shutdown: () => {
       ipcRenderer.invoke('socket-shutdown');
     },
+    multiviewLayer: (cmd, input, layer) => {
+      ipcRenderer.invoke('multiviewLayer', cmd, input, layer);
+    },
   },
   on(eventName, callback) {
     messages.indexOf(eventName) >= 0
@@ -43,7 +46,6 @@ contextBridge.exposeInMainWorld('electron', {
   all() {
     ipcRenderer.removeAllListeners();
   },
-  ffmpeg: (file) => ipcRenderer.invoke('ffmpeg', file),
 });
 
 messages = [
@@ -80,4 +82,5 @@ messages = [
   'socket-tallyData',
   'socket-error',
   'version',
+  'toggleMultiviewLayer',
 ];

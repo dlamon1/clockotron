@@ -4,6 +4,10 @@ export class ColorCheckpoint {
   color = '#5300eb';
   time = 120;
   isDown = true;
+  layer = 1;
+  input = 1;
+  doesToggle = false;
+  multiviewCommand = '';
 
   constructor(color, time, isDown) {
     this.color = color;
@@ -22,5 +26,22 @@ export class ColorCheckpoint {
 
   setIsDown(boolean) {
     this.isDown = boolean;
+  }
+  s;
+
+  setInput(input) {
+    this.input = input;
+  }
+
+  setLayer(layer) {
+    this.layer = layer;
+  }
+
+  setDoesToggle(boolean) {
+    this.doesToggle = boolean;
+  }
+
+  setMultiviewCommand(command) {
+    this.multiviewCommand = command;
   }
 }
