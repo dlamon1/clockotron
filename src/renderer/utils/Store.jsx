@@ -5,8 +5,8 @@ import { Timer } from './StoreClasses';
 export const StoreProvider = ({ children }) => {
   const store = useLocalObservable(() => ({
     timers: [],
-    addTimer(id, type) {
-      let timer = new Timer(id, type);
+    addTimer(type) {
+      let timer = new Timer(type);
       store.timers = [...store.timers, timer];
     },
     removeTimer(value) {

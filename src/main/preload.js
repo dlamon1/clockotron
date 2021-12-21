@@ -32,6 +32,9 @@ contextBridge.exposeInMainWorld('electron', {
     multiviewLayer: (cmd, input, layer) => {
       ipcRenderer.invoke('multiviewLayer', cmd, input, layer);
     },
+    playPause: (cmd, input) => {
+      ipcRenderer.invoke('playPause', cmd, input);
+    },
   },
   on(eventName, callback) {
     messages.indexOf(eventName) >= 0
@@ -83,4 +86,5 @@ messages = [
   'socket-error',
   'version',
   'toggleMultiviewLayer',
+  'playPause',
 ];

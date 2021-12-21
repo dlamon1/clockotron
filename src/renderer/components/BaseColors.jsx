@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import { GithubPicker } from 'react-color';
 
+import { colors } from '../utils/ColorPickerColors';
+
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Accordion from '@material-ui/core/Accordion';
@@ -12,20 +14,9 @@ import Paper from '@material-ui/core/Paper';
 
 import { useGlobalStore } from '../utils/Store.jsx';
 import { useStyles } from '../utils/AppStyles.jsx';
-import Transport from './Transport.jsx';
+import TriggerDetail from './TriggerDetail.jsx';
 
-const colors = [
-  '#FF0000',
-  '#DB3E00',
-  '#FCCB00',
-  '#00FF50',
-  '#1B46F2',
-  '#5300EB',
-  '#FFF',
-  '#000',
-];
-
-const Color2 = observer((props) => {
+const BaseColors = observer((props) => {
   let { value, timerIndex } = props;
   const gs = useGlobalStore();
   const timer = gs.timers[timerIndex];
@@ -49,8 +40,8 @@ const Color2 = observer((props) => {
   };
 
   const updateColorWhileIncrementing = () => {
-    timer.color != timer.colors[4].color
-      ? timer.setColor(timer.colors[4].color)
+    timer.color != timer.colors[1].color
+      ? timer.setColor(timer.colors[1].color)
       : null;
   };
 
@@ -78,15 +69,15 @@ const Color2 = observer((props) => {
 
   useEffect(() => {
     if (
-      timer.colors[4].color == '#000000' ||
-      timer.colors[4].color == '#5300eb' ||
-      timer.colors[4].color == '#1b46f2'
+      timer.colors[1].color == '#000000' ||
+      timer.colors[1].color == '#5300eb' ||
+      timer.colors[1].color == '#1b46f2'
     ) {
       setFontColorUp('#fff');
     } else {
       setFontColorUp('#000');
     }
-  }, [timer.colors[4].color]);
+  }, [timer.colors[1].color]);
 
   return (
     <>
@@ -100,7 +91,7 @@ const Color2 = observer((props) => {
               style={{ backgroundColor: '' }}
             >
               <Typography style={{ color: fontColor, fontWeight: 600 }}>
-                TIMER DOWN COLOR
+                DOWN COLOR
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -132,22 +123,19 @@ const Color2 = observer((props) => {
               </Grid>
             </AccordionDetails>
           </Accordion>
-          <Transport timerIndex={timerIndex} colorIndex={1} />
-          <Transport timerIndex={timerIndex} colorIndex={2} />
-          <Transport timerIndex={timerIndex} colorIndex={3} />
         </Grid>
       </Grid>
       <Grid item xs={12} style={{ marginTop: 10 }}>
         <Grid container justifyContent="space-around" alignItems="center">
           <Accordion
-            style={{ backgroundColor: timer.colors[4].color, width: '85%' }}
+            style={{ backgroundColor: timer.colors[1].color, width: '85%' }}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon style={{ color: fontColor }} />}
               style={{ backgroundColor: '' }}
             >
               <Typography style={{ color: fontColorUp, fontWeight: 600 }}>
-                TIMER UP COLOR
+                UP COLOR
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -168,7 +156,7 @@ const Color2 = observer((props) => {
                     <Grid container style={{ backgroundColor: '' }}>
                       <GithubPicker
                         onChangeComplete={(e) =>
-                          timer.colors[4].setColor(e.hex)
+                          timer.colors[1].setColor(e.hex)
                         }
                         colors={colors}
                         triangle="hide"
@@ -179,13 +167,10 @@ const Color2 = observer((props) => {
               </Grid>
             </AccordionDetails>
           </Accordion>
-          {/* <Transport timerIndex={timerIndex} colorIndex={5} />
-          <Transport timerIndex={timerIndex} colorIndex={6} />
-          <Transport timerIndex={timerIndex} colorIndex={7} /> */}
         </Grid>
       </Grid>
     </>
   );
 });
 
-export default Color2;
+export default BaseColors;

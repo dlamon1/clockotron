@@ -74,7 +74,7 @@ const TextInputList = observer((props) => {
     <>
       {/* {value === 0 && ( */}
       <>
-        <Grid item xs={12} style={{ marginTop: 15 }}>
+        <Grid item xs={12} style={{ marginTop: 10 }}>
           <Grid container justifyContent="space-around" alignItems="center">
             <FormControl style={{ width: '85%' }}>
               <InputLabel id="demo-simple-select-label">Input</InputLabel>
@@ -92,7 +92,7 @@ const TextInputList = observer((props) => {
             </FormControl>
           </Grid>
         </Grid>
-        <Grid item xs={12} style={{ marginTop: 15 }}>
+        <Grid item xs={12} style={{ marginTop: 10 }}>
           <Grid container justifyContent="space-around" alignItems="center">
             <FormControl style={{ width: '85%' }}>
               <InputLabel id="demo-simple-select-label">Text Layer</InputLabel>

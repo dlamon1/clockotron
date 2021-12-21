@@ -33,15 +33,15 @@ const App = observer(() => {
 
   const addTimer = (type) => {
     setCount(count + 1);
-    gs.addTimer(count, type);
+    gs.addTimer(type);
   };
 
   const NewTimer = (props) => {
-    const { timerIndex } = props;
+    const { timerIndex, timerId } = props;
     return (
       <>
         {gs.timers[timerIndex].type === 'timer' && (
-          <Timer timerIndex={timerIndex} />
+          <Timer timerIndex={timerIndex} timerId={timerId} />
         )}
         {gs.timers[timerIndex].type === 'tod' && (
           <TOD timerIndex={timerIndex} />
@@ -92,7 +92,7 @@ const App = observer(() => {
 
             {/* TOD */}
             {gs.timers.map((timer, index) => (
-              <NewTimer timerIndex={index} key={index} />
+              <NewTimer timerIndex={index} key={index} timerId={timer.id} />
             ))}
           </>
         )}

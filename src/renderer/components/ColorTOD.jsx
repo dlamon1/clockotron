@@ -15,7 +15,7 @@ import Box from '@material-ui/core/Box';
 
 import { useGlobalStore } from '../utils/Store.jsx';
 import { useStyles } from '../utils/AppStyles.jsx';
-import Transport from './Transport.jsx';
+import Transport from './TriggerDetail.jsx';
 
 const colors = [
   '#FF0000',

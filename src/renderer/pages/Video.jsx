@@ -7,7 +7,7 @@ import TextInputList from '../components/TextInputList.jsx';
 import ClockInput from '../components/ClockInput.jsx';
 import ClockFormated from '../components/ClockFormated.jsx';
 import PostThings from '../components/PostThings.jsx';
-import Color from '../components/Color.jsx';
+import Color from '../components/BaseColors.jsx';
 import VideoReader from '../components/VideoReader.jsx';
 
 const Video = observer((props) => {

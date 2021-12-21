@@ -31,7 +31,7 @@ const TimeUp = observer((props) => {
 
   return (
     <>
-      <Grid item xs={12} style={{ marginTop: 0, marginBottom: -25 }}>
+      <Grid item xs={12} style={{ marginTop: 0, marginBottom: -45 }}>
         <Grid container justifyContent="center" alignItems="center">
           {timer.formatPositions >= 3 && (
             <IconButton

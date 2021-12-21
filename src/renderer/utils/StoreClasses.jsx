@@ -1,44 +1,47 @@
 import { makeAutoObservable } from 'mobx';
 import { ColorCheckpoint } from './ColorClass';
+import { Trigger } from './TriggerClass';
+import { v4 as uuidv4 } from 'uuid';
 
 export class Timer {
+  id = '';
   color = '#5300eb';
   input = '';
   text = '';
   currentSeconds = 0;
   formatedTime = '00:00:01';
   isRunning = false;
-  color1 = '#00FF50';
-  color2 = '#FCCB00';
-  color3 = '#FF0000';
-  color4 = '#FFF';
-  color2Time = 120;
-  color3Time = 30;
-  color4Time = 10;
   type = 'tod';
   resetSeconds = 0;
   formatPositions = 3;
   isCountingDown = true;
   countUpAfterDownReachesZero = false;
   colors = [];
+  triggers = [];
 
-  constructor(id, type) {
+  constructor(type) {
+    const id = uuidv4();
     this.id = id;
     this.type = type;
     this.addColor('#00FF50', 100000000, true);
-    this.addColor('#FCCB00', 60, true);
-    this.addColor('#FF0000', 30, true);
-    this.addColor('#FFF', 0, true);
     this.addColor('#00FF50', 100000000, false);
-    this.addColor('#FCCB00', 60, false);
-    this.addColor('#FF0000', 30, false);
-    this.addColor('#FFF', 10, false);
     makeAutoObservable(this);
   }
 
   addColor(color, time, isDown) {
     let newColor = new ColorCheckpoint(color, time, isDown);
     this.colors.push(newColor);
+  }
+  addTrigger() {
+    let newTrigger = new Trigger();
+    this.triggers.push(newTrigger);
+  }
+  removeTrigger(id) {
+    let index = this.triggers.map((trigger) => trigger.id).indexOf(id);
+    if (index > -1) {
+      this.triggers.splice(index, 1);
+      // console.log("Result", arrayObject);
+    }
   }
 
   setColor1(color) {

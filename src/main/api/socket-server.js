@@ -96,12 +96,20 @@ export function socket(mainWindow, connection) {
   }
 
   function vmixLayerReq(fun, input, value) {
-    console.log(fun, input, value);
     connection.send([
       {
         Function: fun,
         Input: input,
         Value: value,
+      },
+    ]);
+  }
+
+  function vmixPlayPauseReq(fun, input) {
+    connection.send([
+      {
+        Function: fun,
+        Input: input,
       },
     ]);
   }
@@ -136,6 +144,10 @@ export function socket(mainWindow, connection) {
 
   ipcMain.handle('multiviewLayer', async (__, cmd, input, layer) => {
     vmixLayerReq(cmd, input, layer);
+  });
+
+  ipcMain.handle('playPause', async (__, cmd, input) => {
+    vmixPlayPauseReq(cmd, input);
   });
 
   ipcMain.handle('socket-reqXml-inputList', () => {

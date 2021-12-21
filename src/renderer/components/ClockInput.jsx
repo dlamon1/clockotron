@@ -110,7 +110,7 @@ const ClockInput = observer((props) => {
 
   return (
     <>
-      <Grid item xs={12} style={{ marginTop: 25 }}>
+      <Grid item xs={12} style={{ marginTop: 15 }}>
         <Grid
           container
           justifyContent="space-around"

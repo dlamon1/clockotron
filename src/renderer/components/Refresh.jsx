@@ -18,6 +18,15 @@ const Refresh = observer((props) => {
     window.electron.vmix.reqXmlInputList();
   };
 
+  const timeout = () => {
+    setTimeout(() => {
+      refresh();
+      timeout();
+    }, 4000);
+  };
+
+  timeout();
+
   return (
     <>
       <Grid container justifyContent="center" style={{ width: '100%' }}>

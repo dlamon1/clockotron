@@ -8,17 +8,15 @@ import TimeUp from '../components/TimeUp.jsx';
 import TimeDown from '../components/TimeDown.jsx';
 import PlayPause from '../components/PlayPause.jsx';
 import PostThings from '../components/PostThings.jsx';
-import Color from '../components/Color.jsx';
+import BaseColors from '../components/BaseColors.jsx';
 import Refresh from 'renderer/components/Refresh.jsx';
 import DirectionOptions from '../components/DirectionOptions.jsx';
+import Triggers from '../components/Triggers.jsx';
 
 import Button from '@material-ui/core/Button';
 
-import { useGlobalStore } from 'renderer/utils/Store';
-
-const TOD = observer((props) => {
-  const { value, timerIndex } = props;
-  const gs = useGlobalStore();
+const Timer = observer((props) => {
+  const { value, timerIndex, timerId } = props;
 
   const toggle = () => {
     window.electron.vmix.multiviewLayerToggle(3, 1);
@@ -40,11 +38,11 @@ const TOD = observer((props) => {
       <TimeDown timerIndex={timerIndex} />
       <PlayPause timerIndex={timerIndex} />
       <DirectionOptions timerIndex={timerIndex} />
-      <Color timerIndex={timerIndex} isDown={true} />
-      {/* <Color timerIndex={timerIndex} isDown={false} /> */}
+      <BaseColors timerIndex={timerIndex} />
+      <Triggers timerIndex={timerIndex} timerId={timerId} />
       <PostThings timerIndex={timerIndex} />
     </>
   );
 });
 
-export default TOD;
+export default Timer;
