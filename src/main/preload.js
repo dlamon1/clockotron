@@ -9,10 +9,11 @@ contextBridge.exposeInMainWorld('electron', {
       ipcRenderer.send('showClock');
     },
     connect: (address) => {
-      ipcRenderer.invoke('socket-connect', address);
+      ipcRenderer.invoke('vmixConnect', address);
     },
     reqXmlInputList: () => {
-      ipcRenderer.invoke('socket-reqXml-inputList');
+      ipcRenderer.invoke('vmixRequestXml');
+      // ipcRenderer.invoke('socket-reqXml-inputList');
     },
     reqXmlInputVideoReader: () => {
       ipcRenderer.invoke('socket-reqXml-videoReader');

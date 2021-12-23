@@ -2,7 +2,7 @@ import { ConnectionTCP } from '../api/src';
 import { ipcMain } from 'electron';
 // import { XmlApi } from 'vmix-js-utils';
 
-export function socket(mainWindow, connection) {
+export function socketOld(mainWindow, connection) {
   let receivedXmlData = '';
   let reqObject = {
     Function: 'SetText',
@@ -41,7 +41,6 @@ export function socket(mainWindow, connection) {
           case 0:
             break;
           case 1:
-            console.log('case 0');
             mainWindow.webContents.send('socket-xmlDataRes-inputList', xmlData);
             break;
           case 2:
