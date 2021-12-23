@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 class Layer {
   layer = 1;
   input = 1;
-  multiviewCommand = '';
+  command = '';
   id = '';
 
   constructor() {
@@ -21,13 +21,13 @@ class Layer {
     this.input = input;
   }
 
-  setMultiviewCommand(command) {
-    this.multiviewCommand = command;
+  setCommand(command) {
+    this.command = command;
   }
 }
 
 class Color {
-  color = '#5300eb';
+  color = '#00FF50';
   id = '';
 
   constructor() {
@@ -61,14 +61,15 @@ class PlayPause {
 }
 
 export class Trigger {
+  id = '';
   time = 120;
-  isDown = false;
+  isDown = true;
   isUp = false;
   layers = [];
   colors = [];
-  color = '#aaa';
   playPauses = [];
-  id = '';
+  color = '#00FF50';
+  fontColor = '#fff';
 
   constructor() {
     const id = uuidv4();
@@ -89,6 +90,19 @@ export class Trigger {
 
   setColor(color) {
     this.color = color;
+  }
+
+  setFontColor() {
+    if (
+      this.color == '#000000' ||
+      this.color == '#5300eb' ||
+      this.color == '#1b46f2'
+    ) {
+      // trigger;
+      this.fontColor = '#fff';
+    } else {
+      this.fontColor = '#000';
+    }
   }
 
   addLayer() {

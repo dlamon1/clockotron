@@ -24,10 +24,7 @@ import Button from '@material-ui/core/Button';
 const Triggers = observer((props) => {
   const { timerIndex, timerId } = props;
   const gs = useGlobalStore();
-  let timer = gs.timers.filter((x) => x.id === timerId);
-  timer = timer[0];
-
-  const [triggerArray, setTriggerArray] = useState([]);
+  let timer = gs.timers.filter((x) => x.id === timerId)[0];
 
   // useEffect(() => {
   //   let sortedTriggers = timer.triggers.sort(function (a, b) {
@@ -35,6 +32,55 @@ const Triggers = observer((props) => {
   //   });
   //   setTriggerArray(sortedTriggers);
   // }, [JSON.stringify(timer.triggers)]);
+
+  const updateColorWhileDecrementing = () => {
+    let triggerArray = JSON.parse(JSON.stringify(timer.triggers));
+    let downColorObj = { time: 10000000, color: timer.downColor };
+    let filteredArray = triggerArray.filter(
+      (trigger) => trigger.isDown === true
+    );
+    filteredArray.push(downColorObj);
+    filteredArray.sort(function (a, b) {
+      return a.time - b.time;
+    });
+    let newColor = filteredArray[0].color;
+    for (let i = 0; i < filteredArray.length; i++) {
+      newColor = filteredArray[i].color;
+      if (timer.currentSeconds <= filteredArray[i].time) {
+        break;
+      }
+    }
+    timer.color != newColor && timer.setColor(newColor);
+  };
+
+  const updateColorWhileIncrementing = () => {
+    let triggerArray = JSON.parse(JSON.stringify(timer.triggers));
+    let upColorObj = { time: 10000000, color: timer.upColor };
+    let filteredArray = triggerArray.filter((trigger) => trigger.isUp === true);
+    filteredArray.push(upColorObj);
+    filteredArray.sort(function (a, b) {
+      return a.time - b.time;
+    });
+    let newColor = filteredArray[0].color;
+    for (let i = 0; i < filteredArray.length; i++) {
+      newColor = filteredArray[i].color;
+      if (timer.currentSeconds <= filteredArray[i].time) {
+        break;
+      }
+    }
+    timer.color != newColor && timer.setColor(newColor);
+  };
+
+  useEffect(() => {
+    timer.isCountingDown && updateColorWhileDecrementing();
+    !timer.isCountingDown && updateColorWhileIncrementing();
+  }, [
+    timer.currentSeconds,
+    timer.downColor,
+    timer.upColor,
+    timer.isCountingDown,
+    JSON.stringify(timer.triggers),
+  ]);
 
   return (
     <Grid item xs={12} style={{ marginTop: 10 }}>
@@ -45,6 +91,7 @@ const Triggers = observer((props) => {
             triggerIndex={index}
             timerId={timerId}
             triggerId={trigger.id}
+            key={index}
           />
         ))}
         <Button

@@ -65,7 +65,12 @@ const PlayPauseTrigger = observer((props) => {
   };
 
   useEffect(() => {
-    triggerPlayPause();
+    if (
+      (timer.isRunning && timer.isCountingDown && trigger.isDown) ||
+      (timer.isRunning && !timer.isCountingDown && trigger.isUp)
+    ) {
+      triggerPlayPause();
+    }
   }, [timer.currentSeconds]);
 
   useEffect(() => {

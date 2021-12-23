@@ -20,77 +20,76 @@ const BaseColors = observer((props) => {
   let { value, timerIndex } = props;
   const gs = useGlobalStore();
   const timer = gs.timers[timerIndex];
-  const classes = useStyles();
-  const [fontColor, setFontColor] = useState('black');
-  const [fontColorUp, setFontColorUp] = useState('black');
 
-  const updateColorWhileDecrementing = () => {
-    let filteredArray = timer.colors.filter((color) => color.isDown === true);
-    filteredArray.sort(function (a, b) {
-      return a.time - b.time;
-    });
-    let newColor = '#fff';
-    for (let i = 0; i < filteredArray.length; i++) {
-      newColor = filteredArray[i].color;
-      if (timer.currentSeconds <= filteredArray[i].time) {
-        break;
-      }
-    }
-    timer.color != newColor ? timer.setColor(newColor) : null;
-  };
+  // const updateColorWhileDecrementing = () => {
+  //   let filteredArray = timer.colors.filter((color) => color.isDown === true);
+  //   filteredArray.sort(function (a, b) {
+  //     return a.time - b.time;
+  //   });
+  //   let newColor = '#fff';
+  //   for (let i = 0; i < filteredArray.length; i++) {
+  //     newColor = filteredArray[i].color;
+  //     if (timer.currentSeconds <= filteredArray[i].time) {
+  //       break;
+  //     }
+  //   }
+  //   timer.color != newColor ? timer.setColor(newColor) : null;
+  // };
 
-  const updateColorWhileIncrementing = () => {
-    timer.color != timer.colors[1].color
-      ? timer.setColor(timer.colors[1].color)
-      : null;
-  };
+  // const updateColorWhileIncrementing = () => {
+  //   timer.color != timer.colors[1].color
+  //     ? timer.setColor(timer.colors[1].color)
+  //     : null;
+  // };
 
-  useEffect(() => {
-    timer.isCountingDown
-      ? updateColorWhileDecrementing()
-      : updateColorWhileIncrementing();
-  }, [
-    timer.currentSeconds,
-    JSON.stringify(timer.colors),
-    timer.isCountingDown,
-  ]);
+  // useEffect(() => {
+  //   timer.isCountingDown
+  //     ? updateColorWhileDecrementing()
+  //     : updateColorWhileIncrementing();
+  // }, [
+  //   timer.currentSeconds,
+  //   JSON.stringify(timer.colors),
+  //   timer.isCountingDown,
+  // ]);
 
-  useEffect(() => {
-    if (
-      timer.colors[0].color == '#000000' ||
-      timer.colors[0].color == '#5300eb' ||
-      timer.colors[0].color == '#1b46f2'
-    ) {
-      setFontColor('#fff');
-    } else {
-      setFontColor('#000');
-    }
-  }, [timer.colors[0].color]);
+  // useEffect(() => {
+  //   if (
+  //     timer.colors[0].color == '#000000' ||
+  //     timer.colors[0].color == '#5300eb' ||
+  //     timer.colors[0].color == '#1b46f2'
+  //   ) {
+  //     setFontColor('#fff');
+  //   } else {
+  //     setFontColor('#000');
+  //   }
+  // }, [timer.colors[0].color]);
 
-  useEffect(() => {
-    if (
-      timer.colors[1].color == '#000000' ||
-      timer.colors[1].color == '#5300eb' ||
-      timer.colors[1].color == '#1b46f2'
-    ) {
-      setFontColorUp('#fff');
-    } else {
-      setFontColorUp('#000');
-    }
-  }, [timer.colors[1].color]);
+  // useEffect(() => {
+  //   if (
+  //     timer.colors[1].color == '#000000' ||
+  //     timer.colors[1].color == '#5300eb' ||
+  //     timer.colors[1].color == '#1b46f2'
+  //   ) {
+  //     setFontColorUp('#fff');
+  //   } else {
+  //     setFontColorUp('#000');
+  //   }
+  // }, [timer.colors[1].color]);
 
   return (
     <>
       <Grid item xs={12} style={{ marginTop: 10 }}>
         <Grid container justifyContent="space-around" alignItems="center">
-          <Accordion
-            style={{ backgroundColor: timer.colors[0].color, width: '85%' }}
-          >
+          <Accordion style={{ backgroundColor: timer.downColor, width: '85%' }}>
             <AccordionSummary
-              expandIcon={<ExpandMoreIcon style={{ color: fontColor }} />}
+              expandIcon={
+                <ExpandMoreIcon style={{ color: timer.downFontColor }} />
+              }
               style={{ backgroundColor: '' }}
             >
-              <Typography style={{ color: fontColor, fontWeight: 600 }}>
+              <Typography
+                style={{ color: timer.downFontColor, fontWeight: 600 }}
+              >
                 DOWN COLOR
               </Typography>
             </AccordionSummary>
@@ -103,7 +102,7 @@ const BaseColors = observer((props) => {
                 >
                   <Paper
                     style={{
-                      backgroundColor: '#404040',
+                      backgroundColor: '#252525',
                       padding: 8,
                       paddingTop: 12,
                       maxWidth: '95%',
@@ -111,9 +110,7 @@ const BaseColors = observer((props) => {
                   >
                     <Grid container style={{ backgroundColor: '' }}>
                       <GithubPicker
-                        onChangeComplete={(e) =>
-                          timer.colors[0].setColor(e.hex)
-                        }
+                        onChangeComplete={(e) => timer.setDownColor(e.hex)}
                         colors={colors}
                         triangle="hide"
                       />
@@ -127,14 +124,14 @@ const BaseColors = observer((props) => {
       </Grid>
       <Grid item xs={12} style={{ marginTop: 10 }}>
         <Grid container justifyContent="space-around" alignItems="center">
-          <Accordion
-            style={{ backgroundColor: timer.colors[1].color, width: '85%' }}
-          >
+          <Accordion style={{ backgroundColor: timer.upColor, width: '85%' }}>
             <AccordionSummary
-              expandIcon={<ExpandMoreIcon style={{ color: fontColor }} />}
+              expandIcon={
+                <ExpandMoreIcon style={{ color: timer.upFontColor }} />
+              }
               style={{ backgroundColor: '' }}
             >
-              <Typography style={{ color: fontColorUp, fontWeight: 600 }}>
+              <Typography style={{ color: timer.upFontColor, fontWeight: 600 }}>
                 UP COLOR
               </Typography>
             </AccordionSummary>
@@ -147,7 +144,7 @@ const BaseColors = observer((props) => {
                 >
                   <Paper
                     style={{
-                      backgroundColor: '#404040',
+                      backgroundColor: '#252525',
                       padding: 8,
                       paddingTop: 12,
                       maxWidth: '95%',
@@ -155,9 +152,7 @@ const BaseColors = observer((props) => {
                   >
                     <Grid container style={{ backgroundColor: '' }}>
                       <GithubPicker
-                        onChangeComplete={(e) =>
-                          timer.colors[1].setColor(e.hex)
-                        }
+                        onChangeComplete={(e) => timer.setUpColor(e.hex)}
                         colors={colors}
                         triangle="hide"
                       />

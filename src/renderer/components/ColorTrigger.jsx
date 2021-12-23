@@ -30,17 +30,13 @@ const ColorTrigger = observer((props) => {
     color.setColor(x);
   };
 
-  const updateTimerColor = () => {
-    timer.setColor(color.color);
-  };
+  // const updateTimerColor = () => {
+  //   timer.setColor(color.color);
+  // };
 
-  useEffect(() => {
-    timer.currentSeconds == trigger.time && updateTimerColor();
-  }, [timer.currentSeconds]);
-
-  useEffect(() => {
-    // gs.xmlRaw ? setInputs() : null;
-  }, [gs.xmlRaw]);
+  // useEffect(() => {
+  //   timer.currentSeconds == trigger.time && updateTimerColor();
+  // }, [timer.currentSeconds]);
 
   return (
     <>

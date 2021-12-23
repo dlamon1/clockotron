@@ -21,13 +21,13 @@ import Select from '@material-ui/core/Select';
 import Paper from '@material-ui/core/Paper';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import IconButton from '@material-ui/core/IconButton';
+import Checkbox from '@material-ui/core/Checkbox';
 
 const TriggerDetail = observer((props) => {
   const { timerIndex, triggerId, timerId } = props;
   const gs = useGlobalStore();
   let timer = gs.timers.filter((x) => x.id === timerId)[0];
   let trigger = timer.triggers.filter((x) => x.id === triggerId)[0];
-  const [fontColor, setFontColor] = useState('black');
   const [unit, setUnit] = useState(1);
   const [backgroundColor, setBackgroundColor] = useState('#aaa');
   const [time, setTime] = useState(trigger.time);
@@ -54,26 +54,17 @@ const TriggerDetail = observer((props) => {
   };
 
   useEffect(() => {
-    if (
-      trigger.color == '#000000' ||
-      trigger.color == '#5300eb' ||
-      trigger.color == '#1b46f2'
-    ) {
-      trigger;
-      setFontColor('#fff');
-    } else {
-      setFontColor('#000');
-    }
+    trigger.setFontColor();
   }, [trigger.color]);
 
   useEffect(() => {
     trigger.setTime(time * unit);
-    let res = formatTime(time * unit);
+    let res = formatTime(time * unit, 3);
     setTitle(res);
   }, [unit, time]);
 
   useEffect(() => {
-    let res = formatTime(trigger.time);
+    let res = formatTime(trigger.time, 3);
     setTitle(res);
     addType('color');
     // color.setTime(color.time);
@@ -82,13 +73,36 @@ const TriggerDetail = observer((props) => {
   return (
     <Accordion style={{ backgroundColor: trigger.color, width: '85%' }}>
       <AccordionSummary
-        expandIcon={<ExpandMoreIcon style={{ color: fontColor }} />}
+        expandIcon={<ExpandMoreIcon style={{ color: trigger.fontColor }} />}
         style={{ backgroundColor: '' }}
       >
-        <Typography style={{ color: fontColor, fontWeight: 600 }}>
-          At {title}
+        <Typography style={{ color: trigger.fontColor, fontWeight: 600 }}>
+          @ {title}
         </Typography>
       </AccordionSummary>
+      <Grid
+        container
+        justifyContent="center"
+        alignItems="center"
+        style={{ backgroundColor: '', marginTop: -10, marginBottom: 5 }}
+      >
+        <Checkbox
+          checked={trigger.isUp}
+          onChange={() => trigger.setIsUp(!trigger.isUp)}
+          style={{ color: trigger.fontColor }}
+        />
+        <Typography style={{ color: trigger.fontColor, fontWeight: 600 }}>
+          UP
+        </Typography>
+        <Checkbox
+          checked={trigger.isDown}
+          onChange={() => trigger.setIsDown(!trigger.isDown)}
+          style={{ color: trigger.fontColor }}
+        />
+        <Typography style={{ color: trigger.fontColor, fontWeight: 600 }}>
+          DOWN
+        </Typography>
+      </Grid>
       <AccordionDetails>
         <Paper
           style={{
@@ -136,6 +150,23 @@ const TriggerDetail = observer((props) => {
           timerId={timerId}
           triggerId={triggerId}
           colorId={color.id}
+          key={index}
+        />
+      ))}
+      {trigger.layers.map((layer, index) => (
+        <LayerTrigger
+          timerId={timerId}
+          triggerId={triggerId}
+          layerId={layer.id}
+          key={index}
+        />
+      ))}
+      {trigger.playPauses.map((playPause, index) => (
+        <PlayPauseTrigger
+          timerId={timerId}
+          triggerId={triggerId}
+          playPauseId={playPause.id}
+          key={index}
         />
       ))}
       <AccordionDetails>
@@ -164,7 +195,6 @@ const TriggerDetail = observer((props) => {
                   label="Unit"
                 >
                   <option value={''}></option>
-                  {/* <option value={'color'}>Change Color</option> */}
                   <option value={'layer'}>Toggle Multiview Layer</option>
                   <option value={'playPause'}>Play/Pause</option>
                 </Select>
@@ -173,24 +203,13 @@ const TriggerDetail = observer((props) => {
           </Grid>
         </Paper>
       </AccordionDetails>
-      {trigger.layers.map((layer, index) => (
-        <LayerTrigger
-          timerId={timerId}
-          triggerId={triggerId}
-          layerId={layer.id}
-        />
-      ))}
-      {trigger.playPauses.map((playPause, index) => (
-        <PlayPauseTrigger
-          timerId={timerId}
-          triggerId={triggerId}
-          playPauseId={playPause.id}
-        />
-      ))}
       <Grid container style={{ backgroundColor: '', marginTop: -15 }}>
         <Grid item xs={12} style={{ marginTop: 0 }}>
           <Grid container justifyContent="space-around" alignItems="center">
-            <IconButton style={{ color: fontColor }} onClick={removeTrigger}>
+            <IconButton
+              style={{ color: trigger.fontColor }}
+              onClick={removeTrigger}
+            >
               <DeleteForeverIcon />
             </IconButton>
           </Grid>

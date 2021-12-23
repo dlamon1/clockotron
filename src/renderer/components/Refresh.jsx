@@ -22,7 +22,7 @@ const Refresh = observer((props) => {
     setTimeout(() => {
       refresh();
       timeout();
-    }, 4000);
+    }, 3333);
   };
 
   timeout();

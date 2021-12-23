@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export class Timer {
   id = '';
-  color = '#5300eb';
+  color = '#00FF50';
   input = '';
   text = '';
   currentSeconds = 0;
@@ -18,13 +18,17 @@ export class Timer {
   countUpAfterDownReachesZero = false;
   colors = [];
   triggers = [];
+  downColor = '#00FF50';
+  upColor = '#FF0000';
+  downFontColor = '#000';
+  upFontColor = '#000';
 
   constructor(type) {
     const id = uuidv4();
     this.id = id;
     this.type = type;
     this.addColor('#00FF50', 100000000, true);
-    this.addColor('#00FF50', 100000000, false);
+    this.addColor('#FF0000', 100000000, false);
     makeAutoObservable(this);
   }
 
@@ -44,27 +48,24 @@ export class Timer {
     }
   }
 
-  setColor1(color) {
-    this.color1 = color;
-  }
-  setColor2(color) {
-    this.color2 = color;
-  }
-  setColor3(color) {
-    this.color3 = color;
-  }
-  setColor4(color) {
-    this.color4 = color;
+  getFontColor(color) {
+    if (color == '#000000' || color == '#5300eb' || color == '#1b46f2') {
+      return '#fff';
+    } else {
+      return '#000';
+    }
   }
 
-  setColor2Time(time) {
-    this.color2Time = time;
+  setDownColor(color) {
+    this.downColor = color;
+    let fontColor = this.getFontColor(color);
+    this.downFontColor = fontColor;
   }
-  setColor3Time(time) {
-    this.color3Time = time;
-  }
-  setColor4Time(time) {
-    this.color4Time = time;
+
+  setUpColor(color) {
+    this.upColor = color;
+    let fontColor = this.getFontColor(color);
+    this.upFontColor = fontColor;
   }
 
   setCurrentSeconds(time) {

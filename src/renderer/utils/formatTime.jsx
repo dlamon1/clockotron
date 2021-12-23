@@ -1,27 +1,37 @@
-export const formatTime = (x) => {
-  let time = [];
-  time.push(Math.floor(x / 3600));
-  time.push(Math.floor((x / 60) % 60));
-  time.push(x % 60);
-  let timePrint = add0(time[0]) + ':' + add0(time[1]) + ':' + add0(time[2]);
+export const formatTime = (time, positions) => {
+  let timeArray = [];
+  timeArray.push(Math.floor(time / 3600));
+  timeArray.push(Math.floor((time / 60) % 60));
+  timeArray.push(time % 60);
+  // let timePrint = add0(time[0]) + ':' + add0(time[1]) + ':' + add0(time[2]);
+  let formatedTime = '';
+  if (positions >= 3) {
+    formatedTime = formatedTime + add0(timeArray[0]) + ':';
+  }
+  if (positions >= 2) {
+    formatedTime = formatedTime + add0(timeArray[1]) + ':';
+  }
+  if (positions >= 1) {
+    formatedTime = formatedTime + add0(timeArray[2]);
+  }
 
-  function add0(x) {
+  function add0(time) {
     let y;
-    let l = String(x).split('');
+    let l = String(time).split('');
     switch (l.length) {
       case 0:
         y = '00';
         break;
       case 1:
-        y = '0' + String(x);
+        y = '0' + String(time);
         break;
       case 2:
-        y = String(x);
+        y = String(time);
         break;
       default:
         break;
     }
     return y;
   }
-  return timePrint;
+  return formatedTime;
 };

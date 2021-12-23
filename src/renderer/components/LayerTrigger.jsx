@@ -38,7 +38,7 @@ const LayerTrigger = observer((props) => {
   const handleModeChange = (event) => {
     setModeSelected(event.target.value);
     const i = modes.findIndex((m) => m.label == event.target.value);
-    layer.setMultiviewCommand(modes[i].command);
+    layer.setCommand(modes[i].command);
   };
 
   const handleInputChange = (event) => {
@@ -59,20 +59,27 @@ const LayerTrigger = observer((props) => {
   };
 
   const triggerLayerUpdate = () => {
-    if (
-      timer.currentSeconds == trigger.time &&
-      // color.doesToggle &&
-      layer.multiviewCommand
-    ) {
-      let cmd = layer.multiviewCommand;
-      let input = layer.input;
-      let inputLayer = layer.layer;
-      window.electron.vmix.multiviewLayer(cmd, input, inputLayer);
-    }
+    let cmd = layer.command;
+    let input = layer.input;
+    let inputLayer = layer.layer;
+    window.electron.vmix.multiviewLayer(cmd, input, inputLayer);
   };
 
   useEffect(() => {
-    triggerLayerUpdate();
+    if (
+      (timer.isRunning &&
+        timer.isCountingDown &&
+        trigger.isDown &&
+        layer.command &&
+        timer.currentSeconds == trigger.time) ||
+      (timer.isRunning &&
+        !timer.isCountingDown &&
+        trigger.isUp &&
+        layer.command &&
+        timer.currentSeconds == trigger.time)
+    ) {
+      triggerLayerUpdate();
+    }
   }, [timer.currentSeconds]);
 
   useEffect(() => {
