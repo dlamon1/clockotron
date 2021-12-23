@@ -21,61 +21,6 @@ const BaseColors = observer((props) => {
   const gs = useGlobalStore();
   const timer = gs.timers[timerIndex];
 
-  // const updateColorWhileDecrementing = () => {
-  //   let filteredArray = timer.colors.filter((color) => color.isDown === true);
-  //   filteredArray.sort(function (a, b) {
-  //     return a.time - b.time;
-  //   });
-  //   let newColor = '#fff';
-  //   for (let i = 0; i < filteredArray.length; i++) {
-  //     newColor = filteredArray[i].color;
-  //     if (timer.currentSeconds <= filteredArray[i].time) {
-  //       break;
-  //     }
-  //   }
-  //   timer.color != newColor ? timer.setColor(newColor) : null;
-  // };
-
-  // const updateColorWhileIncrementing = () => {
-  //   timer.color != timer.colors[1].color
-  //     ? timer.setColor(timer.colors[1].color)
-  //     : null;
-  // };
-
-  // useEffect(() => {
-  //   timer.isCountingDown
-  //     ? updateColorWhileDecrementing()
-  //     : updateColorWhileIncrementing();
-  // }, [
-  //   timer.currentSeconds,
-  //   JSON.stringify(timer.colors),
-  //   timer.isCountingDown,
-  // ]);
-
-  // useEffect(() => {
-  //   if (
-  //     timer.colors[0].color == '#000000' ||
-  //     timer.colors[0].color == '#5300eb' ||
-  //     timer.colors[0].color == '#1b46f2'
-  //   ) {
-  //     setFontColor('#fff');
-  //   } else {
-  //     setFontColor('#000');
-  //   }
-  // }, [timer.colors[0].color]);
-
-  // useEffect(() => {
-  //   if (
-  //     timer.colors[1].color == '#000000' ||
-  //     timer.colors[1].color == '#5300eb' ||
-  //     timer.colors[1].color == '#1b46f2'
-  //   ) {
-  //     setFontColorUp('#fff');
-  //   } else {
-  //     setFontColorUp('#000');
-  //   }
-  // }, [timer.colors[1].color]);
-
   return (
     <>
       <Grid item xs={12} style={{ marginTop: 10 }}>

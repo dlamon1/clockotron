@@ -5,36 +5,17 @@ let messages = [];
 
 contextBridge.exposeInMainWorld('electron', {
   vmix: {
-    setClockTime() {
-      ipcRenderer.send('showClock');
-    },
     connect: (address) => {
       ipcRenderer.invoke('vmixConnect', address);
     },
     reqXmlInputList: () => {
       ipcRenderer.invoke('vmixRequestXml');
-      // ipcRenderer.invoke('socket-reqXml-inputList');
     },
-    reqXmlInputVideoReader: () => {
-      ipcRenderer.invoke('socket-reqXml-videoReader');
-    },
-    reqXmlInputVideoReaderLoop: () => {
-      ipcRenderer.invoke('socket-reqXml-videoReader-loop');
-    },
-    postTime: (input, name, value) => {
-      ipcRenderer.invoke('socket-postTime', input, name, value);
-    },
-    postColor: (input, name, value) => {
-      ipcRenderer.invoke('socket-postColor', input, name, value);
+    vmixPostReq: (cmd) => {
+      ipcRenderer.invoke('vmixPostReq', cmd);
     },
     shutdown: () => {
       ipcRenderer.invoke('socket-shutdown');
-    },
-    multiviewLayer: (cmd, input, layer) => {
-      ipcRenderer.invoke('multiviewLayer', cmd, input, layer);
-    },
-    playPause: (cmd, input) => {
-      ipcRenderer.invoke('playPause', cmd, input);
     },
   },
   on(eventName, callback) {
@@ -53,6 +34,7 @@ contextBridge.exposeInMainWorld('electron', {
 });
 
 messages = [
+  'vmixPostReq',
   'start',
   'stop',
   'slower',
@@ -81,6 +63,7 @@ messages = [
   'socket-xmlDataRes',
   'socket-connected',
   'socket-xmlDataRes-inputList',
+  'xmlDataRes',
   'socket-xmlDataRes-videoReader',
   'socket-xmlDataRes-videoReader-loop',
   'socket-tallyData',

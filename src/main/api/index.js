@@ -1,5 +1,4 @@
-import { apiFunction } from './http-server';
-import { socketOld } from './socket-server';
+import { apiFunction } from './apiServer';
 import { vmixSocket } from './vmixSocket';
 import express from 'express';
 

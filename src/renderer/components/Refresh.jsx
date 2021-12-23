@@ -15,7 +15,7 @@ const Refresh = observer((props) => {
   const gs = useGlobalStore();
 
   const refresh = () => {
-    window.electron.vmix.reqXmlInputList();
+    gs.ip && window.electron.vmix.reqXmlInputList();
   };
 
   const timeout = () => {

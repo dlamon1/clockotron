@@ -84,19 +84,12 @@ function createWindow() {
     mainWindow.show();
   });
 
-  // apiFunction(mainWindow);
-  // socket();
   runNetConnections(mainWindow, connection);
 
   mainWindow.on('closed', function () {
     mainWindow = null;
   });
 }
-
-// ipcMain.handle('ffmpeg', (event, file) => {
-//   let res = edit(file);
-//   return res;
-// });
 
 app.on('ready', () => {
   createWindow();
@@ -117,6 +110,6 @@ app.on('activate', () => {
 });
 
 app.on('before-quit', () => {
-  connection && connection.shutdown();
+  connection && connection.destroy();
   connection && connection.clearAllListeners();
 });

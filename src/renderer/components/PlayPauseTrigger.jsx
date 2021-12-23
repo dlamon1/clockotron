@@ -60,7 +60,7 @@ const PlayPauseTrigger = observer((props) => {
     ) {
       let cmd = playPause.command;
       let input = playPause.input;
-      window.electron.vmix.playPause(cmd, input);
+      window.electron.vmix.vmixPostReq(`${cmd} Input=${input}`);
     }
   };
 

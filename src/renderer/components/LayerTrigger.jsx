@@ -62,7 +62,9 @@ const LayerTrigger = observer((props) => {
     let cmd = layer.command;
     let input = layer.input;
     let inputLayer = layer.layer;
-    window.electron.vmix.multiviewLayer(cmd, input, inputLayer);
+    window.electron.vmix.vmixPostReq(
+      `${cmd} Input=${input}&Value=${inputLayer}`
+    );
   };
 
   useEffect(() => {

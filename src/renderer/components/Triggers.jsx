@@ -26,13 +26,6 @@ const Triggers = observer((props) => {
   const gs = useGlobalStore();
   let timer = gs.timers.filter((x) => x.id === timerId)[0];
 
-  // useEffect(() => {
-  //   let sortedTriggers = timer.triggers.sort(function (a, b) {
-  //     return a.time - b.time;
-  //   });
-  //   setTriggerArray(sortedTriggers);
-  // }, [JSON.stringify(timer.triggers)]);
-
   const updateColorWhileDecrementing = () => {
     let triggerArray = JSON.parse(JSON.stringify(timer.triggers));
     let downColorObj = { time: 10000000, color: timer.downColor };

@@ -55,62 +55,58 @@ const TextInputList = observer((props) => {
     gs.timers[timerIndex].setText(event.target.value);
   };
 
-  async function setInputs() {
+  const setInputs = () => {
     let jsonObj = parser.parse(gs.xmlRaw, options);
+    console.log(jsonObj);
     let list = jsonObj.vmix.inputs.input;
-
     let filtered = list.filter(
       (item) => item.attr.type === 'GT' || item.attr.type === 'Xaml'
     );
     setInputList(filtered);
-  }
+  };
 
   useEffect(() => {
     gs.xmlRaw ? setInputs() : null;
-    // setInputs();
   }, [gs.xmlRaw]);
 
   return (
     <>
-      {/* {value === 0 && ( */}
-      <>
-        <Grid item xs={12} style={{ marginTop: 10 }}>
-          <Grid container justifyContent="space-around" alignItems="center">
-            <FormControl style={{ width: '85%' }}>
-              <InputLabel id="demo-simple-select-label">Input</InputLabel>
-              <Select
-                value={inSelected}
-                style={{ width: '100%' }}
-                onChange={handleChange}
-              >
-                {inputList.map((input, index) => (
-                  <MenuItem value={input.attr.title} key={index}>
-                    {input.attr.title}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
+      <Grid item xs={12} style={{ marginTop: 10 }}>
+        <Grid container justifyContent="space-around" alignItems="center">
+          <FormControl style={{ width: '85%' }}>
+            <InputLabel id="demo-simple-select-label">Input</InputLabel>
+            <Select
+              value={inSelected}
+              style={{ width: '100%' }}
+              onChange={handleChange}
+            >
+              {inputList.map((input, index) => (
+                <MenuItem value={input.attr.title} key={index}>
+                  {input.attr.title}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Grid>
-        <Grid item xs={12} style={{ marginTop: 10 }}>
-          <Grid container justifyContent="space-around" alignItems="center">
-            <FormControl style={{ width: '85%' }}>
-              <InputLabel id="demo-simple-select-label">Text Layer</InputLabel>
-              <Select
-                value={textSelected}
-                style={{ width: '100%' }}
-                onChange={handleTextChange}
-              >
-                {textList.map((text, index) => (
-                  <MenuItem value={text} key={(text, index)}>
-                    {text}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
+      </Grid>
+      <Grid item xs={12} style={{ marginTop: 10 }}>
+        <Grid container justifyContent="space-around" alignItems="center">
+          <FormControl style={{ width: '85%' }}>
+            <InputLabel id="demo-simple-select-label">Text Layer</InputLabel>
+            <Select
+              value={textSelected}
+              style={{ width: '100%' }}
+              onChange={handleTextChange}
+            >
+              {textList.map((text, index) => (
+                <MenuItem value={text} key={(text, index)}>
+                  {text}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Grid>
-      </>
+      </Grid>
     </>
   );
 });

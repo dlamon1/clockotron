@@ -20,11 +20,12 @@ const Socket = observer((props) => {
 
   const socketError = (__, error) => {
     connectError();
+    gs.setIp('');
     gs.setIsSocketConnected(false);
   };
 
   useEffect(() => {
-    window.electron.on('socket-xmlDataRes-inputList', storeXmlDataRes);
+    window.electron.on('xmlDataRes', storeXmlDataRes);
     window.electron.on('socket-error', socketError);
 
     return () => {

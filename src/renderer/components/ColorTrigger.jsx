@@ -30,14 +30,6 @@ const ColorTrigger = observer((props) => {
     color.setColor(x);
   };
 
-  // const updateTimerColor = () => {
-  //   timer.setColor(color.color);
-  // };
-
-  // useEffect(() => {
-  //   timer.currentSeconds == trigger.time && updateTimerColor();
-  // }, [timer.currentSeconds]);
-
   return (
     <>
       <AccordionDetails>

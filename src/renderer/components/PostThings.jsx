@@ -9,12 +9,15 @@ const PostThings = observer((props) => {
   let timer = gs.timers[timerIndex];
 
   const postTimes = async (time, input, text) => {
-    window.electron.vmix.postTime(input, text, time);
+    window.electron.vmix.vmixPostReq(
+      `SetText Input=${input}&SelectedName=${text}&Value=${time}`
+    );
   };
 
   const postColor = async (input, text, color) => {
-    let encodedColor = color.replace('#', '%23');
-    window.electron.vmix.postColor(input, text, color);
+    window.electron.vmix.vmixPostReq(
+      `SetTextColour Input=${input}&SelectedName=${text}&Value=${color}`
+    );
   };
 
   useEffect(() => {
