@@ -57,7 +57,6 @@ const TextInputList = observer((props) => {
 
   const setInputs = () => {
     let jsonObj = parser.parse(gs.xmlRaw, options);
-    console.log(jsonObj);
     let list = jsonObj.vmix.inputs.input;
     let filtered = list.filter(
       (item) => item.attr.type === 'GT' || item.attr.type === 'Xaml'

@@ -63,7 +63,7 @@ export function vmixSocket(mainWindow, connection) {
       case 'XML':
         let xml = data.split('<vmix>');
         xml = '<vmix>' + xml[1];
-        mainWindow.webContents.send('xmlDataRes', xml);
+        let isBody = mainWindow.webContents.send('xmlDataRes', xml);
         break;
       case 'FUNCTION':
       default:

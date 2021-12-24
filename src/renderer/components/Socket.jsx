@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
+import parser from 'fast-xml-parser';
 
 import { useGlobalStore } from '../utils/Store.jsx';
+import { options } from 'renderer/utils/options.jsx';
 
 const Socket = observer((props) => {
   const gs = useGlobalStore();
   const { value } = props;
 
   let storeXmlDataRes = (__, xmlData) => {
-    gs.setXmlRaw(xmlData);
+    let jsonObj = parser.parse(xmlData, options);
+    console.log(jsonObj);
+    jsonObj.vmix.inputs && gs.setXmlRaw(xmlData);
   };
 
   const connectError = () => {

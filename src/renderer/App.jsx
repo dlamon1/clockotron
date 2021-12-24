@@ -9,6 +9,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 
 import IpForm from './components/IpInput.jsx';
 import Socket from './components/Socket.jsx';
@@ -76,26 +77,28 @@ const App = observer(() => {
           marginTop: 15,
         }}
         direction="row"
-        justifyContent="space-between"
+        justifyContent="space-around"
         alignItems="center"
       >
-        {/* <Button onClick={() => apiCall()}>hello</Button> */}
-        <Toast />
-        {!gs.ip && <IpForm />}
-        {gs.ip && (
-          <>
-            <Socket />
+        <Box style={{ backgroundColor: '' }}>
+          {/* <Button onClick={() => apiCall()}>hello</Button> */}
+          <Toast />
+          {!gs.ip && <IpForm />}
+          {gs.ip && (
+            <>
+              <Socket />
 
-            {/* <Button onClick={() => addTimer('timer')}>Add Timer</Button>
+              {/* <Button onClick={() => addTimer('timer')}>Add Timer</Button>
             <Button onClick={() => addTimer('video')}>Add Video</Button>
-            <Button onClick={() => addTimer('tod')}>Add TOD</Button> */}
+          <Button onClick={() => addTimer('tod')}>Add TOD</Button> */}
 
-            {/* TOD */}
-            {gs.timers.map((timer, index) => (
-              <NewTimer timerIndex={index} key={index} timerId={timer.id} />
-            ))}
-          </>
-        )}
+              {/* TOD */}
+              {gs.timers.map((timer, index) => (
+                <NewTimer timerIndex={index} key={index} timerId={timer.id} />
+              ))}
+            </>
+          )}
+        </Box>
       </Grid>
     </>
   );
