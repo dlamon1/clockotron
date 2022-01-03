@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { observer } from 'mobx-react';
+import { setDriftlessTimeout, clearDriftless } from 'driftless';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 import { useGlobalStore } from '../utils/Store.jsx';
+import { formatTime } from '../utils/formatTime';
 
 const PlayPause = observer((props) => {
   let { value, timerIndex } = props;
@@ -39,90 +41,18 @@ const PlayPause = observer((props) => {
     reset();
   };
 
-  useEffect(() => {
-    timer.isCountingDown
-      ? (directionRef.current = -1)
-      : (directionRef.current = 1);
-  }, [timer.isCountingDown]);
-
-  useEffect(() => {
-    let x = Math.floor((gs.timers[timerIndex].currentSeconds / speed) * 100);
-    function formatTime(x) {
-      let time = [];
-      time.push(Math.floor(x / 3600));
-      time.push(Math.floor((x / 60) % 60));
-      time.push(x % 60);
-      let timePrint = add0(time[0]) + ':' + add0(time[1]) + ':' + add0(time[2]);
-      let formatedTime = '';
-      if (timer.formatPositions >= 3) {
-        formatedTime = formatedTime + add0(time[0]) + ':';
-      }
-      if (timer.formatPositions >= 2) {
-        formatedTime = formatedTime + add0(time[1]) + ':';
-      }
-      if (timer.formatPositions >= 1) {
-        formatedTime = formatedTime + add0(time[2]);
-      }
-
-      function add0(x) {
-        let y;
-        let l = String(x).split('');
-        switch (l.length) {
-          case 0:
-            y = '00';
-            break;
-          case 1:
-            y = '0' + String(x);
-            break;
-          case 2:
-            y = String(x);
-            break;
-          default:
-            break;
-        }
-        return y;
-      }
-      setRealRemaining(formatedTime);
-    }
-    formatTime(x);
-  }, [timer.currentSeconds]);
-
-  useEffect(() => {
-    window.electron.on('start', start);
-    window.electron.on('stop', stop);
-    window.electron.on('slower', slower);
-    window.electron.on('normal', normal);
-    window.electron.on('faster', faster);
-    window.electron.on('reset', resetApi);
-
-    return () => {
-      window.electron.all();
-    };
-  }, []);
-
-  function update() {
-    timer.setCurrentSeconds(timer.currentSeconds - 1);
-    clockTime();
-  }
-
   function clockTime() {
     if (timer.currentSeconds + directionRef.current > -1) {
       timer.setCurrentSeconds(timer.currentSeconds + directionRef.current);
 
-      const startTime = document.timeline
-        ? document.timeline.currentTime
-        : performance.now();
-
-      function scheduleFrame(time) {
-        const elapsed = time - startTime;
-        const roundedElapsed =
-          Math.round(elapsed / interval.current) * interval.current;
-        const targetNext = startTime + roundedElapsed + interval.current;
-        const delay = (targetNext - performance.now()) * 1;
-        timerRef.current = setTimeout(() => clockTime(), delay);
+      function scheduleFrame() {
+        timerRef.current = setDriftlessTimeout(
+          () => clockTime(),
+          interval.current
+        );
       }
 
-      scheduleFrame(startTime);
+      scheduleFrame();
     } else {
       if (timer.countUpAfterDownReachesZero) {
         directionRef.current = 1;
@@ -130,7 +60,7 @@ const PlayPause = observer((props) => {
         clockTime();
       } else {
         timer.setIsRunning(false);
-        clearTimeout(timerRef.current);
+        clearDriftless(timerRef.current);
         setButtonState('start');
       }
     }
@@ -164,10 +94,36 @@ const PlayPause = observer((props) => {
   }
 
   function stopClock() {
-    clearTimeout(timerRef.current);
+    clearDriftless(timerRef.current);
     timer.setIsRunning(false);
     setButtonState('start');
   }
+
+  useEffect(() => {
+    timer.isCountingDown
+      ? (directionRef.current = -1)
+      : (directionRef.current = 1);
+  }, [timer.isCountingDown]);
+
+  useEffect(() => {
+    let x = Math.floor((gs.timers[timerIndex].currentSeconds / speed) * 100);
+    let formatedTime = formatTime(x, 3);
+    console.log(formatedTime);
+    setRealRemaining(formatedTime);
+  }, [timer.currentSeconds]);
+
+  useEffect(() => {
+    window.electron.on('start', start);
+    window.electron.on('stop', stop);
+    window.electron.on('slower', slower);
+    window.electron.on('normal', normal);
+    window.electron.on('faster', faster);
+    window.electron.on('reset', resetApi);
+
+    return () => {
+      window.electron.all();
+    };
+  }, []);
 
   return (
     <>

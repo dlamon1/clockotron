@@ -10,7 +10,7 @@ export const StoreProvider = ({ children }) => {
       store.timers = [...store.timers, timer];
     },
     removeTimer(value) {
-      console.log(value);
+      // console.log(value);
     },
 
     ip: '',

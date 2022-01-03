@@ -11,7 +11,6 @@ const Socket = observer((props) => {
 
   let storeXmlDataRes = (__, xmlData) => {
     let jsonObj = parser.parse(xmlData, options);
-    console.log(jsonObj);
     jsonObj.vmix.inputs && gs.setXmlRaw(xmlData);
   };
 
@@ -35,7 +34,7 @@ const Socket = observer((props) => {
     return () => {
       gs.isSocketConnect && window.electron.vmix.shutdown();
       gs.isSocketConnect && window.electron.all();
-      gs.isSocketConnect && console.log('return shutdown');
+      // gs.isSocketConnect && console.log('return shutdown');
     };
   }, []);
 

@@ -11,10 +11,10 @@ export function vmixSocket(mainWindow, connection) {
     const connection = net.connect(
       { port: 8099, host: address },
       () => {
-        console.log('connected to server!');
+        // console.log('connected to server!');
       },
       () => {
-        console.log('one time connection res');
+        // console.log('one time connection res');
         mainWindow.webContents.send('socket-connected');
       }
     );
