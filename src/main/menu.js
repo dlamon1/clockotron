@@ -274,37 +274,27 @@ export default class MenuBuilder {
                 // },
               ],
       },
-      // {
-      //   label: 'Help',
-      //   submenu: [
-      //     {
-      //       label: 'Learn More',
-      //       click() {
-      //         shell.openExternal('https://electronjs.org');
-      //       },
-      //     },
-      //     {
-      //       label: 'Documentation',
-      //       click() {
-      //         shell.openExternal(
-      //           'https://github.com/electron/electron/tree/main/docs#readme'
-      //         );
-      //       },
-      //     },
-      //     {
-      //       label: 'Community Discussions',
-      //       click() {
-      //         shell.openExternal('https://www.electronjs.org/community');
-      //       },
-      //     },
-      //     {
-      //       label: 'Search Issues',
-      //       click() {
-      //         shell.openExternal('https://github.com/electron/electron/issues');
-      //       },
-      //     },
-      //   ],
-      // },
+      {
+        label: 'Help',
+        submenu: [
+          {
+            label: 'Learn More',
+            click() {
+              shell.openExternal(
+                'https://www.youtube.com/playlist?list=LL0zDfQW2fnedtEeEKu6720Q'
+              );
+            },
+          },
+          {
+            label: 'Report Bug',
+            click() {
+              shell.openExternal(
+                'https://github.com/dlamon1/clockotron/issues'
+              );
+            },
+          },
+        ],
+      },
     ];
 
     return templateDefault;
