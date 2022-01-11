@@ -225,6 +225,7 @@
     "electron-updater": "^4.3.8",
     "express": "^4.17.1",
     "fast-xml-parser": "^3.19.0",
+    "jsdom": "^19.0.0",
     "mobx": "^6.3.2",
     "mobx-react": "^7.2.0",
     "react": "^17.0.1",
@@ -235,7 +236,8 @@
     "sass-loader": "^12.4.0",
     "uuid": "^8.3.2",
     "validator": "^13.6.0",
-    "xmldom": "^0.6.0"
+    "xmldom": "^0.6.0",
+    "xpath": "^0.0.32"
   },
   "devEngines": {
     "node": ">=10.x",

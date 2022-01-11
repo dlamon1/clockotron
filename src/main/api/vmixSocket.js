@@ -1,5 +1,9 @@
 import net from 'net';
 import { ipcMain } from 'electron';
+import xpath from 'xpath';
+import { DOMParser } from 'xmldom';
+
+console.log('***************************************************');
 
 export function vmixSocket(mainWindow, connection) {
   let initListener;
@@ -7,8 +11,42 @@ export function vmixSocket(mainWindow, connection) {
   let vmixRequestXmlListener;
   let socketShutdownListener;
 
+  let awaitingVideoRes = false;
+
+  let videoLapseData = {
+    inputNumber: 1,
+    key: '',
+    duration: 0,
+    position: 0,
+    isPlaying: false,
+  };
+
+  const parseVideoRes = (data) => {
+    // console.log('video res type: ', resType);
+    awaitingVideoRes = false;
+    let vmixNodeString = data.split('<vmix>')[1];
+    // console.log(vmixNodeString);
+    let vmixNodeStringClean = vmixNodeString.replace(/(\r\n|\n|\r)/gm, '');
+    let domString = `<xml><vmix>${vmixNodeStringClean}</xml>`;
+    const dom = new DOMParser().parseFromString(domString);
+    let key = xpath.select1(`/xml/vmix/inputs/input[7]/@key`, dom).value;
+    let position = xpath.select1(
+      `/xml/vmix/inputs/input[7]/@position`,
+      dom
+    ).value;
+    let duration = xpath.select1(
+      `/xml/vmix/inputs/input[7]/@duration`,
+      dom
+    ).value;
+    videoLapseData.key = key;
+    videoLapseData.duration = duration;
+    videoLapseData.position = position;
+    console.log(videoLapseData);
+    mainWindow.webContents.send('videoReaderData', videoLapseData);
+  };
+
   const connect = (address) => {
-    const connection = net.connect(
+    connection = net.connect(
       { port: 8099, host: address },
       () => {
         // console.log('connected to server!');
@@ -20,8 +58,9 @@ export function vmixSocket(mainWindow, connection) {
     );
 
     connection.on('data', function (data) {
-      const dataStr = data.toString();
-      handleRes(dataStr);
+      const dataString = data.toString();
+      const resType = dataString.split(' ')[0];
+      handleRes(resType, dataString);
     });
 
     connection.on('error', function (e) {
@@ -30,6 +69,10 @@ export function vmixSocket(mainWindow, connection) {
 
     const requestXmlData = () => {
       connection.write('XML\r\n');
+    };
+
+    const requestVideoData = () => {
+      connection.write('SUBSCRIBE ACTS\r\n');
     };
 
     const vmixPostReq = (cmd) => {
@@ -55,20 +98,46 @@ export function vmixSocket(mainWindow, connection) {
     vmixPostReqListener();
     vmixRequestXmlListener();
     socketShutdownListener();
+    requestVideoData();
   };
 
-  const handleRes = (data) => {
-    const resType = data.split(' ')[0];
+  const handleRes = (resType, data) => {
+    // console.log('res type: ', resType);
     switch (resType) {
       case 'XML':
-        let xml = data.split('<vmix>');
-        xml = '<vmix>' + xml[1];
-        let isBody = mainWindow.webContents.send('xmlDataRes', xml);
+        if (awaitingVideoRes) {
+          awaitingVideoRes = false;
+          parseVideoRes(data);
+        } else {
+          let xml = data.split('<vmix>');
+          xml = '<vmix>' + xml[1];
+          let isBody = mainWindow.webContents.send('xmlDataRes', xml);
+        }
         break;
-      case 'FUNCTION':
+      case 'ACTS':
+        // console.log(data);
+        let action = data.split(' ')[2];
+        if (action === 'InputPlaying') {
+          handleInputPlayingAction(data);
+        }
+        break;
+      case 'XMLTEXT':
+        break;
       default:
         break;
     }
+  };
+
+  const handleInputPlayingAction = (data) => {
+    let isPlaying = data.split(' ')[4];
+    if (isPlaying == 1) {
+      videoLapseData.isPlaying = true;
+    } else {
+      videoLapseData.isPlaying = false;
+    }
+    videoLapseData.channel = data.split(' ')[3];
+    awaitingVideoRes = true;
+    connection.write('XML\r\n');
   };
 
   const handleError = (e, connection) => {
@@ -92,6 +161,7 @@ export function vmixSocket(mainWindow, connection) {
   };
 
   const requestShutdown = (connection) => {
+    connection.write('QUIT\r\n');
     connection && connection.end();
   };
 

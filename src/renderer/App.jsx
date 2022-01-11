@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { useGlobalStore } from './utils/Store.jsx';
+import { StoreContext } from './stores/store.context.jsx';
 
 import Grid from '@material-ui/core/Grid';
 import AppBar from '@material-ui/core/AppBar';
@@ -25,6 +26,22 @@ import './app.css';
 const App = observer(() => {
   const [value, setValue] = useState(2);
   const gs = useGlobalStore();
+  const { videoReader } = useContext(StoreContext);
+
+  const newData = (__, data) => {
+    console.log('here');
+    console.log(data);
+  };
+
+  useEffect(() => {
+    window.electron.on('videoReaderData', newData);
+    console.log('here');
+
+    return () => {
+      window.electron.all();
+      console.log('here');
+    };
+  }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
