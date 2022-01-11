@@ -8,7 +8,7 @@ Clockotron provides the ability to manipulate the time of a countdown timer. It 
 
 or
 
-==> Clone or fork this repo, use yarn for everything
+==> Clone or fork this repo, USE YARN
 
 ## How it works
 
