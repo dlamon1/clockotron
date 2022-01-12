@@ -56,7 +56,8 @@ const getAssetPath = (...paths) => {
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 360,
+    width: 720,
+    // width: 360,
     height: 1080,
     minWidth: 333,
     x: 0,
@@ -82,6 +83,8 @@ function createWindow() {
     updater(isDev, mainWindow);
 
     mainWindow.show();
+
+    isDev && mainWindow.webContents.openDevTools();
   });
 
   runNetConnections(mainWindow, connection);

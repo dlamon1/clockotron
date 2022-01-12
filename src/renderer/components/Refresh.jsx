@@ -25,7 +25,7 @@ const Refresh = observer((props) => {
     }, 3333);
   };
 
-  timeout();
+  // timeout();
 
   return (
     <>

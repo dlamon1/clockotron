@@ -19,6 +19,7 @@ contextBridge.exposeInMainWorld('electron', {
     },
   },
   on(eventName, callback) {
+    // console.log(eventName);
     messages.indexOf(eventName) >= 0
       ? ipcRenderer.on(eventName, callback)
       : null;
@@ -67,8 +68,5 @@ messages = [
   'version',
   'playPause',
   'videoReaderData',
-  // 'socket-xmlDataRes-inputList',
-  // 'socket-xmlDataRes-videoReader',
-  // 'socket-xmlDataRes-videoReader-loop',
-  // 'socket-tallyData',
+  'videoTallyData',
 ];

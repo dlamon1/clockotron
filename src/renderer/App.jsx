@@ -16,6 +16,7 @@ import IpForm from './components/IpInput.jsx';
 import Socket from './components/Socket.jsx';
 import Toast from './components/Toast.jsx';
 import Version from './components/Version.jsx';
+import Test from './components/test';
 
 import TOD from './pages/TOD';
 import Timer from './pages/Timer';
@@ -26,27 +27,6 @@ import './app.css';
 const App = observer(() => {
   const [value, setValue] = useState(2);
   const gs = useGlobalStore();
-  const { videoReader } = useContext(StoreContext);
-
-  const newData = (__, data) => {
-    console.log('here');
-    console.log(data);
-  };
-
-  useEffect(() => {
-    window.electron.on('videoReaderData', newData);
-    console.log('here');
-
-    return () => {
-      window.electron.all();
-      console.log('here');
-    };
-  }, []);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
   const [count, setCount] = useState(0);
 
   const addTimer = (type) => {
@@ -74,6 +54,10 @@ const App = observer(() => {
   useEffect(() => {
     addTimer('timer');
     // addTimer('tod');
+    return () => {
+      console.log('here end');
+      window.electron.all();
+    };
   }, []);
 
   // const apiCall = async () => {
@@ -116,6 +100,7 @@ const App = observer(() => {
             </>
           )}
         </Box>
+        <Test />
       </Grid>
     </>
   );

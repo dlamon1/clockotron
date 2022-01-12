@@ -38,14 +38,11 @@ const VideoReader2 = observer((props) => {
   useEffect(() => {
     if (isActiveVideo) {
       let endpoint;
-      let duration =
-        xmlObjLoop.vmix.inputs.input[inputPlayingVideo].attr.duration;
-      let position =
-        xmlObjLoop.vmix.inputs.input[inputPlayingVideo].attr.position;
+      let duration = xmlObjLoop.vmix.inputs.input[inputPlayingVideo].duration;
+      let position = xmlObjLoop.vmix.inputs.input[inputPlayingVideo].position;
       // console.log(duration - position);
-      let markIn = xmlObjLoop.vmix.inputs.input[inputPlayingVideo].attr.markIn;
-      let markOut =
-        xmlObjLoop.vmix.inputs.input[inputPlayingVideo].attr.markOut;
+      let markIn = xmlObjLoop.vmix.inputs.input[inputPlayingVideo].markIn;
+      let markOut = xmlObjLoop.vmix.inputs.input[inputPlayingVideo].markOut;
 
       markOut ? (endpoint = markOut) : (endpoint = duration);
       // markIn ? (endpoint = endpoint - markIn) : (endpoint = endpoint);
@@ -85,8 +82,8 @@ const VideoReader2 = observer((props) => {
     let inputPlaying = 0;
     inputs.forEach((input, i) => {
       if (
-        (tallyData[i] === '1' && input.attr.type === 'Video') ||
-        input.attr.type === 'VideoList'
+        (tallyData[i] === '1' && input.type === 'Video') ||
+        input.type === 'VideoList'
       ) {
         inputPlaying = i;
       } else {
@@ -118,7 +115,7 @@ const VideoReader2 = observer((props) => {
   // and the updates state with the xml object
   useEffect(() => {
     window.electron.on('socket-xmlDataRes-videoReader', (__, xmlData) => {
-      let xmlObj = parser.parse(xmlData, options);
+      let xmlObj = parser.parse(xmlData, options2);
       setXmlObj(xmlObj);
       if (gs.xmlRaw === '') {
         gs.setXmlRaw(xmlData);
@@ -134,7 +131,7 @@ const VideoReader2 = observer((props) => {
 
     // Listener for looping xml Data
     window.electron.on('socket-xmlDataRes-videoReader-loop', (__, xmlData) => {
-      let xmlObj = parser.parse(xmlData, options);
+      let xmlObj = parser.parse(xmlData, options2);
       setXmlObjLoop(xmlObj);
     });
 

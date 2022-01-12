@@ -108,7 +108,7 @@ const PlayPause = observer((props) => {
   useEffect(() => {
     let x = Math.floor((gs.timers[timerIndex].currentSeconds / speed) * 100);
     let formatedTime = formatTime(x, 3);
-    console.log(formatedTime);
+    // console.log(formatedTime);
     setRealRemaining(formatedTime);
   }, [timer.currentSeconds]);
 
