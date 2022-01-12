@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { observer } from 'mobx-react';
 import isNumeric from 'validator/lib/isNumeric';
 
@@ -7,15 +7,13 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 
-import { useGlobalStore } from '../utils/Store.jsx';
+import { StoreContext } from '../stores/store.context.jsx';
 import { useStyles } from '../utils/AppStyles.jsx';
 
 const ClockInput = observer((props) => {
-  let { value, timerIndex } = props;
+  const { vmix, timer } = useContext(StoreContext);
 
-  const gs = useGlobalStore();
   const classes = useStyles();
-  const timer = gs.timers[timerIndex];
 
   const [clockStartValue, setClockStartValue] = useState('');
   const [inputSeconds, setInputSeconds] = useState(0);

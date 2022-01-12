@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { observer } from 'mobx-react';
 
 import Grid from '@material-ui/core/Grid';
@@ -6,13 +6,10 @@ import ArrowDropDownRoundedIcon from '@material-ui/icons/ArrowDropDownRounded';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 
-import { useGlobalStore } from '../utils/Store.jsx';
+import { StoreContext } from '../stores/store.context';
 
 const TimeDown = observer((props) => {
-  let { value, timerIndex } = props;
-
-  const gs = useGlobalStore();
-  const timer = gs.timers[timerIndex];
+  const { timer } = useContext(StoreContext);
 
   let m = -8.7;
 

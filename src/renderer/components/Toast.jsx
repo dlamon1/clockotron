@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { observer } from 'mobx-react';
 
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { useGlobalStore } from '../utils/Store';
+import { StoreContext } from '../stores/store.context';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -21,25 +21,25 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Toast = observer(() => {
-  const gs = useGlobalStore();
   const classes = useStyles();
+  const { alertStore } = useContext(StoreContext);
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
-    setTimeout(gs.setToastOpen(false), 3000);
+    setTimeout(alertStore.close(), 1500);
   };
 
   return (
     <div className={classes.root}>
       <Snackbar
-        open={gs.toastOpen}
-        autoHideDuration={gs.toastLength}
+        open={alertStore.isOpen}
+        autoHideDuration={alertStore.length}
         onClose={handleClose}
       >
-        <Alert onClose={handleClose} severity={gs.severity}>
-          {gs.alert}
+        <Alert onClose={handleClose} severity={alertStore.severity}>
+          {alertStore.text}
         </Alert>
       </Snackbar>
     </div>

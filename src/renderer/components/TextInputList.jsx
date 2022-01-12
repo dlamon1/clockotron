@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { observer } from 'mobx-react';
 import parser from 'fast-xml-parser';
 
@@ -8,13 +8,11 @@ import Grid from '@material-ui/core/Grid';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 
-import { useGlobalStore } from '../utils/Store.jsx';
 import { options } from '../utils/options.jsx';
+import { StoreContext } from '../stores/store.context';
 
 const TextInputList = observer((props) => {
-  let { value, timerIndex } = props;
-
-  const gs = useGlobalStore();
+  const { vmix, timer } = useContext(StoreContext);
 
   const [inSelected, setInSelected] = useState('');
   const [textSelected, setTextSelected] = useState('');
@@ -24,9 +22,7 @@ const TextInputList = observer((props) => {
   const handleChange = (event) => {
     setTextSelected('');
     setInSelected(event.target.value);
-    // gs.setInput(event.target.value);
-    gs.timers[timerIndex].setInput(event.target.value);
-    // gs.setText('');
+    timer.setInput(event.target.value);
     let selected = inputList.filter(
       (input) => input.attr.title == event.target.value
     );
@@ -51,12 +47,11 @@ const TextInputList = observer((props) => {
 
   const handleTextChange = (event) => {
     setTextSelected(event.target.value);
-    // gs.setText(event.target.value);
-    gs.timers[timerIndex].setText(event.target.value);
+    timer.setText(event.target.value);
   };
 
   const setInputs = () => {
-    let jsonObj = parser.parse(gs.xmlRaw, options);
+    let jsonObj = parser.parse(vmix.xmlRaw, options);
     let list = jsonObj.vmix.inputs.input;
     let filtered = list.filter(
       (item) => item.attr.type === 'GT' || item.attr.type === 'Xaml'
@@ -65,8 +60,8 @@ const TextInputList = observer((props) => {
   };
 
   useEffect(() => {
-    gs.xmlRaw ? setInputs() : null;
-  }, [gs.xmlRaw]);
+    vmix.xmlRaw ? setInputs() : null;
+  }, [vmix.xmlRaw]);
 
   return (
     <>

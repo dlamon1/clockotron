@@ -1,38 +1,27 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { observer } from 'mobx-react-lite';
 
-import { useGlobalStore } from 'renderer/utils/Store';
+import { StoreContext } from '../stores/store.context';
 
 import Grid from '@material-ui/core/Grid';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 
-const Refresh = observer((props) => {
-  const { value, timerIndex } = props;
-  const gs = useGlobalStore();
-
-  const refresh = () => {
-    gs.ip && window.electron.vmix.reqXmlInputList();
-  };
+const Refresh = observer(() => {
+  const { vmix } = useContext(StoreContext);
 
   const timeout = () => {
     setTimeout(() => {
-      refresh();
+      vmix.refresh();
       timeout();
     }, 3333);
   };
 
-  timeout();
+  // timeout();
 
   return (
-    <>
-      <Grid container justifyContent="center" style={{ width: '100%' }}>
-        <Button onClick={refresh}>Refresh Input List</Button>
-      </Grid>
-    </>
+    <Grid container justifyContent="center" style={{ width: '100%' }}>
+      <Button onClick={vmix.refresh}>Refresh Input List</Button>
+    </Grid>
   );
 });
 

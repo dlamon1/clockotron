@@ -1,46 +1,37 @@
-import React from 'react';
+import React, { useContext } from 'react';
+
 import { observer } from 'mobx-react-lite';
 
+import Refresh from 'renderer/components/Refresh.jsx';
 import TextInputList from '../components/TextInputList.jsx';
 import ClockInput from '../components/ClockInput.jsx';
-import ClockFormated from '../components/ClockFormated.jsx';
 import TimeUp from '../components/TimeUp.jsx';
+import ClockFormated from '../components/ClockFormated.jsx';
 import TimeDown from '../components/TimeDown.jsx';
 import PlayPause from '../components/PlayPause.jsx';
-import PostThings from '../components/PostThings.jsx';
-import BaseColors from '../components/BaseColors.jsx';
-import Refresh from 'renderer/components/Refresh.jsx';
 import DirectionOptions from '../components/DirectionOptions.jsx';
+import BaseColors from '../components/BaseColors.jsx';
 import Triggers from '../components/Triggers.jsx';
+import PostThings from '../components/PostThings.jsx';
 
-import Button from '@material-ui/core/Button';
+import { StoreContext } from '../stores/store.context';
 
-const Timer = observer((props) => {
-  const { value, timerIndex, timerId } = props;
-
-  const toggle = () => {
-    window.electron.vmix.multiviewLayerToggle(3, 1);
-  };
-  const on = () => {
-    window.electron.vmix.multiviewLayerOn(3, 1);
-  };
-  const off = () => {
-    window.electron.vmix.multiviewLayerOff(3, 1);
-  };
+const Timer = observer(() => {
+  const { timer } = useContext(StoreContext);
 
   return (
     <>
-      <Refresh timerIndex={timerIndex} />
-      <TextInputList timerIndex={timerIndex} />
-      <ClockInput timerIndex={timerIndex} />
-      <TimeUp timerIndex={timerIndex} />
-      <ClockFormated timerIndex={timerIndex} />
-      <TimeDown timerIndex={timerIndex} />
-      <PlayPause timerIndex={timerIndex} />
-      <DirectionOptions timerIndex={timerIndex} />
-      <BaseColors timerIndex={timerIndex} />
-      <Triggers timerIndex={timerIndex} timerId={timerId} />
-      <PostThings timerIndex={timerIndex} />
+      <Refresh />
+      <TextInputList />
+      <ClockInput />
+      <TimeUp />
+      <ClockFormated />
+      <TimeDown />
+      <PlayPause />
+      <DirectionOptions />
+      <BaseColors />
+      <Triggers />
+      <PostThings />
     </>
   );
 });

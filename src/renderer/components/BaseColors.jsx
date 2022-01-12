@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { observer } from 'mobx-react';
 import { GithubPicker } from 'react-color';
 
@@ -12,14 +12,11 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Paper from '@material-ui/core/Paper';
 
-import { useGlobalStore } from '../utils/Store.jsx';
 import { useStyles } from '../utils/AppStyles.jsx';
-import TriggerDetail from './TriggerDetail.jsx';
+import { StoreContext } from '../stores/store.context';
 
 const BaseColors = observer((props) => {
-  let { value, timerIndex } = props;
-  const gs = useGlobalStore();
-  const timer = gs.timers[timerIndex];
+  const { timer } = useContext(StoreContext);
 
   return (
     <>
@@ -53,7 +50,7 @@ const BaseColors = observer((props) => {
                       maxWidth: '95%',
                     }}
                   >
-                    <Grid container style={{ backgroundColor: '' }}>
+                    <Grid container style={{ minWidth: 250 }}>
                       <GithubPicker
                         onChangeComplete={(e) => timer.setDownColor(e.hex)}
                         colors={colors}
@@ -95,7 +92,7 @@ const BaseColors = observer((props) => {
                       maxWidth: '95%',
                     }}
                   >
-                    <Grid container style={{ backgroundColor: '' }}>
+                    <Grid container style={{ minWidth: 250 }}>
                       <GithubPicker
                         onChangeComplete={(e) => timer.setUpColor(e.hex)}
                         colors={colors}

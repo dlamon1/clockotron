@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { observer } from 'mobx-react';
 import { setDriftlessTimeout, clearDriftless } from 'driftless';
 
@@ -6,13 +6,11 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
-import { useGlobalStore } from '../utils/Store.jsx';
 import { formatTime } from '../utils/formatTime';
+import { StoreContext } from '../stores/store.context';
 
 const PlayPause = observer((props) => {
-  let { value, timerIndex } = props;
-  const gs = useGlobalStore();
-  const timer = gs.timers[timerIndex];
+  const { timer } = useContext(StoreContext);
 
   const [buttonState, setButtonState] = useState('Start');
   const [speed, setSpeed] = useState(100);
@@ -106,9 +104,8 @@ const PlayPause = observer((props) => {
   }, [timer.isCountingDown]);
 
   useEffect(() => {
-    let x = Math.floor((gs.timers[timerIndex].currentSeconds / speed) * 100);
+    let x = Math.floor((timer.currentSeconds / speed) * 100);
     let formatedTime = formatTime(x, 3);
-    console.log(formatedTime);
     setRealRemaining(formatedTime);
   }, [timer.currentSeconds]);
 

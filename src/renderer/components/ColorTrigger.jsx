@@ -1,27 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { observer } from 'mobx-react';
-import parser from 'fast-xml-parser';
 import { GithubPicker } from 'react-color';
 
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 
-import { useGlobalStore } from '../utils/Store.jsx';
-import { options } from '../utils/options.jsx';
 import { colors } from 'renderer/utils/ColorPickerColors';
 
-const ColorTrigger = observer((props) => {
-  let { timerId, triggerId, colorId } = props;
+import { StoreContext } from '../stores/store.context';
 
-  const gs = useGlobalStore();
-  let timer = gs.timers.filter((x) => x.id === timerId)[0];
+const ColorTrigger = observer((props) => {
+  let { triggerId, colorId } = props;
+  const { timer } = useContext(StoreContext);
   let trigger = timer.triggers.filter((x) => x.id === triggerId)[0];
   let color = trigger.colors.filter((x) => x.id === colorId)[0];
 

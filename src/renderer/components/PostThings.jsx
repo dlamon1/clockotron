@@ -1,12 +1,10 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { observer } from 'mobx-react';
 
-import { useGlobalStore } from '../utils/Store.jsx';
+import { StoreContext } from '../stores/store.context';
 
 const PostThings = observer((props) => {
-  let { value, timerIndex } = props;
-  const gs = useGlobalStore();
-  let timer = gs.timers[timerIndex];
+  const { vmix, timer } = useContext(StoreContext);
 
   const postTimes = async (time, input, text) => {
     window.electron.vmix.vmixPostReq(
@@ -22,7 +20,7 @@ const PostThings = observer((props) => {
 
   useEffect(() => {
     try {
-      gs.ip && timer.input && timer.text && timer.color
+      vmix.ip && timer.input && timer.text && timer.color
         ? postColor(timer.input, timer.text, timer.color)
         : null;
     } catch (err) {
@@ -32,7 +30,7 @@ const PostThings = observer((props) => {
 
   useEffect(() => {
     try {
-      gs.ip && timer.input && timer.text && timer.color
+      vmix.ip && timer.input && timer.text && timer.color
         ? postTimes(timer.formatedTime, timer.input, timer.text)
         : null;
     } catch (err) {

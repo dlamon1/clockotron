@@ -1,24 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { observer } from 'mobx-react';
 import isNumeric from 'validator/lib/isNumeric';
 
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
 import Switch from '@material-ui/core/Switch';
 
-import { useGlobalStore } from '../utils/Store.jsx';
+import { StoreContext } from '../stores/store.context';
 import { useStyles } from '../utils/AppStyles.jsx';
 
 const ClockInput = observer((props) => {
-  let { value, timerIndex } = props;
-
-  const gs = useGlobalStore();
-  const classes = useStyles();
-  const timer = gs.timers[timerIndex];
+  const { timer } = useContext(StoreContext);
 
   const [clockStartValue, setClockStartValue] = useState('');
   const [inputSeconds, setInputSeconds] = useState(0);
@@ -113,51 +107,49 @@ const ClockInput = observer((props) => {
   }, []);
 
   return (
-    <>
-      <Grid item xs={12} style={{ marginTop: 0 }}>
-        <Grid
-          container
-          justifyContent="space-around"
-          alignItems="center"
-          style={{}}
-        >
-          <Box style={{ width: '85%', backgroundColor: '' }}>
-            <Grid
-              container
-              justifyContent="center"
-              alignItems="center"
-              style={{ backgroundColor: '' }}
-            >
-              <Typography style={{ color: 'white' }}> UP</Typography>
+    <Grid item xs={12} style={{ marginTop: 0 }}>
+      <Grid
+        container
+        justifyContent="space-around"
+        alignItems="center"
+        style={{}}
+      >
+        <Box style={{ width: '85%', backgroundColor: '' }}>
+          <Grid
+            container
+            justifyContent="center"
+            alignItems="center"
+            style={{ backgroundColor: '' }}
+          >
+            <Typography style={{ color: 'white' }}> UP</Typography>
 
-              <Switch
-                checked={timer.isCountingDown}
-                onChange={() => timer.setIsCountingDown(!timer.isCountingDown)}
-                name="checkedA"
-              />
-              <Typography style={{ color: 'white' }}>DOWN</Typography>
-            </Grid>
-            <Grid
-              container
-              justifyContent="center"
-              alignItems="center"
-              style={{ backgroundColor: '' }}
-            >
-              <Checkbox
-                checked={timer.countUpAfterDownReachesZero}
-                onChange={() =>
-                  timer.setCountUpAfterDownReachesZero(
-                    !timer.countUpAfterDownReachesZero
-                  )
-                }
-                inputProps={{ 'aria-label': 'primary checkbox' }}
-              />
-              <Typography style={{ color: 'white' }}>UP AFTER DOWN</Typography>
-            </Grid>
-          </Box>
-        </Grid>
+            <Switch
+              checked={timer.isCountingDown}
+              onChange={() => timer.setIsCountingDown(!timer.isCountingDown)}
+              name="checkedA"
+            />
+            <Typography style={{ color: 'white' }}>DOWN</Typography>
+          </Grid>
+          <Grid
+            container
+            justifyContent="center"
+            alignItems="center"
+            style={{ backgroundColor: '' }}
+          >
+            <Checkbox
+              checked={timer.countUpAfterDownReachesZero}
+              onChange={() =>
+                timer.setCountUpAfterDownReachesZero(
+                  !timer.countUpAfterDownReachesZero
+                )
+              }
+              inputProps={{ 'aria-label': 'primary checkbox' }}
+            />
+            <Typography style={{ color: 'white' }}>UP AFTER DOWN</Typography>
+          </Grid>
+        </Box>
       </Grid>
-    </>
+    </Grid>
   );
 });
 

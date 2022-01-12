@@ -1,19 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { observer } from 'mobx-react';
 
 import Grid from '@material-ui/core/Grid';
 import ArrowDropUpRoundedIcon from '@material-ui/icons/ArrowDropUpRounded';
 import IconButton from '@material-ui/core/IconButton';
-
-import { useGlobalStore } from '../utils/Store.jsx';
+import { StoreContext } from '../stores/store.context';
 
 const TimeUp = observer((props) => {
+  const { timer } = useContext(StoreContext);
   let { input, value, timerIndex } = props;
 
   let m = -8.7;
-
-  const gs = useGlobalStore();
-  const timer = gs.timers[timerIndex];
 
   let hUp = () => timer.setCurrentSeconds(timer.currentSeconds + 3600);
   let mUp = () => timer.setCurrentSeconds(timer.currentSeconds + 60);

@@ -1,58 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { observer } from 'mobx-react';
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-import Alert from '@material-ui/lab/Alert';
 import Version from './Version.jsx';
 
-import { useGlobalStore } from '../utils/Store.jsx';
+import { StoreContext } from '../stores/store.context';
+
 import { useStyles } from '../utils/AppStyles.jsx';
 
 const IpForm = observer(() => {
-  const gs = useGlobalStore();
   const classes = useStyles();
+  const { vmix } = useContext(StoreContext);
 
   const [ip, setIpp] = useState('127.0.0.1');
-  let connectionTimeout = null;
-
-  const connectError = () => {
-    gs.setAlert('Cannot connect at this address');
-    gs.setSeverity('error');
-    gs.setToastLength(3000);
-    gs.setToastOpen(true);
-  };
-
-  const vmixConnect = () => {
-    window.electron.vmix.connect(ip);
-    connectionTimeout = setTimeout(connectError, 15000);
-  };
-
-  let connected = () => {
-    gs.setIp(ip);
-    gs.setIsSocketConnected(true);
-    clearTimeout(connectionTimeout);
-    gs.setAlert('Connection made to Vmix');
-    gs.setSeverity('success');
-    gs.setToastLength(3000);
-    gs.setToastOpen(true);
-  };
-
-  const refresh = () => {
-    gs.setIp('');
-    gs.setIsSocketConnected(false);
-    gs.setXmlRaw('');
-    gs.setInput('');
-    gs.setText('');
-    gs.setInputVideo('');
-    gs.setInputTOD('');
-    gs.setTextTOD('');
-  };
 
   useEffect(() => {
-    window.electron.on('socket-connected', connected);
+    window.electron.on('socket-connected', vmix.connected);
 
     return () => {
       window.electron.all();
@@ -74,12 +40,7 @@ const IpForm = observer(() => {
           style={{ height: '100vh' }}
         >
           <Box style={{ width: '85%', backgroundColor: '' }}>
-            <Grid
-              container
-              justifyContent="center"
-              alignItems="center"
-              // style={{ height: '100vh' }}
-            >
+            <Grid container justifyContent="center" alignItems="center">
               <TextField
                 color="secondary"
                 id="outlined-textarea"
@@ -98,7 +59,7 @@ const IpForm = observer(() => {
               />
               <Button
                 variant="contained"
-                onClick={vmixConnect}
+                onClick={() => vmix.attemptVmixConnection(ip)}
                 style={{ marginTop: 10, paddingLeft: 30, paddingRight: 30 }}
               >
                 Set

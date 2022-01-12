@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { observer } from 'mobx-react';
 import parser from 'fast-xml-parser';
 
@@ -7,21 +7,19 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 
-import { useGlobalStore } from '../utils/Store.jsx';
 import { options } from '../utils/options.jsx';
 
-const PlayPauseTrigger = observer((props) => {
-  let { timerId, triggerId, playPauseId } = props;
+import { StoreContext } from '../stores/store.context';
 
-  const gs = useGlobalStore();
-  let timer = gs.timers.filter((x) => x.id === timerId)[0];
+const PlayPauseTrigger = observer((props) => {
+  let { triggerId, playPauseId } = props;
+  const { vmix, timer } = useContext(StoreContext);
   let trigger = timer.triggers.filter((x) => x.id === triggerId)[0];
   let playPause = trigger.playPauses.filter((x) => x.id === playPauseId)[0];
+
   const [modeSelected, setModeSelected] = useState('');
   const [inSelected, setInSelected] = useState('');
   const [layerSelected, setLayerSelected] = useState('');
@@ -47,7 +45,7 @@ const PlayPauseTrigger = observer((props) => {
   };
 
   const setInputs = () => {
-    let jsonObj = parser.parse(gs.xmlRaw, options);
+    let jsonObj = parser.parse(vmix.xmlRaw, options);
     let list = jsonObj.vmix.inputs.input;
     setInputList(list);
   };
@@ -74,8 +72,8 @@ const PlayPauseTrigger = observer((props) => {
   }, [timer.currentSeconds]);
 
   useEffect(() => {
-    gs.xmlRaw ? setInputs() : null;
-  }, [gs.xmlRaw]);
+    vmix.xmlRaw ? setInputs() : null;
+  }, [vmix.xmlRaw]);
 
   return (
     <>

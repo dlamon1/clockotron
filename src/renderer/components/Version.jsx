@@ -4,8 +4,6 @@ import { observer } from 'mobx-react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
-import { useGlobalStore } from '../utils/Store.jsx';
-
 const ClockFormated = observer(() => {
   const [version, sVersion] = useState('0.0.0');
 

@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { observer } from 'mobx-react';
 
 import LayerTrigger from './LayerTrigger';
 import ColorTrigger from './ColorTrigger';
 import PlayPauseTrigger from './PlayPauseTrigger';
-import { colors } from 'renderer/utils/ColorPickerColors';
-import { useGlobalStore } from '../utils/Store.jsx';
+
 import { formatTime } from 'renderer/utils/formatTime';
 
 import Grid from '@material-ui/core/Grid';
@@ -23,11 +22,13 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import IconButton from '@material-ui/core/IconButton';
 import Checkbox from '@material-ui/core/Checkbox';
 
+import { StoreContext } from '../stores/store.context';
+
 const TriggerDetail = observer((props) => {
-  const { timerIndex, triggerId, timerId } = props;
-  const gs = useGlobalStore();
-  let timer = gs.timers.filter((x) => x.id === timerId)[0];
+  const { timer } = useContext(StoreContext);
+  const { triggerId, timerId } = props;
   let trigger = timer.triggers.filter((x) => x.id === triggerId)[0];
+
   const [unit, setUnit] = useState(1);
   const [backgroundColor, setBackgroundColor] = useState('#aaa');
   const [time, setTime] = useState(trigger.time);

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { observer } from 'mobx-react';
-import { useGlobalStore } from '../utils/Store.jsx';
+
 import { formatTime } from 'renderer/utils/formatTime.jsx';
 
 import Grid from '@material-ui/core/Grid';
@@ -8,11 +8,10 @@ import Typography from '@material-ui/core/Typography';
 import { ChevronRight, ChevronLeft } from '@material-ui/icons';
 import { IconButton } from '@material-ui/core';
 
-const ClockFormated = observer((props) => {
-  let { value, timerIndex } = props;
+import { StoreContext } from '../stores/store.context';
 
-  const gs = useGlobalStore();
-  const timer = gs.timers[timerIndex];
+const ClockFormated = observer((props) => {
+  const { timer } = useContext(StoreContext);
 
   useEffect(() => {
     let res = formatTime(timer.currentSeconds, timer.formatPositions);

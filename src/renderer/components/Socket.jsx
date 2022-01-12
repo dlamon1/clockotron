@@ -1,46 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { observer } from 'mobx-react';
 import parser from 'fast-xml-parser';
 
-import { useGlobalStore } from '../utils/Store.jsx';
+import { StoreContext } from '../stores/store.context';
 import { options } from 'renderer/utils/options.jsx';
 
-const Socket = observer((props) => {
-  const gs = useGlobalStore();
-  const { value } = props;
+const Socket = observer(() => {
+  const { vmix } = useContext(StoreContext);
 
   let storeXmlDataRes = (__, xmlData) => {
     let jsonObj = parser.parse(xmlData, options);
-    jsonObj.vmix.inputs && gs.setXmlRaw(xmlData);
+    jsonObj.vmix.inputs && vmix.setXmlRaw(xmlData);
   };
 
-  const connectError = () => {
-    gs.setAlert('Lost connection to Vmix');
-    gs.setSeverity('error');
-    gs.setToastLength(5000);
-    gs.setToastOpen(true);
-  };
-
-  const socketError = (__, error) => {
-    connectError();
-    gs.setIp('');
-    gs.setIsSocketConnected(false);
+  let lostConnection = () => {
+    vmix.lostSocketConnection();
   };
 
   useEffect(() => {
     window.electron.on('xmlDataRes', storeXmlDataRes);
-    window.electron.on('socket-error', socketError);
+    window.electron.on('socket-error', lostConnection);
 
     return () => {
-      gs.isSocketConnect && window.electron.vmix.shutdown();
-      gs.isSocketConnect && window.electron.all();
-      // gs.isSocketConnect && console.log('return shutdown');
+      vmix.isSocketConnect && window.electron.vmix.shutdown();
+      vmix.isSocketConnect && window.electron.all();
     };
   }, []);
 
   useEffect(() => {
-    gs.ip && window.electron.vmix.reqXmlInputList();
-  }, [gs.ip]);
+    vmix.ip && window.electron.vmix.reqXmlInputList();
+  }, [vmix.ip]);
 
   return <></>;
 });
