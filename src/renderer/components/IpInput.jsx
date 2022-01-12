@@ -17,8 +17,13 @@ const IpForm = observer(() => {
 
   const [ip, setIpp] = useState('127.0.0.1');
 
+  const connected = () => {
+    console.log('here, connected');
+    vmix.connected();
+  };
+
   useEffect(() => {
-    window.electron.on('socket-connected', vmix.connected);
+    window.electron.on('socket-connected', connected);
 
     return () => {
       window.electron.all();

@@ -10,8 +10,7 @@ export function vmixSocket(mainWindow, connection) {
   const connect = (address) => {
     const connection = net.connect(
       { port: 8099, host: address },
-      () => {
-      },
+      () => {},
       () => {
         mainWindow.webContents.send('socket-connected');
       }
@@ -100,6 +99,7 @@ export function vmixSocket(mainWindow, connection) {
 
   initListener = () => {
     ipcMain.handle('vmixConnect', async (__, address) => {
+      console.log(address);
       connection = null;
       connect(address);
     });

@@ -1,21 +1,21 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable } from 'mobx';
 
 export class Vmix {
-
-  unconfirmedIp = ''
-  ip = '7u'
-  xmlRaw = ''
-  isSocketConnected = false
-  connectionTimeout
-  alertStore
+  unconfirmedIp = '';
+  ip = '';
+  xmlRaw = '';
+  isSocketConnected = false;
+  connectionTimeout;
+  alertStore;
 
   constructor(alertStore) {
-    this.alertStore = alertStore
-    makeAutoObservable(this)
+    this.alertStore = alertStore;
+    console.log(this.alertStore);
+    makeAutoObservable(this);
   }
 
   setIp(ip) {
-    this.ip = ip
+    this.ip = ip;
   }
 
   setXmlRaw(data) {
@@ -27,22 +27,22 @@ export class Vmix {
   }
 
   attemptVmixConnection(ip) {
-    this.unconfirmedIp = ip
+    this.unconfirmedIp = ip;
     window.electron.vmix.connect(ip);
-    this.connectionTimeout = setTimeout(() => this.connectError(), 1000);
-  };
+    this.connectionTimeout = setTimeout(() => this.connectError(), 5000);
+  }
 
   connected() {
-    this.ip(this.unconfirmedIp);
-    this.setIsSocketConnected = (true);
-    clearTimeout(connectionTimeout);
-    this.alertStore.connectionMadeToVmix()
-  };
+    this.ip = this.unconfirmedIp;
+    this.setIsSocketConnected = true;
+    clearTimeout(this.connectionTimeout);
+    console.log(this.alertStore);
+    this.alertStore.connectionMadeToVmix();
+  }
 
   connectError() {
-    console.log(this.alertStore);
     this.alertStore.cannotConnect();
-  };
+  }
 
   lostSocketConnection = (__, error) => {
     this.alertStore.lostVmixConnection();
@@ -53,5 +53,4 @@ export class Vmix {
   refresh() {
     this.ip && window.electron.vmix.reqXmlInputList();
   }
-
 }
