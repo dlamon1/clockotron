@@ -1,9 +1,7 @@
-import express from 'express';
 
 export function apiFunction(mainWindow, api) {
-  // const api = express();
 
-  api.listen(5491, () => {});
+  api.listen(5491, () => { });
 
   api.get('/api', (req, res) => {
     res.send('api');

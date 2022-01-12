@@ -6,6 +6,5 @@ const api = express();
 
 export function runNetConnections(mainWindow, connection) {
   apiFunction(mainWindow, api);
-  // socketOld(mainWindow, connection);
   vmixSocket(mainWindow, connection);
 }

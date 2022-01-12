@@ -68,7 +68,6 @@ const TriggerDetail = observer((props) => {
     let res = formatTime(trigger.time, 3);
     setTitle(res);
     addType('color');
-    // color.setTime(color.time);
   }, []);
 
   return (

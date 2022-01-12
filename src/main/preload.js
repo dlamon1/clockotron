@@ -66,8 +66,4 @@ messages = [
   'socket-error',
   'version',
   'playPause',
-  // 'socket-xmlDataRes-inputList',
-  // 'socket-xmlDataRes-videoReader',
-  // 'socket-xmlDataRes-videoReader-loop',
-  // 'socket-tallyData',
 ];

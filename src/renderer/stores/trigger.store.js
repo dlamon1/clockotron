@@ -98,7 +98,6 @@ export class Trigger {
       this.color == '#5300eb' ||
       this.color == '#1b46f2'
     ) {
-      // trigger;
       this.fontColor = '#fff';
     } else {
       this.fontColor = '#000';

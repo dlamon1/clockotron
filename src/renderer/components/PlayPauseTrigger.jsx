@@ -51,11 +51,7 @@ const PlayPauseTrigger = observer((props) => {
   };
 
   const triggerPlayPause = () => {
-    if (
-      timer.currentSeconds == trigger.time &&
-      // color.doesToggle &&
-      playPause.command
-    ) {
+    if (timer.currentSeconds == trigger.time && playPause.command) {
       let cmd = playPause.command;
       let input = playPause.input;
       window.electron.vmix.vmixPostReq(`${cmd} Input=${input}`);

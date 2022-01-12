@@ -11,7 +11,6 @@ export class Timer {
   currentSeconds = 0;
   formatedTime = '00:00:01';
   isRunning = false;
-  // type = 'tod';
   resetSeconds = 0;
   formatPositions = 3;
   isCountingDown = true;
@@ -28,7 +27,6 @@ export class Timer {
     const id = uuidv4();
     this.id = id;
     this.alertStore = alertStore
-    // this.type = type;
     this.addColor('#00FF50', 100000000, true);
     this.addColor('#FF0000', 100000000, false);
     makeAutoObservable(this);
@@ -46,7 +44,6 @@ export class Timer {
     let index = this.triggers.map((trigger) => trigger.id).indexOf(id);
     if (index > -1) {
       this.triggers.splice(index, 1);
-      // console.log("Result", arrayObject);
     }
   }
 

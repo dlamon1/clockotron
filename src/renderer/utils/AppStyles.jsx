@@ -8,14 +8,10 @@ export const useStyles = makeStyles({
   root: {
     width: '100%',
   },
-  heading: {
-    // fontSize: theme.typography.pxToRem(15),
-    // fontWeight: theme.typography.fontWeightRegular,
-  },
+  heading: {},
   over: {
     display: 'block',
     width: 200,
-    // white-space: 'nowrap',
     overflow: 'hidden',
     textoverflow: 'ellipsis',
   },

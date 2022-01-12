@@ -3,7 +3,6 @@ export const formatTime = (time, positions) => {
   timeArray.push(Math.floor(time / 3600));
   timeArray.push(Math.floor((time / 60) % 60));
   timeArray.push(time % 60);
-  // let timePrint = add0(time[0]) + ':' + add0(time[1]) + ':' + add0(time[2]);
   let formatedTime = '';
   if (positions >= 3) {
     formatedTime = formatedTime + add0(timeArray[0]) + ':';

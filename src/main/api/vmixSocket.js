@@ -11,10 +11,8 @@ export function vmixSocket(mainWindow, connection) {
     const connection = net.connect(
       { port: 8099, host: address },
       () => {
-        // console.log('connected to server!');
       },
       () => {
-        // console.log('one time connection res');
         mainWindow.webContents.send('socket-connected');
       }
     );
@@ -72,8 +70,6 @@ export function vmixSocket(mainWindow, connection) {
   };
 
   const handleError = (e, connection) => {
-    // console.log(e);
-    // console.log('----error----');
     switch (e.code) {
       case 'EPIPE':
         requestShutdown(connection);
