@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 
-import { useGlobalStore } from '../utils/Store.jsx';
-
 import TextInputList from '../components/TextInputList.jsx';
 import ClockInput from '../components/ClockInput.jsx';
 import ClockFormated from '../components/ClockFormated.jsx';

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { observer } from 'mobx-react';
-import parser from 'fast-xml-parser';
+import { XMLParser } from 'fast-xml-parser';
 
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -24,18 +24,18 @@ const TextInputList = observer((props) => {
     setInSelected(event.target.value);
     timer.setInput(event.target.value);
     let selected = inputList.filter(
-      (input) => input.attr.title == event.target.value
+      (input) => input.title == event.target.value
     );
     let arr = selected[0].text;
     let texts;
     switch (true) {
       case Array.isArray(arr):
         texts = [];
-        arr.forEach((text) => texts.push(text.attr.name));
+        arr.forEach((text) => texts.push(text.name));
         setTextList(texts);
         break;
       case true:
-        texts = arr.attr.name;
+        texts = arr.name;
         let textsList = [];
         textsList.push(texts);
         setTextList(textsList);
@@ -51,10 +51,11 @@ const TextInputList = observer((props) => {
   };
 
   const setInputs = () => {
+    const parser = new XMLParser(options);
     let jsonObj = parser.parse(vmix.xmlRaw, options);
     let list = jsonObj.vmix.inputs.input;
     let filtered = list.filter(
-      (item) => item.attr.type === 'GT' || item.attr.type === 'Xaml'
+      (item) => item.type === 'GT' || item.type === 'Xaml'
     );
     setInputList(filtered);
   };
@@ -75,8 +76,8 @@ const TextInputList = observer((props) => {
               onChange={handleChange}
             >
               {inputList.map((input, index) => (
-                <MenuItem value={input.attr.title} key={index}>
-                  {input.attr.title}
+                <MenuItem value={input.title} key={index}>
+                  {input.title}
                 </MenuItem>
               ))}
             </Select>

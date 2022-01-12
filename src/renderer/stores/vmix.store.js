@@ -10,7 +10,6 @@ export class Vmix {
 
   constructor(alertStore) {
     this.alertStore = alertStore;
-    console.log(this.alertStore);
     makeAutoObservable(this);
   }
 
@@ -36,7 +35,6 @@ export class Vmix {
     this.ip = this.unconfirmedIp;
     this.setIsSocketConnected = true;
     clearTimeout(this.connectionTimeout);
-    console.log(this.alertStore);
     this.alertStore.connectionMadeToVmix();
   }
 

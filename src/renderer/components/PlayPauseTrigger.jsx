@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { observer } from 'mobx-react';
-import parser from 'fast-xml-parser';
+import { XMLParser } from 'fast-xml-parser';
 
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -40,11 +40,12 @@ const PlayPauseTrigger = observer((props) => {
 
   const handleInputChange = (event) => {
     setInSelected(event.target.value);
-    const i = inputList.findIndex((i) => i.attr.title == event.target.value);
-    playPause.setInput(inputList[i].attr.key);
+    const i = inputList.findIndex((i) => i.title == event.target.value);
+    playPause.setInput(inputList[i].key);
   };
 
   const setInputs = () => {
+    const parser = new XMLParser(options);
     let jsonObj = parser.parse(vmix.xmlRaw, options);
     let list = jsonObj.vmix.inputs.input;
     setInputList(list);
@@ -112,8 +113,8 @@ const PlayPauseTrigger = observer((props) => {
                   onChange={handleInputChange}
                 >
                   {inputList.map((input, index) => (
-                    <MenuItem value={input.attr.title} key={index}>
-                      {input.attr.title}
+                    <MenuItem value={input.title} key={index}>
+                      {input.title}
                     </MenuItem>
                   ))}
                 </Select>

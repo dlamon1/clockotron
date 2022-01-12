@@ -1,5 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { observer } from 'mobx-react-lite';
+
+import { StoreContext } from './stores/store.context.jsx';
 
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -7,9 +9,10 @@ import Box from '@material-ui/core/Box';
 import IpInput from './components/IpInput.jsx';
 import Socket from './components/Socket.jsx';
 import Toast from './components/Toast.jsx';
-import Timer from './pages/Timer';
+import Version from './components/Version.jsx';
+import Test from './components/test';
 
-import { StoreContext } from './stores/store.context.jsx';
+import Timer from './pages/Timer';
 
 import './app.css';
 
@@ -42,6 +45,7 @@ const App = observer(() => {
             </>
           )}
         </Box>
+        <Test />
       </Grid>
     </>
   );

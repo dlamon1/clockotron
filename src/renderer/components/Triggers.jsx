@@ -9,7 +9,6 @@ import { StoreContext } from '../stores/store.context';
 
 const Triggers = observer((props) => {
   const { timer } = useContext(StoreContext);
-  console.log(timer);
 
   const updateColorWhileDecrementing = () => {
     let triggerArray = JSON.parse(JSON.stringify(timer.triggers));

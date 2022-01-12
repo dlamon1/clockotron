@@ -16,7 +16,7 @@ const Refresh = observer(() => {
     }, 3333);
   };
 
-  timeout();
+  // timeout();
 
   return (
     <Grid container justifyContent="center" style={{ width: '100%' }}>
