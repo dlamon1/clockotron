@@ -13,8 +13,6 @@ import VideoReader from '../components/VideoReader.jsx';
 const Video = observer((props) => {
   const { timerIndex } = props;
   const [value, setValue] = useState(2);
-  const gs = useGlobalStore();
-  const timer = gs.timers[timerIndex];
 
   return (
     <>
