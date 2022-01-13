@@ -10,7 +10,7 @@ import { formatTime } from '../utils/formatTime';
 import { StoreContext } from '../stores/store.context';
 
 const PlayPause = observer((props) => {
-  const { timer } = useContext(StoreContext);
+  const { timer, clockotron } = useContext(StoreContext);
 
   const [buttonState, setButtonState] = useState('Start');
   const [speed, setSpeed] = useState(100);
@@ -124,65 +124,67 @@ const PlayPause = observer((props) => {
   }, []);
 
   return (
-    <>
-      <Grid item xs={12} style={{ marginTop: 0 }}>
-        <Grid container justifyContent="center" alignItems="center">
-          <Button
-            onClick={reset}
-            size="large"
-            variant="contained"
-            style={{ width: '30%', marginLeft: 6, marginRight: 6 }}
-          >
-            Reset
-          </Button>
-          <Button
-            onClick={toggle}
-            size="large"
-            variant="contained"
-            style={{ width: '30%', marginLeft: 6, marginRight: 6 }}
-          >
-            {buttonState}
-          </Button>
+    clockotron.tabValue === 0 && (
+      <>
+        <Grid item xs={12} style={{ marginTop: 0 }}>
+          <Grid container justifyContent="center" alignItems="center">
+            <Button
+              onClick={reset}
+              size="large"
+              variant="contained"
+              style={{ width: '30%', marginLeft: 6, marginRight: 6 }}
+            >
+              Reset
+            </Button>
+            <Button
+              onClick={toggle}
+              size="large"
+              variant="contained"
+              style={{ width: '30%', marginLeft: 6, marginRight: 6 }}
+            >
+              {buttonState}
+            </Button>
+          </Grid>
         </Grid>
-      </Grid>
 
-      <Grid item xs={12} style={{ marginTop: 15 }}>
-        <Grid container justifyContent="center" alignItems="center">
-          <Typography color="primary" style={{ fontSize: 18 }}>
-            Clock Speed: {speed} %
-          </Typography>
+        <Grid item xs={12} style={{ marginTop: 15 }}>
+          <Grid container justifyContent="center" alignItems="center">
+            <Typography color="primary" style={{ fontSize: 18 }}>
+              Clock Speed: {speed} %
+            </Typography>
+          </Grid>
         </Grid>
-      </Grid>
-      <Grid item xs={12} style={{ marginTop: 5 }}>
-        <Grid container justifyContent="center" alignItems="center">
-          <Typography color="primary" style={{ fontSize: 18 }}>
-            Approx Remain : {realRemaing}
-          </Typography>
+        <Grid item xs={12} style={{ marginTop: 5 }}>
+          <Grid container justifyContent="center" alignItems="center">
+            <Typography color="primary" style={{ fontSize: 18 }}>
+              Approx Remain : {realRemaing}
+            </Typography>
+          </Grid>
         </Grid>
-      </Grid>
-      <Grid item xs={12} style={{ marginTop: 0 }}>
-        <Grid container justifyContent="center" alignItems="center">
-          <Button
-            onClick={() => setInt(1.05)}
-            style={{ marginLeft: 5, marginRight: 5 }}
-          >
-            slower
-          </Button>
-          <Button
-            onClick={() => setInt(1)}
-            style={{ marginLeft: 5, marginRight: 5 }}
-          >
-            normal
-          </Button>
-          <Button
-            onClick={() => setInt(0.95)}
-            style={{ marginLeft: 5, marginRight: 5 }}
-          >
-            faster
-          </Button>
+        <Grid item xs={12} style={{ marginTop: 0 }}>
+          <Grid container justifyContent="center" alignItems="center">
+            <Button
+              onClick={() => setInt(1.05)}
+              style={{ marginLeft: 5, marginRight: 5 }}
+            >
+              slower
+            </Button>
+            <Button
+              onClick={() => setInt(1)}
+              style={{ marginLeft: 5, marginRight: 5 }}
+            >
+              normal
+            </Button>
+            <Button
+              onClick={() => setInt(0.95)}
+              style={{ marginLeft: 5, marginRight: 5 }}
+            >
+              faster
+            </Button>
+          </Grid>
         </Grid>
-      </Grid>
-    </>
+      </>
+    )
   );
 });
 

@@ -16,97 +16,103 @@ import { useStyles } from '../utils/AppStyles.jsx';
 import { StoreContext } from '../stores/store.context';
 
 const BaseColors = observer((props) => {
-  const { timer } = useContext(StoreContext);
+  const { timer, clockotron } = useContext(StoreContext);
 
   return (
-    <>
-      <Grid item xs={12} style={{ marginTop: 10 }}>
-        <Grid container justifyContent="space-around" alignItems="center">
-          <Accordion style={{ backgroundColor: timer.downColor, width: '85%' }}>
-            <AccordionSummary
-              expandIcon={
-                <ExpandMoreIcon style={{ color: timer.downFontColor }} />
-              }
-              style={{ backgroundColor: '' }}
+    clockotron.tabValue === 0 && (
+      <>
+        <Grid item xs={12} style={{ marginTop: 10 }}>
+          <Grid container justifyContent="space-around" alignItems="center">
+            <Accordion
+              style={{ backgroundColor: timer.downColor, width: '85%' }}
             >
-              <Typography
-                style={{ color: timer.downFontColor, fontWeight: 600 }}
+              <AccordionSummary
+                expandIcon={
+                  <ExpandMoreIcon style={{ color: timer.downFontColor }} />
+                }
+                style={{ backgroundColor: '' }}
               >
-                DOWN COLOR
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Grid item xs={12} style={{ marginTop: -10 }}>
-                <Grid
-                  container
-                  justifyContent="space-around"
-                  alignItems="center"
+                <Typography
+                  style={{ color: timer.downFontColor, fontWeight: 600 }}
                 >
-                  <Paper
-                    style={{
-                      backgroundColor: '#252525',
-                      padding: 8,
-                      paddingTop: 12,
-                      maxWidth: '95%',
-                    }}
+                  DOWN COLOR
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Grid item xs={12} style={{ marginTop: -10 }}>
+                  <Grid
+                    container
+                    justifyContent="space-around"
+                    alignItems="center"
                   >
-                    <Grid container style={{ minWidth: 250 }}>
-                      <GithubPicker
-                        onChangeComplete={(e) => timer.setDownColor(e.hex)}
-                        colors={colors}
-                        triangle="hide"
-                      />
-                    </Grid>
-                  </Paper>
+                    <Paper
+                      style={{
+                        backgroundColor: '#252525',
+                        padding: 8,
+                        paddingTop: 12,
+                        maxWidth: '95%',
+                      }}
+                    >
+                      <Grid container style={{ minWidth: 250 }}>
+                        <GithubPicker
+                          onChangeComplete={(e) => timer.setDownColor(e.hex)}
+                          colors={colors}
+                          triangle="hide"
+                        />
+                      </Grid>
+                    </Paper>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </AccordionDetails>
-          </Accordion>
+              </AccordionDetails>
+            </Accordion>
+          </Grid>
         </Grid>
-      </Grid>
-      <Grid item xs={12} style={{ marginTop: 10 }}>
-        <Grid container justifyContent="space-around" alignItems="center">
-          <Accordion style={{ backgroundColor: timer.upColor, width: '85%' }}>
-            <AccordionSummary
-              expandIcon={
-                <ExpandMoreIcon style={{ color: timer.upFontColor }} />
-              }
-              style={{ backgroundColor: '' }}
-            >
-              <Typography style={{ color: timer.upFontColor, fontWeight: 600 }}>
-                UP COLOR
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Grid item xs={12} style={{ marginTop: -10 }}>
-                <Grid
-                  container
-                  justifyContent="space-around"
-                  alignItems="center"
+        <Grid item xs={12} style={{ marginTop: 10 }}>
+          <Grid container justifyContent="space-around" alignItems="center">
+            <Accordion style={{ backgroundColor: timer.upColor, width: '85%' }}>
+              <AccordionSummary
+                expandIcon={
+                  <ExpandMoreIcon style={{ color: timer.upFontColor }} />
+                }
+                style={{ backgroundColor: '' }}
+              >
+                <Typography
+                  style={{ color: timer.upFontColor, fontWeight: 600 }}
                 >
-                  <Paper
-                    style={{
-                      backgroundColor: '#252525',
-                      padding: 8,
-                      paddingTop: 12,
-                      maxWidth: '95%',
-                    }}
+                  UP COLOR
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Grid item xs={12} style={{ marginTop: -10 }}>
+                  <Grid
+                    container
+                    justifyContent="space-around"
+                    alignItems="center"
                   >
-                    <Grid container style={{ minWidth: 250 }}>
-                      <GithubPicker
-                        onChangeComplete={(e) => timer.setUpColor(e.hex)}
-                        colors={colors}
-                        triangle="hide"
-                      />
-                    </Grid>
-                  </Paper>
+                    <Paper
+                      style={{
+                        backgroundColor: '#252525',
+                        padding: 8,
+                        paddingTop: 12,
+                        maxWidth: '95%',
+                      }}
+                    >
+                      <Grid container style={{ minWidth: 250 }}>
+                        <GithubPicker
+                          onChangeComplete={(e) => timer.setUpColor(e.hex)}
+                          colors={colors}
+                          triangle="hide"
+                        />
+                      </Grid>
+                    </Paper>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </AccordionDetails>
-          </Accordion>
+              </AccordionDetails>
+            </Accordion>
+          </Grid>
         </Grid>
-      </Grid>
-    </>
+      </>
+    )
   );
 });
 

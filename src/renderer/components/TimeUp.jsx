@@ -7,8 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { StoreContext } from '../stores/store.context';
 
 const TimeUp = observer((props) => {
-  const { timer } = useContext(StoreContext);
-  let { input, value, timerIndex } = props;
+  const { timer, clockotron } = useContext(StoreContext);
 
   let m = -8.7;
 
@@ -27,71 +26,77 @@ const TimeUp = observer((props) => {
   }, []);
 
   return (
-    <>
-      <Grid item xs={12} style={{ marginTop: 0, marginBottom: -45 }}>
-        <Grid container justifyContent="center" alignItems="center">
-          {timer.formatPositions >= 3 && (
-            <IconButton
-              onClick={() =>
-                timer.setCurrentSeconds(timer.currentSeconds + 3600)
-              }
-              style={{
-                marginLeft: m,
-                marginRight: m,
-              }}
-            >
-              <ArrowDropUpRoundedIcon
-                fontSize="large"
+    clockotron.tabValue === 0 && (
+      <>
+        <Grid item xs={12} style={{ marginTop: 0, marginBottom: -45 }}>
+          <Grid container justifyContent="center" alignItems="center">
+            {timer.formatPositions >= 3 && (
+              <IconButton
+                onClick={() =>
+                  timer.setCurrentSeconds(timer.currentSeconds + 3600)
+                }
                 style={{
                   marginLeft: m,
                   marginRight: m,
-                  fontSize: 75,
-                  color: 'lightgrey',
                 }}
-              />
-            </IconButton>
-          )}
-          {timer.formatPositions >= 2 && (
-            <IconButton
-              onClick={() => timer.setCurrentSeconds(timer.currentSeconds + 60)}
-              style={{
-                marginLeft: m,
-                marginRight: m,
-              }}
-            >
-              <ArrowDropUpRoundedIcon
-                fontSize="large"
+              >
+                <ArrowDropUpRoundedIcon
+                  fontSize="large"
+                  style={{
+                    marginLeft: m,
+                    marginRight: m,
+                    fontSize: 75,
+                    color: 'lightgrey',
+                  }}
+                />
+              </IconButton>
+            )}
+            {timer.formatPositions >= 2 && (
+              <IconButton
+                onClick={() =>
+                  timer.setCurrentSeconds(timer.currentSeconds + 60)
+                }
                 style={{
                   marginLeft: m,
                   marginRight: m,
-                  fontSize: 75,
-                  color: 'lightgrey',
                 }}
-              />
-            </IconButton>
-          )}
-          {timer.formatPositions >= 1 && (
-            <IconButton
-              onClick={() => timer.setCurrentSeconds(timer.currentSeconds + 1)}
-              style={{
-                marginLeft: m,
-                marginRight: m,
-              }}
-            >
-              <ArrowDropUpRoundedIcon
-                fontSize="large"
+              >
+                <ArrowDropUpRoundedIcon
+                  fontSize="large"
+                  style={{
+                    marginLeft: m,
+                    marginRight: m,
+                    fontSize: 75,
+                    color: 'lightgrey',
+                  }}
+                />
+              </IconButton>
+            )}
+            {timer.formatPositions >= 1 && (
+              <IconButton
+                onClick={() =>
+                  timer.setCurrentSeconds(timer.currentSeconds + 1)
+                }
                 style={{
                   marginLeft: m,
                   marginRight: m,
-                  fontSize: 75,
-                  color: 'lightgrey',
                 }}
-              />
-            </IconButton>
-          )}
+              >
+                <ArrowDropUpRoundedIcon
+                  fontSize="large"
+                  style={{
+                    marginLeft: m,
+                    marginRight: m,
+                    fontSize: 75,
+                    color: 'lightgrey',
+                  }}
+                />
+              </IconButton>
+            )}
+          </Grid>
         </Grid>
-      </Grid>
-    </>
+      </>
+    )
   );
 });
 

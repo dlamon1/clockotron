@@ -11,8 +11,11 @@ import Socket from './components/Socket.jsx';
 import Toast from './components/Toast.jsx';
 import Version from './components/Version.jsx';
 import Test from './components/test';
+import PostThings from './components/PostThings.jsx';
+import { PageTab } from './components/tabs.compoent.jsx';
 
 import Timer from './pages/Timer';
+import Video from './pages/Video';
 
 import './app.css';
 
@@ -24,10 +27,10 @@ const App = observer(() => {
         id="app"
         container
         style={{
-          backgroundColor: '#202020',
+          backgroundColor: '',
           overflow: 'hidden',
           height: '100%',
-          width: '100%',
+          // width: '100vw',
           marginTop: 15,
         }}
         direction="row"
@@ -40,8 +43,11 @@ const App = observer(() => {
             <IpInput />
           ) : (
             <>
+              <PageTab />
+              <PostThings />
               <Socket />
               <Timer />
+              <Video />
             </>
           )}
         </Box>

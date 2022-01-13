@@ -11,7 +11,7 @@ import { StoreContext } from '../stores/store.context.jsx';
 import { useStyles } from '../utils/AppStyles.jsx';
 
 const ClockInput = observer((props) => {
-  const { vmix, timer } = useContext(StoreContext);
+  const { vmix, timer, clockotron } = useContext(StoreContext);
 
   const classes = useStyles();
 
@@ -107,50 +107,52 @@ const ClockInput = observer((props) => {
   }, []);
 
   return (
-    <>
-      <Grid item xs={12} style={{ marginTop: 15 }}>
-        <Grid
-          container
-          justifyContent="space-around"
-          alignItems="center"
-          style={{}}
-        >
-          <Box style={{ width: '85%', backgroundColor: '' }}>
-            <Grid
-              container
-              justifyContent="space-between"
-              alignItems="center"
-              style={{ backgroundColor: '' }}
-            >
-              <TextField
-                color="secondary"
-                id="outlined-textarea"
-                label="Enter a time"
-                variant="outlined"
-                margin="dense"
-                value={clockStartValue}
-                onChange={(e) => updateInputForm(e.target.value)}
-                style={{ backgroundColor: '', width: '50%' }}
-                focus="true"
-                onKeyDown={handleKeyDown}
-                InputProps={{
-                  classes: {
-                    notchedOutline: classes.notchedOutline,
-                  },
-                }}
-              />
-              <Button
-                variant="contained"
-                onClick={() => postClockGlobally(inputSeconds)}
-                style={{ marginTop: 3 }}
+    clockotron.tabValue === 0 && (
+      <>
+        <Grid item xs={12} style={{ marginTop: 15 }}>
+          <Grid
+            container
+            justifyContent="space-around"
+            alignItems="center"
+            style={{}}
+          >
+            <Box style={{ width: '85%', backgroundColor: '' }}>
+              <Grid
+                container
+                justifyContent="space-between"
+                alignItems="center"
+                style={{ backgroundColor: '' }}
               >
-                Set time
-              </Button>
-            </Grid>
-          </Box>
+                <TextField
+                  color="secondary"
+                  id="outlined-textarea"
+                  label="Enter a time"
+                  variant="outlined"
+                  margin="dense"
+                  value={clockStartValue}
+                  onChange={(e) => updateInputForm(e.target.value)}
+                  style={{ backgroundColor: '', width: '50%' }}
+                  focus="true"
+                  onKeyDown={handleKeyDown}
+                  InputProps={{
+                    classes: {
+                      notchedOutline: classes.notchedOutline,
+                    },
+                  }}
+                />
+                <Button
+                  variant="contained"
+                  onClick={() => postClockGlobally(inputSeconds)}
+                  style={{ marginTop: 3 }}
+                >
+                  Set time
+                </Button>
+              </Grid>
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
-    </>
+      </>
+    )
   );
 });
 

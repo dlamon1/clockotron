@@ -25,10 +25,12 @@ const Socket = observer((props) => {
   };
 
   const handleVideoData = (__, data) => {
+    // console.log(data);
     videoReader.handleNewVideoXmlData(data);
   };
 
   const handleTallyData = (__, data) => {
+    // console.log(data);
     videoReader.handleNewTallyData(data);
   };
 
@@ -39,10 +41,8 @@ const Socket = observer((props) => {
     window.electron.on('videoTallyData', handleTallyData);
 
     return () => {
-      // console.log('retured');
       vmix.isSocketConnect && window.electron.vmix.shutdown();
       vmix.isSocketConnect && window.electron.all();
-      // gs.isSocketConnect && console.log('return shutdown');
     };
   }, []);
 

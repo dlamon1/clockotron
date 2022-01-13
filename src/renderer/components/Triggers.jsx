@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import { StoreContext } from '../stores/store.context';
 
 const Triggers = observer((props) => {
-  const { timer } = useContext(StoreContext);
+  const { timer, clockotron } = useContext(StoreContext);
 
   const updateColorWhileDecrementing = () => {
     let triggerArray = JSON.parse(JSON.stringify(timer.triggers));
@@ -60,24 +60,28 @@ const Triggers = observer((props) => {
   ]);
 
   return (
-    <Grid item xs={12} style={{ marginTop: 10 }}>
-      <Grid container justifyContent="space-around" alignItems="center">
-        {timer.triggers.map((trigger, index) => (
-          <TriggerDetail
-            triggerIndex={index}
-            triggerId={trigger.id}
-            key={index}
-          />
-        ))}
-        <Button
-          variant="outlined"
-          onClick={() => timer.addTrigger()}
-          style={{ marginTop: 15, marginBottom: 15, paddingInline: 65 }}
-        >
-          Add Trigger
-        </Button>
-      </Grid>
-    </Grid>
+    clockotron.tabValue === 0 && (
+      <>
+        <Grid item xs={12} style={{ marginTop: 10 }}>
+          <Grid container justifyContent="space-around" alignItems="center">
+            {timer.triggers.map((trigger, index) => (
+              <TriggerDetail
+                triggerIndex={index}
+                triggerId={trigger.id}
+                key={index}
+              />
+            ))}
+            <Button
+              variant="outlined"
+              onClick={() => timer.addTrigger()}
+              style={{ marginTop: 15, marginBottom: 15, paddingInline: 65 }}
+            >
+              Add Trigger
+            </Button>
+          </Grid>
+        </Grid>
+      </>
+    )
   );
 });
 

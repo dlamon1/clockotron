@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { StoreContext } from '../stores/store.context';
 
 const TimeDown = observer((props) => {
-  const { timer } = useContext(StoreContext);
+  const { timer, clockotron } = useContext(StoreContext);
 
   let m = -8.7;
 
@@ -34,71 +34,77 @@ const TimeDown = observer((props) => {
   }, []);
 
   return (
-    <>
-      <Grid item xs={12} style={{ marginTop: -45, marginBottom: 0 }}>
-        <Grid container justifyContent="center" alignItems="center">
-          {timer.formatPositions >= 3 && (
-            <IconButton
-              onClick={() =>
-                timer.setCurrentSeconds(timer.currentSeconds - 3600)
-              }
-              disabled={3600 >= parseInt(timer.currentSeconds)}
-              style={{
-                marginLeft: m,
-                marginRight: m,
-              }}
-            >
-              <ArrowDropDownRoundedIcon
+    clockotron.tabValue === 0 && (
+      <>
+        <Grid item xs={12} style={{ marginTop: -45, marginBottom: 0 }}>
+          <Grid container justifyContent="center" alignItems="center">
+            {timer.formatPositions >= 3 && (
+              <IconButton
+                onClick={() =>
+                  timer.setCurrentSeconds(timer.currentSeconds - 3600)
+                }
+                disabled={3600 >= parseInt(timer.currentSeconds)}
                 style={{
                   marginLeft: m,
                   marginRight: m,
-                  fontSize: 75,
-                  color: 'lightgrey',
                 }}
-              />
-            </IconButton>
-          )}
-          {timer.formatPositions >= 2 && (
-            <IconButton
-              onClick={() => timer.setCurrentSeconds(timer.currentSeconds - 60)}
-              disabled={timer.currentSeconds < 61}
-              style={{
-                marginLeft: m,
-                marginRight: m,
-              }}
-            >
-              <ArrowDropDownRoundedIcon
+              >
+                <ArrowDropDownRoundedIcon
+                  style={{
+                    marginLeft: m,
+                    marginRight: m,
+                    fontSize: 75,
+                    color: 'lightgrey',
+                  }}
+                />
+              </IconButton>
+            )}
+            {timer.formatPositions >= 2 && (
+              <IconButton
+                onClick={() =>
+                  timer.setCurrentSeconds(timer.currentSeconds - 60)
+                }
+                disabled={timer.currentSeconds < 61}
                 style={{
                   marginLeft: m,
                   marginRight: m,
-                  fontSize: 75,
-                  color: 'lightgrey',
                 }}
-              />
-            </IconButton>
-          )}
-          {timer.formatPositions >= 1 && (
-            <IconButton
-              onClick={() => timer.setCurrentSeconds(timer.currentSeconds - 1)}
-              disabled={timer.currentSeconds <= 0}
-              style={{
-                marginLeft: m,
-                marginRight: m,
-              }}
-            >
-              <ArrowDropDownRoundedIcon
+              >
+                <ArrowDropDownRoundedIcon
+                  style={{
+                    marginLeft: m,
+                    marginRight: m,
+                    fontSize: 75,
+                    color: 'lightgrey',
+                  }}
+                />
+              </IconButton>
+            )}
+            {timer.formatPositions >= 1 && (
+              <IconButton
+                onClick={() =>
+                  timer.setCurrentSeconds(timer.currentSeconds - 1)
+                }
+                disabled={timer.currentSeconds <= 0}
                 style={{
                   marginLeft: m,
                   marginRight: m,
-                  fontSize: 75,
-                  color: 'lightgrey',
                 }}
-              />
-            </IconButton>
-          )}
+              >
+                <ArrowDropDownRoundedIcon
+                  style={{
+                    marginLeft: m,
+                    marginRight: m,
+                    fontSize: 75,
+                    color: 'lightgrey',
+                  }}
+                />
+              </IconButton>
+            )}
+          </Grid>
         </Grid>
-      </Grid>
-    </>
+      </>
+    )
   );
 });
 

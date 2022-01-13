@@ -12,7 +12,7 @@ import { StoreContext } from '../stores/store.context';
 import { useStyles } from '../utils/AppStyles.jsx';
 
 const ClockInput = observer((props) => {
-  const { timer } = useContext(StoreContext);
+  const { timer, clockotron } = useContext(StoreContext);
 
   const [clockStartValue, setClockStartValue] = useState('');
   const [inputSeconds, setInputSeconds] = useState(0);
@@ -107,49 +107,57 @@ const ClockInput = observer((props) => {
   }, []);
 
   return (
-    <Grid item xs={12} style={{ marginTop: 0 }}>
-      <Grid
-        container
-        justifyContent="space-around"
-        alignItems="center"
-        style={{}}
-      >
-        <Box style={{ width: '85%', backgroundColor: '' }}>
+    clockotron.tabValue === 0 && (
+      <>
+        <Grid item xs={12} style={{ marginTop: 0 }}>
           <Grid
             container
-            justifyContent="center"
+            justifyContent="space-around"
             alignItems="center"
-            style={{ backgroundColor: '' }}
+            style={{}}
           >
-            <Typography style={{ color: 'white' }}> UP</Typography>
+            <Box style={{ width: '85%', backgroundColor: '' }}>
+              <Grid
+                container
+                justifyContent="center"
+                alignItems="center"
+                style={{ backgroundColor: '' }}
+              >
+                <Typography style={{ color: 'white' }}> UP</Typography>
 
-            <Switch
-              checked={timer.isCountingDown}
-              onChange={() => timer.setIsCountingDown(!timer.isCountingDown)}
-              name="checkedA"
-            />
-            <Typography style={{ color: 'white' }}>DOWN</Typography>
+                <Switch
+                  checked={timer.isCountingDown}
+                  onChange={() =>
+                    timer.setIsCountingDown(!timer.isCountingDown)
+                  }
+                  name="checkedA"
+                />
+                <Typography style={{ color: 'white' }}>DOWN</Typography>
+              </Grid>
+              <Grid
+                container
+                justifyContent="center"
+                alignItems="center"
+                style={{ backgroundColor: '' }}
+              >
+                <Checkbox
+                  checked={timer.countUpAfterDownReachesZero}
+                  onChange={() =>
+                    timer.setCountUpAfterDownReachesZero(
+                      !timer.countUpAfterDownReachesZero
+                    )
+                  }
+                  inputProps={{ 'aria-label': 'primary checkbox' }}
+                />
+                <Typography style={{ color: 'white' }}>
+                  UP AFTER DOWN
+                </Typography>
+              </Grid>
+            </Box>
           </Grid>
-          <Grid
-            container
-            justifyContent="center"
-            alignItems="center"
-            style={{ backgroundColor: '' }}
-          >
-            <Checkbox
-              checked={timer.countUpAfterDownReachesZero}
-              onChange={() =>
-                timer.setCountUpAfterDownReachesZero(
-                  !timer.countUpAfterDownReachesZero
-                )
-              }
-              inputProps={{ 'aria-label': 'primary checkbox' }}
-            />
-            <Typography style={{ color: 'white' }}>UP AFTER DOWN</Typography>
-          </Grid>
-        </Box>
-      </Grid>
-    </Grid>
+        </Grid>
+      </>
+    )
   );
 });
 

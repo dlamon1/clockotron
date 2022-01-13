@@ -18,7 +18,6 @@ const IpForm = observer(() => {
   const [ip, setIpp] = useState('127.0.0.1');
 
   const connected = () => {
-    console.log('here, connected');
     vmix.connected();
   };
 

@@ -3,8 +3,6 @@ import { ipcMain } from 'electron';
 import xpath from 'xpath';
 import { DOMParser } from 'xmldom';
 
-console.log('***************************************************');
-
 export function vmixSocket(mainWindow, connection) {
   let initListener;
   let vmixPostReqListener;
@@ -137,6 +135,7 @@ export function vmixSocket(mainWindow, connection) {
 
   //
   const handleData = (data) => {
+    console.log('here');
     const dataString = data.toString();
     const resType = dataString.split(' ')[0];
     if (resType == 'XML') {

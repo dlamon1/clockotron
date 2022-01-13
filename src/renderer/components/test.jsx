@@ -16,19 +16,18 @@ const Test = observer(() => {
   const { videoReader } = useContext(StoreContext);
   const [list, setList] = useState([]);
 
-  useEffect(() => {
-    // console.log(videoReader.videoInputs);
-  }, [JSON.stringify(videoReader.videoInputs)]);
+  // useEffect(() => {
+  //   console.log(videoReader.videoInputs);
+  // }, [JSON.stringify(videoReader.videoInputs)]);
 
   return (
     <>
-      <Typography style={{ color: 'white' }}>hello</Typography>
       {videoReader.videoInputs.map((input) => (
         <Grid container direction="column" key={input.key}>
           <Typography style={{ color: 'white' }}>
-            {input.position}
-            {/* {': '}
-            {input.isPlaying} */}
+            {input.title}
+            {': '}
+            {input.currentSeconds}
           </Typography>
         </Grid>
       ))}

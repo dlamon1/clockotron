@@ -1,18 +1,42 @@
 import { makeAutoObservable } from 'mobx';
 import { XMLParser } from 'fast-xml-parser';
 import { options } from '../utils/options';
+import { setDriftlessTimeout, clearDriftless } from 'driftless';
 
 export class VideoReader {
   videoInputs = [];
   pgmArray = [];
   videoInputsInPgm = [];
+  input = '';
+  text = '';
+  formatPositions = 3;
+  currentSeconds = 0;
+  color = '#00FF50';
+  formatedTime = '00:00:00';
 
   constructor() {
     makeAutoObservable(this);
   }
 
+  setInput(input) {
+    this.input = input;
+  }
+
+  setText(text) {
+    this.text = text;
+  }
+
+  setFormatedTime(time) {
+    this.formatedTime = time;
+  }
+
+  setFormatPositions(num) {
+    if (this.formatPositions + num < 4 && this.formatPositions + num > 0) {
+      this.formatPositions = this.formatPositions + num;
+    }
+  }
+
   handleNewVideoXmlData(data) {
-    // console.log(data);
     let inputs = this.parseXmlData(data);
     inputs.forEach((input) => {
       let index = this.checkForInput(input.key);
@@ -22,11 +46,7 @@ export class VideoReader {
         this.updateInput(index, input);
       }
     });
-    // console.log(this.videoInputs);
   }
-
-  // this.checkPgmForVideo();
-  // console.log(this.videoInputsInPgm);
 
   parseXmlData(data) {
     const parser = new XMLParser(options);
@@ -96,15 +116,26 @@ class Input {
   title = '';
   isCountingDown = false;
   isOnPgm = false;
+  currentSeconds = 1000;
+  ref = null;
 
   constructor(input) {
+    makeAutoObservable(this);
     this.inputNumber = parseInt(input.number);
     this.key = input.key;
     this.duration = this.setDuration(input);
     this.position = this.setPosition(input);
     this.isPlaying = this.setIsPlaying(input);
     this.title = input.title;
-    makeAutoObservable(this);
+    this.clock();
+  }
+
+  clock() {
+    if (this.currentSeconds > 0) {
+      this.currentSeconds = this.currentSeconds - 1;
+
+      this.ref = setDriftlessTimeout(() => this.clock(), 1000);
+    }
   }
 
   setIsPlaying(input) {

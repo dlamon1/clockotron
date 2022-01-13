@@ -3,10 +3,10 @@ import React, { useContext } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import Refresh from 'renderer/components/Refresh.jsx';
-import TextInputList from '../components/TextInputList.jsx';
+import TextInputList from '../components/inputSelector.timer.jsx';
 import ClockInput from '../components/ClockInput.jsx';
 import TimeUp from '../components/TimeUp.jsx';
-import ClockFormated from '../components/ClockFormated.jsx';
+import ClockFormated from '../components/clock.formated.timer.jsx';
 import TimeDown from '../components/TimeDown.jsx';
 import PlayPause from '../components/PlayPause.jsx';
 import DirectionOptions from '../components/DirectionOptions.jsx';
@@ -21,7 +21,7 @@ const Timer = observer(() => {
 
   return (
     <>
-      <Refresh />
+      {/* <Refresh /> */}
       <TextInputList />
       <ClockInput />
       <TimeUp />
@@ -31,7 +31,7 @@ const Timer = observer(() => {
       <DirectionOptions />
       <BaseColors />
       <Triggers />
-      <PostThings />
+      {/* <PostThings /> */}
     </>
   );
 });
