@@ -2,7 +2,7 @@ import { makeAutoObservable } from 'mobx';
 
 export class AlertStore {
   text = '';
-  severity = '  ';
+  severity = '';
   length = 1000;
   isOpen = false;
 

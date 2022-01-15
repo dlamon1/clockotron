@@ -11,15 +11,14 @@ import { IconButton } from '@material-ui/core';
 import { StoreContext } from '../stores/store.context';
 
 const ClockFormated = observer((props) => {
+  const { i } = props;
   const { videoReader, clockotron } = useContext(StoreContext);
+  const input = videoReader.vmixInputs[i];
 
   useEffect(() => {
-    let res = formatTime(
-      videoReader.currentSeconds,
-      videoReader.formatPositions
-    );
-    videoReader.setFormatedTime(res);
-  }, [videoReader.currentSeconds, videoReader.formatPositions]);
+    let res = formatTime(input.currentSeconds, input.formatPositions);
+    input.setFormatedTime(res);
+  }, [input.currentSeconds, input.formatPositions]);
 
   return (
     clockotron.tabValue === 1 && (
@@ -27,17 +26,17 @@ const ClockFormated = observer((props) => {
         <Grid item xs={12} style={{ marginTop: 20 }}>
           <Grid container justifyContent="space-around" alignItems="center">
             <IconButton
-              onClick={() => videoReader.setFormatPositions(-1)}
-              disabled={videoReader.formatPositions === 1}
+              onClick={() => input.setFormatPositions(-1)}
+              disabled={input.formatPositions === 1}
             >
               <ChevronLeft />
             </IconButton>
-            <Typography style={{ fontSize: 45, color: videoReader.color }}>
-              {videoReader.formatedTime}
+            <Typography style={{ fontSize: 45, color: input.color }}>
+              {input.formatedTime}
             </Typography>
             <IconButton
-              onClick={() => videoReader.setFormatPositions(1)}
-              disabled={videoReader.formatPositions === 3}
+              onClick={() => input.setFormatPositions(1)}
+              disabled={input.formatPositions === 3}
             >
               <ChevronRight />
             </IconButton>

@@ -3,19 +3,112 @@ import { XMLParser } from 'fast-xml-parser';
 import { options } from '../utils/options';
 import { setDriftlessTimeout, clearDriftless } from 'driftless';
 
+let videoTypes = ['Video', 'VideoList'];
+
 export class VideoReader {
-  videoInputs = [];
-  pgmArray = [];
-  videoInputsInPgm = [];
+  vmixInputs = [];
+  pgmString = '';
+  vmixInputsInPgm = [];
+  tallyArray = [];
+
+  constructor() {
+    makeAutoObservable(this);
+  }
+
+  handleNewVideoXmlData(data) {
+    // console.log('new xml');
+
+    let inputs = this.parseXmlData(data);
+
+    inputs.forEach((input) => {
+      let index = this.checkForInput(input.key);
+      if (index == -1) {
+        this.addInput(input);
+        // console.log('here');
+      } else {
+        this.updateInputXmlData(index, input, this.tallyArray);
+        // console.log('here');
+      }
+    });
+
+    return;
+  }
+
+  parseXmlData(data) {
+    const parser = new XMLParser(options);
+    let jsonObj = parser.parse(data);
+    let list = jsonObj.xml.vmix.inputs.input;
+    return list;
+  }
+
+  parseXmlDataForTally(data) {
+    const parser = new XMLParser(options);
+    let jsonObj = parser.parse(data);
+    let list = jsonObj.xml.vmix.active;
+    return list;
+  }
+
+  handleNewTallyData(data) {
+    this.tallyArray = data.split('');
+    console.log('here');
+  }
+
+  checkForInput(key) {
+    let res = this.vmixInputs.findIndex((input) => input.key == key);
+    return res;
+  }
+
+  addInput(inputObj) {
+    let input = new Input(inputObj);
+    this.vmixInputs.push(input);
+  }
+
+  updateInputXmlData(index, data, tally) {
+    this.vmixInputs[index].update(data, tally);
+  }
+}
+
+class Input {
+  inputNumber = 1;
+  key = '';
+  duration = 0;
+  position = 0;
+  isPlaying = false;
+  title = '';
+  isCountingDown = false;
+  isOnPgm = false;
+  currentSeconds = 1000;
+  ref = null;
   input = '';
   text = '';
   formatPositions = 3;
   currentSeconds = 0;
   color = '#00FF50';
   formatedTime = '00:00:00';
+  type = '';
+  isVideo = false;
 
-  constructor() {
+  constructor(input) {
     makeAutoObservable(this);
+    this.inputNumber = parseInt(input.number);
+    this.key = input.key;
+    this.duration = this.setDuration(input);
+    this.position = this.setPosition(input);
+    this.isPlaying = this.setIsPlaying(input);
+    this.title = input.title;
+    this.type = input.type;
+    this.clock();
+    this.setIsVideo(input.type);
+    // console.log(this);
+  }
+
+  setIsVideo(type) {
+    let i = videoTypes.indexOf(type);
+    if (i > -1) {
+      this.isVideo = true;
+    } else {
+      this.isVideo = false;
+    }
   }
 
   setInput(input) {
@@ -34,100 +127,6 @@ export class VideoReader {
     if (this.formatPositions + num < 4 && this.formatPositions + num > 0) {
       this.formatPositions = this.formatPositions + num;
     }
-  }
-
-  handleNewVideoXmlData(data) {
-    let inputs = this.parseXmlData(data);
-    inputs.forEach((input) => {
-      let index = this.checkForInput(input.key);
-      if (index == -1) {
-        this.addInput(input);
-      } else {
-        this.updateInput(index, input);
-      }
-    });
-  }
-
-  parseXmlData(data) {
-    const parser = new XMLParser(options);
-    let jsonObj = parser.parse(data);
-    let list = jsonObj.xml.vmix.inputs.input;
-    return list;
-  }
-
-  handleNewTallyData(data) {
-    // let a = data.split('');
-    // console.log(data);
-    let pgmArray = [];
-    for (let i = 0; i < data.length; i++) {
-      if ('1' == data[i]) {
-        // console.log(i + 1);
-        pgmArray.push(i + 1);
-      }
-    }
-    this.pgmArray = pgmArray;
-    // console.log(this.pgmArray, pgmArray);
-  }
-
-  checkForInput(key) {
-    let res = this.videoInputs.findIndex((input) => input.key == key);
-    return res;
-  }
-
-  addInput(inputObj) {
-    let input = new Input(inputObj);
-    this.videoInputs.push(input);
-  }
-
-  updateInput(index, data) {
-    this.videoInputs[index].update(data);
-  }
-
-  checkPgmForVideo() {
-    let a = [];
-    for (let i = 0; i < this.pgmArray.length; i++) {
-      // console.log(this.pgmArray[i]);
-      let index = this.videoInputs.findIndex(
-        (input) => input.inputNumber === this.pgmArray[i]
-      );
-      // console.log(index);
-      if (index >= 0) {
-        this.handlePlayingVideoInProgram(i);
-        // let input = new CurrentlyPlayingInput(this.inputs[index]);
-        a.push(this.videoInputs[index]);
-      }
-      // console.log(a);
-    }
-    this.videoInputsInPgm.splice(0, this.videoInputsInPgm.length, ...a);
-    // console.log(this.videoInputsInPgm);
-  }
-
-  handlePlayingVideoInProgram(i) {
-    // console.log(i);
-  }
-}
-
-class Input {
-  inputNumber = 1;
-  key = '';
-  duration = 0;
-  position = 0;
-  isPlaying = false;
-  title = '';
-  isCountingDown = false;
-  isOnPgm = false;
-  currentSeconds = 1000;
-  ref = null;
-
-  constructor(input) {
-    makeAutoObservable(this);
-    this.inputNumber = parseInt(input.number);
-    this.key = input.key;
-    this.duration = this.setDuration(input);
-    this.position = this.setPosition(input);
-    this.isPlaying = this.setIsPlaying(input);
-    this.title = input.title;
-    this.clock();
   }
 
   clock() {
@@ -162,12 +161,25 @@ class Input {
     return 0;
   }
 
-  update(input) {
+  update(input, tally) {
     this.inputNumber = parseInt(input.number);
     this.duration = this.setDuration(input);
     this.position = this.setPosition(input);
     this.isPlaying = this.setIsPlaying(input);
+    this.isOnPgm = this.setIsOnPgm(input, tally);
     this.title = input.title;
+  }
+
+  setIsOnPgm(input, tally) {
+    // console.log(input.number - 1);
+
+    let status = tally[input.number - 1];
+
+    if (status == '1') {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
 

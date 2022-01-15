@@ -17,12 +17,12 @@ const Test = observer(() => {
   const [list, setList] = useState([]);
 
   // useEffect(() => {
-  //   console.log(videoReader.videoInputs);
-  // }, [JSON.stringify(videoReader.videoInputs)]);
+  //   console.log(videoReader.vmixInputs);
+  // }, [JSON.stringify(videoReader.vmixInputs)]);
 
   return (
     <>
-      {videoReader.videoInputs.map((input) => (
+      {videoReader.vmixInputs.map((input) => (
         <Grid container direction="column" key={input.key}>
           <Typography style={{ color: 'white' }}>
             {input.title}

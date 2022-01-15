@@ -11,6 +11,9 @@ contextBridge.exposeInMainWorld('electron', {
     reqXmlInputList: () => {
       ipcRenderer.invoke('vmixRequestXml');
     },
+    reqXmlVideo: () => {
+      ipcRenderer.invoke('reqXmlVideo');
+    },
     vmixPostReq: (cmd) => {
       ipcRenderer.invoke('vmixPostReq', cmd);
     },

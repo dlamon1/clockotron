@@ -24,13 +24,13 @@ const Socket = observer((props) => {
     vmix.setIsSocketConnected(false);
   };
 
-  const handleVideoData = (__, data) => {
+  const handleVideoData = (__, data, fullTallyDataString) => {
     // console.log(data);
     videoReader.handleNewVideoXmlData(data);
+    // videoReader.handleNewTallyData(fullTallyDataString);
   };
 
   const handleTallyData = (__, data) => {
-    // console.log(data);
     videoReader.handleNewTallyData(data);
   };
 
@@ -46,7 +46,9 @@ const Socket = observer((props) => {
     };
   }, []);
 
+  // When the IP is set, make an initial request for XML data
   useEffect(() => {
+    window.electron.vmix.reqXmlVideo();
     vmix.ip && window.electron.vmix.reqXmlInputList();
   }, [vmix.ip]);
 

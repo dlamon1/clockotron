@@ -12,7 +12,9 @@ import { options } from '../utils/options.jsx';
 import { StoreContext } from '../stores/store.context';
 
 const TextInputList = observer((props) => {
+  const { i } = props;
   const { vmix, videoReader, clockotron } = useContext(StoreContext);
+  const input = videoReader.vmixInputs[i];
 
   const [inSelected, setInSelected] = useState('');
   const [textSelected, setTextSelected] = useState('');
@@ -22,7 +24,7 @@ const TextInputList = observer((props) => {
   const handleChange = (event) => {
     setTextSelected('');
     setInSelected(event.target.value);
-    videoReader.setInput(event.target.value);
+    input.setInput(event.target.value);
     let selected = inputList.filter(
       (input) => input.title == event.target.value
     );
@@ -47,7 +49,7 @@ const TextInputList = observer((props) => {
 
   const handleTextChange = (event) => {
     setTextSelected(event.target.value);
-    videoReader.setText(event.target.value);
+    input.setText(event.target.value);
   };
 
   const setInputs = () => {
