@@ -11,16 +11,24 @@ const Refresh = observer(() => {
 
   const timeout = () => {
     setTimeout(() => {
-      vmix.refresh();
+      vmix.ip && window.electron.vmix.reqXml();
       timeout();
-    }, 3333);
+    }, 3000);
+  };
+
+  const refresh = () => {
+    vmix.refresh();
   };
 
   // timeout();
 
   return (
-    <Grid container justifyContent="center" style={{ width: '100%' }}>
-      <Button onClick={vmix.refresh}>Refresh Input List</Button>
+    <Grid
+      container
+      justifyContent="center"
+      style={{ marginTop: 10, width: '100%' }}
+    >
+      <Button onClick={refresh}>Refresh Input List</Button>
     </Grid>
   );
 });

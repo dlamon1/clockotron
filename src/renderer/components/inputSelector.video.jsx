@@ -24,7 +24,7 @@ const TextInputList = observer((props) => {
   const handleChange = (event) => {
     setTextSelected('');
     setInSelected(event.target.value);
-    input.setInput(event.target.value);
+    videoReader.setInput(event.target.value);
     let selected = inputList.filter(
       (input) => input.title == event.target.value
     );
@@ -49,13 +49,11 @@ const TextInputList = observer((props) => {
 
   const handleTextChange = (event) => {
     setTextSelected(event.target.value);
-    input.setText(event.target.value);
+    videoReader.setText(event.target.value);
   };
 
   const setInputs = () => {
-    const parser = new XMLParser(options);
-    let jsonObj = parser.parse(vmix.xmlRaw, options);
-    let list = jsonObj.vmix.inputs.input;
+    let list = vmix.inputs;
     let filtered = list.filter(
       (item) => item.type === 'GT' || item.type === 'Xaml'
     );
@@ -63,8 +61,8 @@ const TextInputList = observer((props) => {
   };
 
   useEffect(() => {
-    vmix.xmlRaw ? setInputs() : null;
-  }, [vmix.xmlRaw]);
+    vmix.inputs && setInputs();
+  }, [vmix.inputs]);
 
   return (
     clockotron.tabValue === 1 && (

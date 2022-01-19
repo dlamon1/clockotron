@@ -1,4 +1,6 @@
 import { makeAutoObservable } from 'mobx';
+import { XMLParser } from 'fast-xml-parser';
+import { options } from '../utils/options';
 
 export class Vmix {
   unconfirmedIp = '';
@@ -7,6 +9,7 @@ export class Vmix {
   isSocketConnected = false;
   connectionTimeout;
   alertStore;
+  inputs = [];
 
   constructor(alertStore) {
     this.alertStore = alertStore;
@@ -21,6 +24,13 @@ export class Vmix {
     this.xmlRaw = data;
   }
 
+  updateInputList(data) {
+    const parser = new XMLParser(options);
+    let jsonObj = parser.parse(data);
+    let list = jsonObj.xml.vmix.inputs.input;
+    this.inputs = list;
+  }
+
   setIsSocketConnected(boolean) {
     this.isSocketConnected = boolean;
   }
@@ -29,6 +39,11 @@ export class Vmix {
     this.unconfirmedIp = ip;
     window.electron.vmix.connect(ip);
     this.connectionTimeout = setTimeout(() => this.connectError(), 5000);
+  }
+
+  refresh() {
+    // console.log(this);
+    this.ip && window.electron.vmix.reqXml();
   }
 
   connected() {
@@ -42,13 +57,9 @@ export class Vmix {
     this.alertStore.cannotConnect();
   }
 
-  lostSocketConnection = (__, error) => {
+  lostSocketConnection(__, error) {
     this.alertStore.lostVmixConnection();
     this.setIp = '';
     this.isSocketConnected = false;
-  };
-
-  refresh() {
-    this.ip && window.electron.vmix.reqXmlInputList();
   }
 }

@@ -51,9 +51,7 @@ const TextInputList = observer((props) => {
   };
 
   const setInputs = () => {
-    const parser = new XMLParser(options);
-    let jsonObj = parser.parse(vmix.xmlRaw, options);
-    let list = jsonObj.vmix.inputs.input;
+    let list = vmix.inputs;
     let filtered = list.filter(
       (item) => item.type === 'GT' || item.type === 'Xaml'
     );
@@ -61,8 +59,8 @@ const TextInputList = observer((props) => {
   };
 
   useEffect(() => {
-    vmix.xmlRaw ? setInputs() : null;
-  }, [vmix.xmlRaw]);
+    vmix.inputs && setInputs();
+  }, [vmix.inputs]);
 
   return (
     clockotron.tabValue === 0 && (

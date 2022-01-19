@@ -48,13 +48,6 @@ const LayerTrigger = observer((props) => {
     layer.setLayer(event.target.value);
   };
 
-  const setInputs = () => {
-    const parser = new XMLParser(options);
-    let jsonObj = parser.parse(vmix.xmlRaw, options);
-    let list = jsonObj.vmix.inputs.input;
-    setInputList(list);
-  };
-
   const triggerLayerUpdate = () => {
     let cmd = layer.command;
     let input = layer.input;
@@ -82,8 +75,8 @@ const LayerTrigger = observer((props) => {
   }, [timer.currentSeconds]);
 
   useEffect(() => {
-    vmix.xmlRaw ? setInputs() : null;
-  }, [vmix.xmlRaw]);
+    vmix.inputs && setInputList(vmix.inputs);
+  }, [vmix.inputs]);
 
   return (
     <>

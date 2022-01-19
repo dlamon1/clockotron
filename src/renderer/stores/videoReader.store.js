@@ -1,7 +1,8 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, toJS } from 'mobx';
 import { XMLParser } from 'fast-xml-parser';
 import { options } from '../utils/options';
 import { setDriftlessTimeout, clearDriftless } from 'driftless';
+import { formatedTime } from '../utils/formatTime';
 
 let videoTypes = ['Video', 'VideoList'];
 
@@ -10,47 +11,164 @@ export class VideoReader {
   pgmString = '';
   vmixInputsInPgm = [];
   tallyArray = [];
+  inputsOnPgm = [];
+  input = '';
+  rawXmlInputs = [];
+  text = '';
+  formatPositions = 3;
+  currentSeconds = 0;
+  formatedTime = '00:00:00';
+  color = '#00FF50';
+  runClock = false;
+  activeInput = 0;
+  inputOnPgm;
+  allActiveInputs = [];
+  mountedTimer = 0;
+  firstVideoOnPgm;
+  mountedInputIndex;
+  isMountedPlaying = false;
+  interval = 1000;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  handleNewVideoXmlData(data) {
-    // console.log('new xml');
+  setInput(input) {
+    this.input = input;
+  }
 
-    let inputs = this.parseXmlData(data);
+  setText(text) {
+    this.text = text;
+  }
 
-    inputs.forEach((input) => {
+  setFormatedTime(time) {
+    this.formatedTime = time;
+  }
+
+  setFormatPositions(num) {
+    if (this.formatPositions + num < 4 && this.formatPositions + num > 0) {
+      this.formatPositions = this.formatPositions + num;
+    }
+  }
+
+  // create array of each channel
+  // create array of each channel in pgm
+  handleNewTallyData(data) {
+    this.tallyArray = data.split('');
+    this.updateInputsOnPgm();
+  }
+
+  updateInputsOnPgm() {
+    let a = [];
+    this.tallyArray.forEach((input, index) => {
+      if (input == '1') {
+        a.push(parseInt(index));
+      }
+    });
+    this.inputsOnPgm = a;
+  }
+
+  handleNewXmlData(data) {
+    console.log('XML');
+
+    let jsonObj = this.parseXmlToJSON(data);
+    // console.log(jsonObj);
+    this.rawXmlInputs = jsonObj.xml.vmix.inputs.input;
+    this.activeInput = jsonObj.xml.vmix.active;
+    // console.log(this.pgmChannel);
+
+    this.rawXmlInputs.forEach((input) => {
       let index = this.checkForInput(input.key);
       if (index == -1) {
         this.addInput(input);
         // console.log('here');
       } else {
-        this.updateInputXmlData(index, input, this.tallyArray);
-        // console.log('here');
+        let tallyArrayObj = toJS(this.tallyArray);
+        this.updateInputXmlData(index, input, tallyArrayObj);
       }
     });
-
     return;
   }
 
-  parseXmlData(data) {
-    const parser = new XMLParser(options);
-    let jsonObj = parser.parse(data);
-    let list = jsonObj.xml.vmix.inputs.input;
-    return list;
+  // has input changed
+  // is input video
+  updateMountedInputIndex() {
+    console.log('Tally');
+
+    let pgm = { isVideo: false, inputIndex: 0, isPlaying: false };
+    this.inputsOnPgm.every((input) => {
+      let isVideo = this.checkTypeIsVideo(this.vmixInputs[input].type);
+      if (isVideo) {
+        pgm.isVideo = true;
+        pgm.inputIndex = input;
+        return false;
+      }
+      return true;
+    });
+    if (!pgm.isVideo) {
+      pgm.inputIndex = this.inputsOnPgm[0];
+    }
+    pgm.key = this.vmixInputs[pgm.inputIndex].key;
+    let mountedKey;
+    if (this.vmixInputs[this.mountedInputIndex]) {
+      mountedKey = this.vmixInputs[this.mountedInputIndex].key;
+    }
+    // console.log(mountedKey);
+    if (mountedKey != pgm.key) {
+      this.interval = 1000;
+      this.mountedInputIndex = pgm.inputIndex;
+    } else {
+      this.updateInterval(pgm);
+    }
   }
 
-  parseXmlDataForTally(data) {
-    const parser = new XMLParser(options);
-    let jsonObj = parser.parse(data);
-    let list = jsonObj.xml.vmix.active;
-    return list;
+  updateIsPlaying(data) {
+    console.log('ACTS');
+
+    let inputIndex = parseInt(data.split(' ')[1]) - 1;
+    let inputPlayingStatus = data.split(' ')[2];
+    let isPlaying = false;
+    if (inputPlayingStatus == '1') {
+      isPlaying = true;
+    }
+    // console.log(isPlaying);
+    if (inputIndex == this.mountedInputIndex) {
+      this.isMountedPlaying = isPlaying;
+    }
   }
 
-  handleNewTallyData(data) {
-    this.tallyArray = data.split('');
-    console.log('here');
+  updateInterval(pgm) {
+    let input = this.vmixInputs[pgm.inputIndex];
+    let newInterval = (input.duration - input.position) / this.currentSeconds;
+    this.interval = newInterval;
+  }
+
+  checkTypeIsVideo(type) {
+    let i = videoTypes.indexOf(type);
+    if (i > -1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  setCurrentSeconds(time) {
+    this.currentSeconds = time;
+  }
+
+  selectInputForClock() {
+    for (let i = 0; i < this.vmixInputs.length; i++) {
+      let input = this.vmixInputs[i];
+      if (input.isOnPgm && input.isVideo) {
+        return input;
+      }
+    }
+  }
+
+  parseXmlToJSON(data) {
+    const parser = new XMLParser(options);
+    let jsonObj = parser.parse(data);
+    return jsonObj;
   }
 
   checkForInput(key) {
@@ -83,7 +201,6 @@ class Input {
   text = '';
   formatPositions = 3;
   currentSeconds = 0;
-  color = '#00FF50';
   formatedTime = '00:00:00';
   type = '';
   isVideo = false;

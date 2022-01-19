@@ -1,30 +1,17 @@
 import net from 'net';
 import { ipcMain } from 'electron';
-import xpath from 'xpath';
-import { DOMParser } from 'xmldom';
 
 export function vmixSocket(mainWindow, connection) {
   let initListener;
   let vmixPostReqListener;
-  let vmixRequestXmlListener;
   let socketShutdownListener;
-  let reqXmlVideoListener;
+  let reqXmlListener;
+  let reqTallyListener;
+  let reqXmlToUpdateVideoPlayer;
 
-  let awaitingVideoRes = false;
-
-  let videoLapseData = {
-    inputNumber: 1,
-    key: '',
-    duration: 0,
-    position: 0,
-    isPlaying: false,
-    title: '',
-    pgmArray: [],
-  };
-
-  let ACTS_WAITING = false;
-
-  let fullTallyDataString = '';
+  let waitingForXmlFromTallyReq = false;
+  let waitingForXmlFromActsReq = false;
+  let initialXmlReq = false;
 
   const connect = (address) => {
     connection = net.connect(
@@ -36,7 +23,8 @@ export function vmixSocket(mainWindow, connection) {
     );
 
     connection.on('data', function (data) {
-      handleData(data);
+      console.log('*****new data*****');
+      splitOnNewLine(data.toString());
     });
 
     connection.on('error', function (e) {
@@ -45,6 +33,10 @@ export function vmixSocket(mainWindow, connection) {
 
     const requestXmlData = () => {
       connection.write('XML\r\n');
+    };
+
+    const requestTallyData = () => {
+      connection.write('TALLY\r\n');
     };
 
     const requestVideoData = () => {
@@ -56,14 +48,19 @@ export function vmixSocket(mainWindow, connection) {
       connection.write('FUNCTION ' + cmd + '\r\n');
     };
 
-    vmixRequestXmlListener = () => {
-      ipcMain.handle('vmixRequestXml', () => {
+    reqTallyListener = () => {
+      ipcMain.handle('reqTally', () => {
+        requestTallyData();
+      });
+    };
+    reqXmlListener = () => {
+      ipcMain.handle('reqXml', () => {
         requestXmlData();
       });
     };
-    reqXmlVideoListener = () => {
-      ipcMain.handle('reqXmlVideo', () => {
-        awaitingVideoRes = true;
+    reqXmlToUpdateVideoPlayer = () => {
+      ipcMain.handle('reqXmlToUpdateVideoPlayer', () => {
+        waitingForXmlFromTallyReq = true;
         requestXmlData();
       });
     };
@@ -78,56 +75,73 @@ export function vmixSocket(mainWindow, connection) {
         requestShutdown();
       });
     };
+
+    reqTallyListener();
     vmixPostReqListener();
-    vmixRequestXmlListener();
-    reqXmlVideoListener();
+    reqXmlListener();
+    reqXmlToUpdateVideoPlayer();
     socketShutdownListener();
     requestVideoData();
   };
 
+  const splitOnNewLine = (data) => {
+    if (data.includes('XML ')) {
+      handleDataByResType(data);
+      return;
+    }
+    let lines = createArraySplitByNewLine(data);
+    lines.forEach((line) => {
+      handleDataByResType(line);
+    });
+  };
+
   //
-  const handleData = (data) => {
-    console.log('**********');
-    const dataString = data.toString();
-    const resType = dataString.split(' ')[0];
-    // console.log(resType);
+  const handleDataByResType = (data) => {
+    const resType = data.split(' ')[0];
+    console.log(resType);
     if (resType == 'XML') {
-      console.log(resType);
-      handleXmlData(dataString);
+      // console.log(data);
+      handleActType_XML(data);
     }
     if (resType == 'ACTS') {
-      let array = createArrayFromActsData(dataString);
-      array.forEach((line) => {
-        // let actsType = line.split(' ')[0];
-        handleIndividualActsLine(line);
-      });
+      // console.log(data);
+      // handleIndividualActsLine(data);
+      handleResType_ACTS(data);
+    }
+    if (resType == 'TALLY') {
+      waitingForXmlFromTallyReq = true;
+      // console.log(data);
+      // handleIndividualActsLine(data);
+      handleResType_TALLY(data);
     }
   };
 
-  const handleXmlData = (data) => {
-    // if (awaitingVideoRes) {
-    //   awaitingVideoRes = false;
-    // console.log(data);
-    parseVideoRes(data);
-    // } else {
-    //   // parseVideoRes(data);
-    //   let xml = data.split('<vmix>');
-    //   xml = '<vmix>' + xml[1];
-    //   mainWindow.webContents.send('xmlDataRes', xml);
-    // }
+  const handleActType_XML = (data) => {
+    let vmixNodeString = data.split('<vmix>')[1];
+    if (!vmixNodeString) {
+      console.error('error parsing XML data: ', data);
+      return;
+    }
+
+    let vmixNodeStringClean = vmixNodeString.replace(/(\r\n|\n|\r)/gm, '');
+    let domString = `<xml><vmix>${vmixNodeStringClean}</xml>`;
+
+    if (waitingForXmlFromTallyReq && initialXmlReq) {
+      waitingForXmlFromTallyReq = false;
+      mainWindow.webContents.send('handleXmlTallyData', domString);
+    } else if (waitingForXmlFromActsReq && initialXmlReq) {
+      waitingForXmlFromActsReq = false;
+      mainWindow.webContents.send('handleXmlActsData', domString);
+    } else {
+      initialXmlReq = true;
+      mainWindow.webContents.send('handleXmlData', domString);
+    }
   };
 
-  const handleIndividualActsLine = (line) => {
-    console.log(line);
-    let actsType = line.split(' ')[0];
-    if (actsType == 'ACTS') {
-      // console.log('playing');
-      handleResType_ACTS(line);
-    }
-    if (actsType == 'TALLY') {
-      // console.log('tally');
-      handleResType_TALLY(line);
-    }
+  const handleResType_TALLY = (line) => {
+    let tallyString = line.split(' ')[2];
+    mainWindow.webContents.send('videoTallyData', tallyString);
+    connection.write('XML\r\n');
   };
 
   const handleResType_ACTS = (line) => {
@@ -138,33 +152,16 @@ export function vmixSocket(mainWindow, connection) {
     }
   };
 
-  const handleResType_TALLY = (line) => {
-    fullTallyDataString = line.split(' ')[2];
-    let tallyString = line.split(' ')[2];
-    ACTS_WAITING = true;
-    mainWindow.webContents.send('videoTallyData', tallyString);
-    connection.write('XML\r\n');
-  };
-
   const handleActType_INPUT_PLAYING = (data) => {
-    awaitingVideoRes = true;
-    ACTS_WAITING = true;
+    waitingForXmlFromActsReq = true;
+    mainWindow.webContents.send('inputPlayingData', data);
     connection.write('XML\r\n');
   };
 
-  const createArrayFromActsData = (data) => {
+  const createArraySplitByNewLine = (data) => {
     let arrayByLines = data.split(/\r?\n/);
+    // console.log(arrayByLines);
     return arrayByLines;
-  };
-
-  const parseVideoRes = (data) => {
-    // console.log(data);
-    awaitingVideoRes = false;
-    let vmixNodeString = data.split('<vmix>')[1];
-    let vmixNodeStringClean = vmixNodeString.replace(/(\r\n|\n|\r)/gm, '');
-    let domString = `<xml><vmix>${vmixNodeStringClean}</xml>`;
-
-    mainWindow.webContents.send('videoReaderData', domString);
   };
 
   const handleError = (e, connection) => {
@@ -192,8 +189,12 @@ export function vmixSocket(mainWindow, connection) {
 
   const removeIpcListeners = () => {
     ipcMain.removeHandler('vmixConnect', initListener);
-    ipcMain.removeHandler('vmixRequestXml', vmixPostReqListener);
-    ipcMain.removeHandler('reqXmlVideo', reqXmlVideoListener);
+    ipcMain.removeHandler('reqXml', reqXmlListener);
+    ipcMain.removeHandler(
+      'reqXmlToUpdateVideoPlayer',
+      reqXmlToUpdateVideoPlayer
+    );
+    ipcMain.removeHandler('reqTally', reqTallyListener);
     ipcMain.removeHandler('vmixPostReq', vmixRequestXmlListener);
     ipcMain.removeHandler('socket-shutdown', socketShutdownListener);
   };

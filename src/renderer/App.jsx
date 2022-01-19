@@ -13,6 +13,7 @@ import Version from './components/Version.jsx';
 import Test from './components/test';
 import PostThings from './components/PostThings.jsx';
 import { PageTab } from './components/tabs.compoent.jsx';
+import Refresh from './components/Refresh';
 
 import Timer from './pages/Timer';
 import Video from './pages/Video';
@@ -44,6 +45,7 @@ const App = observer(() => {
           ) : (
             <>
               <PageTab />
+              <Refresh />
               <PostThings />
               <Socket />
               <Timer />

@@ -44,13 +44,6 @@ const PlayPauseTrigger = observer((props) => {
     playPause.setInput(inputList[i].key);
   };
 
-  const setInputs = () => {
-    const parser = new XMLParser(options);
-    let jsonObj = parser.parse(vmix.xmlRaw, options);
-    let list = jsonObj.vmix.inputs.input;
-    setInputList(list);
-  };
-
   const triggerPlayPause = () => {
     if (timer.currentSeconds == trigger.time && playPause.command) {
       let cmd = playPause.command;
@@ -69,8 +62,8 @@ const PlayPauseTrigger = observer((props) => {
   }, [timer.currentSeconds]);
 
   useEffect(() => {
-    vmix.xmlRaw ? setInputs() : null;
-  }, [vmix.xmlRaw]);
+    vmix.inputs && setInputList(vmix.inputs);
+  }, [vmix.inputs]);
 
   return (
     <>

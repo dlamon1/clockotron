@@ -8,11 +8,14 @@ contextBridge.exposeInMainWorld('electron', {
     connect: (address) => {
       ipcRenderer.invoke('vmixConnect', address);
     },
-    reqXmlInputList: () => {
-      ipcRenderer.invoke('vmixRequestXml');
+    reqXml: () => {
+      ipcRenderer.invoke('reqXml');
     },
-    reqXmlVideo: () => {
-      ipcRenderer.invoke('reqXmlVideo');
+    reqXmlToUpdateVideoPlayer: () => {
+      ipcRenderer.invoke('reqXmlToUpdateVideoPlayer');
+    },
+    reqTally: () => {
+      ipcRenderer.invoke('reqTally');
     },
     vmixPostReq: (cmd) => {
       ipcRenderer.invoke('vmixPostReq', cmd);
@@ -70,6 +73,9 @@ messages = [
   'socket-error',
   'version',
   'playPause',
-  'videoReaderData',
+  'handleXmlData',
+  'handleXmlTallyData',
   'videoTallyData',
+  'inputPlayingData',
+  'handleXmlActsData',
 ];
