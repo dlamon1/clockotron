@@ -36,8 +36,13 @@ const Socket = observer(() => {
   };
 
   const betaFeatures = (__, boolean) => {
-    clockotron.setAreBetaFeaturesEnabled(boolean);
-    clockotron.setTabValue(1);
+    if (boolean) {
+      clockotron.setAreBetaFeaturesEnabled(boolean);
+      clockotron.setTabValue(1);
+    } else {
+      clockotron.setTabValue(0);
+      clockotron.setAreBetaFeaturesEnabled(boolean);
+    }
   };
 
   useEffect(() => {
