@@ -1,16 +1,21 @@
-import {
-  app,
-  Menu,
-  shell,
-  BrowserWindow,
-  MenuItemConstructorOptions,
-} from 'electron';
+import { app, Menu, shell } from 'electron';
 
 export default class MenuBuilder {
   mainWindow;
+  betaFeaturesEnabled = false;
 
   constructor(mainWindow) {
     this.mainWindow = mainWindow;
+  }
+
+  setBetaFeaturesEnabled(boolean) {
+    this.betaFeaturesEnabled = boolean;
+  }
+
+  toggleBetaFeatures() {
+    this.betaFeaturesEnabled = !this.betaFeaturesEnabled;
+    this.mainWindow.webContents.send('betaFeatures', this.betaFeaturesEnabled);
+    console.log(this.betaFeaturesEnabled);
   }
 
   buildMenu() {
@@ -224,19 +229,19 @@ export default class MenuBuilder {
           process.env.DEBUG_PROD === 'true'
             ? [
                 {
+                  id: 'betaEnabled',
+                  label: this.betaFeaturesEnabled
+                    ? 'Disable Beta Features'
+                    : 'Toggle Video TRT (beta)',
+                  click: () => {
+                    this.toggleBetaFeatures();
+                  },
+                },
+                {
                   label: '&Reload',
                   accelerator: 'Ctrl+R',
                   click: () => {
                     this.mainWindow.webContents.reload();
-                  },
-                },
-                {
-                  label: 'Toggle &Full Screen',
-                  accelerator: 'F11',
-                  click: () => {
-                    this.mainWindow.setFullScreen(
-                      !this.mainWindow.isFullScreen()
-                    );
                   },
                 },
                 {
@@ -250,28 +255,22 @@ export default class MenuBuilder {
               ]
             : [
                 {
-                  label: '&Reload',
-                  accelerator: 'Ctrl+R',
+                  id: 'betaEnabled',
+                  label: this.betaFeaturesEnabled
+                    ? 'Disable Beta Features'
+                    : 'Toggle Video TRT (beta)',
                   click: () => {
-                    this.mainWindow.webContents.reload();
+                    this.toggleBetaFeatures();
                   },
                 },
                 {
-                  label: 'Toggle &Full Screen',
-                  accelerator: 'F11',
+                  label: '&Reload',
+                  accelerator: 'Ctrl+R',
                   click: () => {
-                    this.mainWindow.setFullScreen(
-                      !this.mainWindow.isFullScreen()
-                    );
+                    app.relaunch();
+                    app.quit();
                   },
                 },
-                // {
-                //   label: 'Toggle &Developer Tools',
-                //   accelerator: 'Alt+Ctrl+I',
-                //   click: () => {
-                //     this.mainWindow.webContents.toggleDevTools();
-                //   },
-                // },
               ],
       },
       {
@@ -281,7 +280,7 @@ export default class MenuBuilder {
             label: 'Learn More',
             click() {
               shell.openExternal(
-                'https://www.youtube.com/playlist?list=LL0zDfQW2fnedtEeEKu6720Q'
+                'https://www.youtube.com/playlist?list=PLmp58ureC93GrGy14z6HlSYHPQs5hfwp6'
               );
             },
           },

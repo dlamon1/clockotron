@@ -13,7 +13,7 @@ export const PageTab = observer(() => {
 
   const [isOnAir, setIsOnAir] = useState('');
 
-  let areBetaFeaturesEnabled = vmix.areBetaFeaturesEnabled;
+  let areBetaFeaturesEnabled = clockotron.areBetaFeaturesEnabled;
 
   const changeTabs = (e, value) => {
     clockotron.setTabValue(value);

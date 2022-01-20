@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { StoreContext } from '../stores/store.context';
 
 const Socket = observer(() => {
-  const { videoReader, vmix } = useContext(StoreContext);
+  const { videoReader, vmix, clockotron } = useContext(StoreContext);
 
   const socketError = (__, error) => {
     connectError();
@@ -35,7 +35,12 @@ const Socket = observer(() => {
     videoReader.updateIsPlaying(data);
   };
 
+  const betaFeatures = (__, boolean) => {
+    clockotron.setAreBetaFeaturesEnabled(boolean);
+  };
+
   useEffect(() => {
+    window.electron.on('betaFeatures', betaFeatures);
     window.electron.on('socket-error', socketError);
     window.electron.on('handleXmlData', handleXmlData);
     window.electron.on('handleXmlTallyData', handleXmlTallyData);

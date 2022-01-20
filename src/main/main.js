@@ -20,6 +20,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 let mainWindow;
+let menuBuilder;
 let isDev = false;
 let connection = null;
 let isMac = process.platform === 'darwin';
@@ -94,9 +95,15 @@ function createWindow() {
   });
 }
 
+let betaFeaturesListener = () => {
+  ipcMain.handle('betaFeatures', (__, boolean) => {
+    menuBuilder.setBetaFeaturesEnabled(boolean);
+  });
+};
+
 app.on('ready', () => {
   createWindow();
-  const menuBuilder = new MenuBuilder(mainWindow);
+  menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
 });
 
@@ -113,6 +120,7 @@ app.on('activate', () => {
 });
 
 app.on('before-quit', () => {
+  ipcMain.removeHandler('betaFeatures', betaFeaturesListener);
   connection && connection.destroy();
   connection && connection.clearAllListeners();
 });

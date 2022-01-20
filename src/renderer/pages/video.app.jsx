@@ -11,7 +11,7 @@ import InputSelector from '../components/inputSelector.video.jsx';
 import ClockFormated from '../components/clock.formated.video.jsx';
 
 const Video = observer(() => {
-  const { videoReader } = useContext(StoreContext);
+  const { videoReader, vmix } = useContext(StoreContext);
 
   const timerRef = useRef(null);
   const timerRef2 = useRef(null);
@@ -71,14 +71,14 @@ const Video = observer(() => {
     };
   }, [videoReader.mountedInputIndex, JSON.stringify(videoReader.vmixInputs)]);
 
+  useEffect(() => {
+    vmix.ip && window.electron.vmix.reqTally();
+  }, [vmix.ip]);
+
   return (
     <Grid style={{ width: '100vw' }}>
       <InputSelector />
       <ClockFormated />
-      <Typography
-        align="center"
-        style={{ marginTop: 15, color: 'white', fontSize: 20 }}
-      ></Typography>
     </Grid>
   );
 });

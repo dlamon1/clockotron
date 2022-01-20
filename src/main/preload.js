@@ -77,4 +77,5 @@ messages = [
   'videoTallyData',
   'inputPlayingData',
   'handleXmlActsData',
+  'betaFeatures',
 ];
