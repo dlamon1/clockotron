@@ -146,7 +146,7 @@ export class VideoReader {
   }
 
   setCurrentSeconds(time) {
-    this.currentSeconds = time;
+    if (typeof time === 'number') this.currentSeconds = time;
   }
 
   parseXmlToJSON(data) {

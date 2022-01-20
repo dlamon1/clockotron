@@ -14,6 +14,7 @@ const ClockFormated = observer((props) => {
   const { videoReader, clockotron } = useContext(StoreContext);
 
   useEffect(() => {
+    console.log(videoReader.currentSeconds);
     let res = formatTime(
       videoReader.currentSeconds,
       videoReader.formatPositions

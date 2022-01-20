@@ -22,7 +22,7 @@ const Video = observer((props) => {
     let input = videoReader.vmixInputs[videoReader.mountedInputIndex];
     window.electron.vmix.reqXmlToUpdateVideoPlayer();
 
-    if (videoReader.currentSeconds > 0 && input.isPlaying) {
+    if (videoReader.currentSeconds >= 1 && input.isPlaying) {
       // console.log('hello');
       videoReader.setCurrentSeconds(videoReader.currentSeconds - 1);
 
@@ -50,10 +50,12 @@ const Video = observer((props) => {
       let remainder = timeleft % 1000;
       videoReader.setCurrentSeconds(rounded);
       if (input.isPlaying && input.isVideo) {
-        timerRef2.current = setDriftlessTimeout(
-          videoReader.setCurrentSeconds(rounded - 1),
-          remainder
-        );
+        if (videoReader.currentSeconds >= 1) {
+          timerRef2.current = setDriftlessTimeout(
+            videoReader.setCurrentSeconds(rounded - 1),
+            remainder
+          );
+        }
         timerRef3.current = setDriftlessTimeout(timer, 1000);
       } else {
         // THIS WILL NEVER HAPPEN, FIGURE OUT A WAY TO MAKE IT HAPPEN
