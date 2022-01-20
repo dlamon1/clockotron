@@ -13,6 +13,7 @@ export default class MenuBuilder {
   }
 
   toggleBetaFeatures() {
+    console.log(this.betaFeaturesEnabled);
     this.betaFeaturesEnabled = !this.betaFeaturesEnabled;
     this.mainWindow.webContents.send('betaFeatures', this.betaFeaturesEnabled);
     console.log(this.betaFeaturesEnabled);
@@ -229,13 +230,15 @@ export default class MenuBuilder {
           process.env.DEBUG_PROD === 'true'
             ? [
                 {
-                  id: 'betaEnabled',
+                  id: 'betaFeatures',
                   label: this.betaFeaturesEnabled
                     ? 'Disable Beta Features'
                     : 'Toggle Video TRT (beta)',
                   click: () => {
                     this.toggleBetaFeatures();
                   },
+                  enabled: false,
+                  // visible: false,
                 },
                 {
                   label: '&Reload',

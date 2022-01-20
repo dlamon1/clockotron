@@ -13,7 +13,7 @@ import { useStyles } from '../utils/AppStyles.jsx';
 
 const IpForm = observer(() => {
   const classes = useStyles();
-  const { vmix } = useContext(StoreContext);
+  const { vmix, clockotron } = useContext(StoreContext);
 
   const [ip, setIpp] = useState('127.0.0.1');
 
@@ -23,6 +23,7 @@ const IpForm = observer(() => {
 
   useEffect(() => {
     window.electron.on('socket-connected', connected);
+    clockotron.enableBetaButton();
 
     return () => {
       window.electron.all();

@@ -16,7 +16,9 @@ export class VideoReader {
   formatPositions = 3;
   currentSeconds = 0;
   formatedTime = '00:00:00';
-  color = '#00FF50';
+  color = '#ff0000';
+  downColor = '#00FF50';
+  downFontColor = '#000';
   runClock = false;
   activeInput = 0;
   inputOnPgm;
@@ -161,6 +163,22 @@ export class VideoReader {
 
   updateInputXmlData(index, data, tally) {
     this.vmixInputs[index].update(data, tally);
+  }
+
+  getFontColor(color) {
+    if (color == '#000000' || color == '#5300eb' || color == '#1b46f2') {
+      return '#fff';
+    } else {
+      return '#000';
+    }
+  }
+
+  setDownColor(color) {
+    console.log(color);
+    this.downColor = color;
+    this.color = color;
+    let fontColor = this.getFontColor(color);
+    this.downFontColor = fontColor;
   }
 }
 

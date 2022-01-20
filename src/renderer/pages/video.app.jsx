@@ -3,12 +3,12 @@ import { observer } from 'mobx-react-lite';
 import { setDriftlessTimeout, clearDriftless } from 'driftless';
 
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 
 import { StoreContext } from '../stores/store.context.jsx';
 
 import InputSelector from '../components/inputSelector.video.jsx';
 import ClockFormated from '../components/clock.formated.video.jsx';
+import BaseColors from '../components/baseColors.video';
 
 const Video = observer(() => {
   const { videoReader, vmix } = useContext(StoreContext);
@@ -25,7 +25,7 @@ const Video = observer(() => {
     if (videoReader.currentSeconds >= 1 && input.isPlaying) {
       timerRef4.current = setDriftlessTimeout(
         videoReader.setCurrentSeconds(videoReader.currentSeconds - 1),
-        477
+        433
       );
 
       function scheduleFrame() {
@@ -58,7 +58,6 @@ const Video = observer(() => {
         }
         timerRef3.current = setDriftlessTimeout(timer, 1000);
       } else {
-        // THIS WILL NEVER HAPPEN, FIGURE OUT A WAY TO MAKE IT HAPPEN
         clearDriftless(timerRef.current);
         videoReader.setCurrentSeconds(rounded);
       }
@@ -79,6 +78,7 @@ const Video = observer(() => {
     <Grid style={{ width: '100vw' }}>
       <InputSelector />
       <ClockFormated />
+      {/* <BaseColors /> */}
     </Grid>
   );
 });

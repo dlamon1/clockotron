@@ -17,4 +17,8 @@ export class ClockotronState {
   setTabValue(value) {
     this.tabValue = value;
   }
+
+  enableBetaButton() {
+    window.electron.enableBetaButton();
+  }
 }

@@ -96,10 +96,14 @@ function createWindow() {
 }
 
 let betaFeaturesListener = () => {
-  ipcMain.handle('betaFeatures', (__, boolean) => {
-    menuBuilder.setBetaFeaturesEnabled(boolean);
+  ipcMain.handle('enableBetaButton', (__) => {
+    console.log('enable beta listener');
+    menuBuilder.setBetaFeaturesEnabled();
+    Menu.getApplicationMenu().getMenuItemById('betaFeatures').enabled = true;
+    Menu.getApplicationMenu().getMenuItemById('betaFeatures').visible = true;
   });
 };
+betaFeaturesListener();
 
 app.on('ready', () => {
   createWindow();

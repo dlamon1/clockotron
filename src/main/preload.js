@@ -37,6 +37,9 @@ contextBridge.exposeInMainWorld('electron', {
   all() {
     ipcRenderer.removeAllListeners();
   },
+  enableBetaButton() {
+    ipcRenderer.invoke('enableBetaButton');
+  },
 });
 
 messages = [
