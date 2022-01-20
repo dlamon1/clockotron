@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { StoreContext } from '../stores/store.context';
@@ -9,11 +9,27 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 
 export const PageTab = observer(() => {
-  const { clockotron } = useContext(StoreContext);
+  const { clockotron, videoReader, vmix } = useContext(StoreContext);
+
+  const [isOnAir, setIsOnAir] = useState('');
+
+  let areBetaFeaturesEnabled = vmix.areBetaFeaturesEnabled;
 
   const changeTabs = (e, value) => {
     clockotron.setTabValue(value);
   };
+
+  useEffect(() => {
+    let input = videoReader.vmixInputs[videoReader.mountedInputIndex];
+    if (!input) {
+      return;
+    }
+    if (input.isVideo) {
+      setIsOnAir('red');
+    } else {
+      setIsOnAir('');
+    }
+  }, [JSON.stringify(videoReader.vmixInputs), videoReader.mountedInputIndex]);
 
   return (
     <Grid
@@ -32,11 +48,13 @@ export const PageTab = observer(() => {
             value={0}
             style={{ color: 'white', marginInline: 15 }}
           />
-          <Tab
-            label="Video"
-            value={1}
-            style={{ color: 'white', marginInline: 15 }}
-          />
+          {areBetaFeaturesEnabled && (
+            <Tab
+              label="Video"
+              value={1}
+              style={{ color: 'white', marginInline: 15, background: isOnAir }}
+            />
+          )}
         </Tabs>
       </Paper>
     </Grid>

@@ -20,7 +20,8 @@ const ClockFormated = observer(() => {
       <Typography
         style={{
           color: 'white',
-          marginTop: 15,
+          // marginTop: -5,
+          marginBottom: 5,
           fontSize: 13,
           justifyContent: 'center',
           alignItems: 'center',

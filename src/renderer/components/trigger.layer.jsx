@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { observer } from 'mobx-react';
-import { XMLParser } from 'fast-xml-parser';
 
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -10,15 +9,13 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Paper from '@material-ui/core/Paper';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 
-import { options } from '../utils/options.jsx';
-
 import { StoreContext } from '../stores/store.context';
 
-const PlayPauseTrigger = observer((props) => {
-  let { triggerId, playPauseId } = props;
+const LayerTrigger = observer((props) => {
+  let { triggerId, layerId } = props;
   const { vmix, timer } = useContext(StoreContext);
   let trigger = timer.triggers.filter((x) => x.id === triggerId)[0];
-  let playPause = trigger.playPauses.filter((x) => x.id === playPauseId)[0];
+  let layer = trigger.layers.filter((x) => x.id === layerId)[0];
 
   const [modeSelected, setModeSelected] = useState('');
   const [inSelected, setInSelected] = useState('');
@@ -27,37 +24,51 @@ const PlayPauseTrigger = observer((props) => {
   const [textList, setTextList] = useState([]);
   const layerArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const modes = [
-    { label: 'Play', command: 'Play' },
-    { label: 'Pause', command: 'Pause' },
-    { label: 'PlayPause', command: 'PlayPause' },
+    { label: 'Toggle', command: 'MultiViewOverlay' },
+    { label: 'On', command: 'MultiViewOverlayOn' },
+    { label: 'Off', command: 'MultiViewOverlayOff' },
   ];
 
   const handleModeChange = (event) => {
     setModeSelected(event.target.value);
     const i = modes.findIndex((m) => m.label == event.target.value);
-    playPause.setCommand(modes[i].command);
+    layer.setCommand(modes[i].command);
   };
 
   const handleInputChange = (event) => {
     setInSelected(event.target.value);
     const i = inputList.findIndex((i) => i.title == event.target.value);
-    playPause.setInput(inputList[i].key);
+    layer.setInput(inputList[i].key);
   };
 
-  const triggerPlayPause = () => {
-    if (timer.currentSeconds == trigger.time && playPause.command) {
-      let cmd = playPause.command;
-      let input = playPause.input;
-      window.electron.vmix.vmixPostReq(`${cmd} Input=${input}`);
-    }
+  const handleLayerChange = (event) => {
+    setLayerSelected(event.target.value);
+    layer.setLayer(event.target.value);
+  };
+
+  const triggerLayerUpdate = () => {
+    let cmd = layer.command;
+    let input = layer.input;
+    let inputLayer = layer.layer;
+    window.electron.vmix.vmixPostReq(
+      `${cmd} Input=${input}&Value=${inputLayer}`
+    );
   };
 
   useEffect(() => {
     if (
-      (timer.isRunning && timer.isCountingDown && trigger.isDown) ||
-      (timer.isRunning && !timer.isCountingDown && trigger.isUp)
+      (timer.isRunning &&
+        timer.isCountingDown &&
+        trigger.isDown &&
+        layer.command &&
+        timer.currentSeconds == trigger.time) ||
+      (timer.isRunning &&
+        !timer.isCountingDown &&
+        trigger.isUp &&
+        layer.command &&
+        timer.currentSeconds == trigger.time)
     ) {
-      triggerPlayPause();
+      triggerLayerUpdate();
     }
   }, [timer.currentSeconds]);
 
@@ -114,10 +125,28 @@ const PlayPauseTrigger = observer((props) => {
               </FormControl>
             </Grid>
           </Grid>
+          <Grid item xs={12} style={{ marginTop: 5 }}>
+            <Grid container justifyContent="space-around" alignItems="center">
+              <FormControl style={{ width: '85%' }}>
+                <InputLabel>Layer</InputLabel>
+                <Select
+                  value={layerSelected}
+                  style={{ width: '100%' }}
+                  onChange={handleLayerChange}
+                >
+                  {layerArray.map((layer, index) => (
+                    <MenuItem value={index + 1} key={index}>
+                      {index + 1}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
         </Paper>
       </AccordionDetails>
     </>
   );
 });
 
-export default PlayPauseTrigger;
+export default LayerTrigger;

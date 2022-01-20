@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { observer } from 'mobx-react';
 
 import { StoreContext } from '../stores/store.context';
@@ -13,26 +13,21 @@ const Socket = observer(() => {
   };
 
   const handleXmlData = (__, data) => {
-    // console.log('xml ');
     videoReader.handleNewXmlData(data);
     vmix.updateInputList(data);
   };
 
   const handleXmlTallyData = (__, data) => {
-    console.log('xml from tally');
     videoReader.handleNewXmlData(data);
     vmix.updateInputList(data);
     videoReader.updateMountedInputIndex();
   };
 
   const handleXmlActsData = (__, data) => {
-    // console.log('xml from tally');
     videoReader.handleNewXmlData(data);
   };
 
   const handleTallyData = (__, data) => {
-    // console.log('tally');
-    // console.log(data);
     videoReader.handleNewTallyData(data);
   };
 

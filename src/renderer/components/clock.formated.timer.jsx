@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { observer } from 'mobx-react';
 
 import { formatTime } from 'renderer/utils/formatTime.jsx';
@@ -10,7 +10,7 @@ import { IconButton } from '@material-ui/core';
 
 import { StoreContext } from '../stores/store.context';
 
-const ClockFormated = observer((props) => {
+const ClockFormated = observer(() => {
   const { timer, clockotron } = useContext(StoreContext);
 
   useEffect(() => {

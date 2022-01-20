@@ -1,24 +1,31 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { observer } from 'mobx-react';
 
 import Grid from '@material-ui/core/Grid';
-import ArrowDropUpRoundedIcon from '@material-ui/icons/ArrowDropUpRounded';
+import ArrowDropDownRoundedIcon from '@material-ui/icons/ArrowDropDownRounded';
 import IconButton from '@material-ui/core/IconButton';
+
 import { StoreContext } from '../stores/store.context';
 
-const TimeUp = observer((props) => {
+const TimeDown = observer(() => {
   const { timer, clockotron } = useContext(StoreContext);
 
   let m = -8.7;
 
-  let hUp = () => timer.setCurrentSeconds(timer.currentSeconds + 3600);
-  let mUp = () => timer.setCurrentSeconds(timer.currentSeconds + 60);
-  let sUp = () => timer.setCurrentSeconds(timer.currentSeconds + 1);
+  let hDown = () =>
+    3600 <= parseInt(timer.currentSeconds) &&
+    timer.setCurrentSeconds(timer.currentSeconds - 3600);
+  let mDown = () =>
+    timer.currentSeconds > 61 &&
+    timer.setCurrentSeconds(timer.currentSeconds - 60);
+  let sDown = () =>
+    timer.currentSeconds > 0 &&
+    timer.setCurrentSeconds(timer.currentSeconds - 1);
 
   useEffect(() => {
-    window.electron.on('sUp', sUp);
-    window.electron.on('mUp', mUp);
-    window.electron.on('hUp', hUp);
+    window.electron.on('sDown', sDown);
+    window.electron.on('mDown', mDown);
+    window.electron.on('hDown', hDown);
 
     return () => {
       window.electron.all();
@@ -28,20 +35,20 @@ const TimeUp = observer((props) => {
   return (
     clockotron.tabValue === 0 && (
       <>
-        <Grid item xs={12} style={{ marginTop: 0, marginBottom: -45 }}>
+        <Grid item xs={12} style={{ marginTop: -45, marginBottom: 0 }}>
           <Grid container justifyContent="center" alignItems="center">
             {timer.formatPositions >= 3 && (
               <IconButton
                 onClick={() =>
-                  timer.setCurrentSeconds(timer.currentSeconds + 3600)
+                  timer.setCurrentSeconds(timer.currentSeconds - 3600)
                 }
+                disabled={3600 >= parseInt(timer.currentSeconds)}
                 style={{
                   marginLeft: m,
                   marginRight: m,
                 }}
               >
-                <ArrowDropUpRoundedIcon
-                  fontSize="large"
+                <ArrowDropDownRoundedIcon
                   style={{
                     marginLeft: m,
                     marginRight: m,
@@ -54,15 +61,15 @@ const TimeUp = observer((props) => {
             {timer.formatPositions >= 2 && (
               <IconButton
                 onClick={() =>
-                  timer.setCurrentSeconds(timer.currentSeconds + 60)
+                  timer.setCurrentSeconds(timer.currentSeconds - 60)
                 }
+                disabled={timer.currentSeconds < 61}
                 style={{
                   marginLeft: m,
                   marginRight: m,
                 }}
               >
-                <ArrowDropUpRoundedIcon
-                  fontSize="large"
+                <ArrowDropDownRoundedIcon
                   style={{
                     marginLeft: m,
                     marginRight: m,
@@ -75,15 +82,15 @@ const TimeUp = observer((props) => {
             {timer.formatPositions >= 1 && (
               <IconButton
                 onClick={() =>
-                  timer.setCurrentSeconds(timer.currentSeconds + 1)
+                  timer.setCurrentSeconds(timer.currentSeconds - 1)
                 }
+                disabled={timer.currentSeconds <= 0}
                 style={{
                   marginLeft: m,
                   marginRight: m,
                 }}
               >
-                <ArrowDropUpRoundedIcon
-                  fontSize="large"
+                <ArrowDropDownRoundedIcon
                   style={{
                     marginLeft: m,
                     marginRight: m,
@@ -100,4 +107,4 @@ const TimeUp = observer((props) => {
   );
 });
 
-export default TimeUp;
+export default TimeDown;

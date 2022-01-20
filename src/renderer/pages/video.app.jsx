@@ -10,21 +10,23 @@ import { StoreContext } from '../stores/store.context.jsx';
 import InputSelector from '../components/inputSelector.video.jsx';
 import ClockFormated from '../components/clock.formated.video.jsx';
 
-const Video = observer((props) => {
+const Video = observer(() => {
   const { videoReader } = useContext(StoreContext);
 
   const timerRef = useRef(null);
   const timerRef2 = useRef(null);
   const timerRef3 = useRef(null);
+  const timerRef4 = useRef(null);
 
   const timer = () => {
-    // console.log(timerRef);
     let input = videoReader.vmixInputs[videoReader.mountedInputIndex];
     window.electron.vmix.reqXmlToUpdateVideoPlayer();
 
     if (videoReader.currentSeconds >= 1 && input.isPlaying) {
-      // console.log('hello');
-      videoReader.setCurrentSeconds(videoReader.currentSeconds - 1);
+      timerRef4.current = setDriftlessTimeout(
+        videoReader.setCurrentSeconds(videoReader.currentSeconds - 1),
+        477
+      );
 
       function scheduleFrame() {
         timerRef.current = setDriftlessTimeout(
@@ -42,9 +44,7 @@ const Video = observer((props) => {
   // This is triggered when there is new XML data
   useEffect(() => {
     let input = videoReader.vmixInputs[videoReader.mountedInputIndex];
-    // console.log(input);
     if (input) {
-      // setMounted(input);
       let timeleft = input.duration - input.position;
       let rounded = Math.ceil(timeleft / 1000);
       let remainder = timeleft % 1000;
@@ -67,6 +67,7 @@ const Video = observer((props) => {
       clearDriftless(timerRef.current);
       clearDriftless(timerRef2.current);
       clearDriftless(timerRef3.current);
+      clearDriftless(timerRef4.current);
     };
   }, [videoReader.mountedInputIndex, JSON.stringify(videoReader.vmixInputs)]);
 

@@ -1,13 +1,13 @@
 import React, { useEffect, useContext } from 'react';
 import { observer } from 'mobx-react';
 
-import TriggerDetail from './TriggerDetail';
+import TriggerDetail from './trigger.details';
 
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { StoreContext } from '../stores/store.context';
 
-const Triggers = observer((props) => {
+const Triggers = observer(() => {
   const { timer, clockotron } = useContext(StoreContext);
 
   const updateColorWhileDecrementing = () => {

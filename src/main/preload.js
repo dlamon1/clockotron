@@ -25,7 +25,6 @@ contextBridge.exposeInMainWorld('electron', {
     },
   },
   on(eventName, callback) {
-    // console.log(eventName);
     messages.indexOf(eventName) >= 0
       ? ipcRenderer.on(eventName, callback)
       : null;

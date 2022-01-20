@@ -1,27 +1,33 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { StoreContext } from './stores/store.context.jsx';
 
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
+import Checkbox from '@material-ui/core/Checkbox';
 
-import IpInput from './components/IpInput.jsx';
-import Socket from './components/Socket.jsx';
-import Toast from './components/Toast.jsx';
-import Version from './components/Version.jsx';
-import Test from './components/test';
-import PostThings from './components/PostThings.jsx';
+import IpInput from './components/ip.app.jsx';
+import Socket from './components/socket.app.jsx';
+import Toast from './components/toast.app.jsx';
+import PostThings from './components/postThing.app.jsx';
 import { PageTab } from './components/tabs.compoent.jsx';
-import Refresh from './components/Refresh';
+import Refresh from './components/refresh.app';
 
-import Timer from './pages/Timer';
-import Video from './pages/Video';
+import Timer from './pages/timer.app';
+import Video from './pages/video.app';
 
 import './app.css';
 
 const App = observer(() => {
-  const { vmix } = useContext(StoreContext);
+  const { vmix, clockotron } = useContext(StoreContext);
+
+  let areBetaFeaturesEnabled = vmix.areBetaFeaturesEnabled;
+  let setAreBetaFeaturesEnabled = () => {
+    clockotron.setTabValue(0);
+    vmix.setAreBetaFeaturesEnabled(!areBetaFeaturesEnabled);
+  };
+
   return (
     <>
       <Grid
@@ -46,10 +52,16 @@ const App = observer(() => {
             <>
               <PageTab />
               <Refresh />
+              <Checkbox
+                checked={areBetaFeaturesEnabled}
+                onChange={() =>
+                  setAreBetaFeaturesEnabled(!areBetaFeaturesEnabled)
+                }
+              />
               <PostThings />
               <Socket />
               <Timer />
-              <Video />
+              {areBetaFeaturesEnabled && <Video />}
             </>
           )}
         </Box>

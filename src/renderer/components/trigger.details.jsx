@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { observer } from 'mobx-react';
 
-import LayerTrigger from './LayerTrigger';
-import ColorTrigger from './ColorTrigger';
-import PlayPauseTrigger from './PlayPauseTrigger';
+import LayerTrigger from './trigger.layer';
+import ColorTrigger from './trigger.color';
+import PlayPauseTrigger from './trigger.playPause';
 
 import { formatTime } from 'renderer/utils/formatTime';
 

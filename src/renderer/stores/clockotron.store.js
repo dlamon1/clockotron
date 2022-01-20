@@ -3,7 +3,7 @@ import { makeAutoObservable } from 'mobx';
 export class ClockotronState {
   // 0 = timer
   // 1 = video reader
-  tabValue = 1;
+  tabValue = 0;
 
   constructor() {
     makeAutoObservable(this);

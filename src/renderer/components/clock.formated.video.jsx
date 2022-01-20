@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useRef } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { observer } from 'mobx-react';
 
 import { formatTime } from 'renderer/utils/formatTime.jsx';
@@ -14,7 +14,6 @@ const ClockFormated = observer((props) => {
   const { videoReader, clockotron } = useContext(StoreContext);
 
   useEffect(() => {
-    console.log(videoReader.currentSeconds);
     let res = formatTime(
       videoReader.currentSeconds,
       videoReader.formatPositions

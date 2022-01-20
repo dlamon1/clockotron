@@ -1,7 +1,5 @@
-
 export function apiFunction(mainWindow, api) {
-
-  api.listen(5491, () => { });
+  api.listen(5491, () => {});
 
   api.get('/api', (req, res) => {
     res.send('api');
@@ -47,7 +45,6 @@ export function apiFunction(mainWindow, api) {
   api.get('/clear', (req, res) => {
     res.send('clear');
     mainWindow.webContents.send('clear');
-    console.log(req);
   });
   api.get('/postClock', (req, res) => {
     res.send('postClock');

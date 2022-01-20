@@ -12,7 +12,6 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Paper from '@material-ui/core/Paper';
 
-import { useStyles } from '../utils/AppStyles.jsx';
 import { StoreContext } from '../stores/store.context';
 
 const BaseColors = observer((props) => {

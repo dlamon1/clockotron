@@ -26,7 +26,7 @@ export function vmixSocket(mainWindow, connection) {
     );
 
     connection.on('data', function (data) {
-      console.log('*****new data*****');
+      // console.log('*****new data*****');
       splitDataResponseByNewline(data.toString());
     });
 
@@ -100,19 +100,13 @@ export function vmixSocket(mainWindow, connection) {
 
   const handleDataByResType = (data) => {
     const resType = data.split(' ')[0];
-    console.log(resType);
     if (resType == 'XML') {
-      // console.log(data);
       handleActType_XML(data);
     }
     if (resType == 'ACTS') {
-      // console.log(data);
-      // handleIndividualActsLine(data);
       handleResType_ACTS(data);
     }
     if (resType == 'TALLY') {
-      // console.log(data);
-      // handleIndividualActsLine(data);
       handleResType_TALLY(data);
     }
   };
@@ -171,7 +165,6 @@ export function vmixSocket(mainWindow, connection) {
 
   const createArraySplitByNewLine = (data) => {
     let arrayByLines = data.split(/\r?\n/);
-    // console.log(arrayByLines);
     return arrayByLines;
   };
 
@@ -212,7 +205,6 @@ export function vmixSocket(mainWindow, connection) {
 
   initListener = () => {
     ipcMain.handle('vmixConnect', async (__, address) => {
-      // console.log(address);
       connection = null;
       connect(address);
     });

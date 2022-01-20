@@ -10,6 +10,7 @@ export class Vmix {
   connectionTimeout;
   alertStore;
   inputs = [];
+  areBetaFeaturesEnabled = false;
 
   constructor(alertStore) {
     this.alertStore = alertStore;
@@ -35,6 +36,10 @@ export class Vmix {
     this.isSocketConnected = boolean;
   }
 
+  setAreBetaFeaturesEnabled(boolean) {
+    this.areBetaFeaturesEnabled = boolean;
+  }
+
   attemptVmixConnection(ip) {
     this.unconfirmedIp = ip;
     window.electron.vmix.connect(ip);
@@ -42,7 +47,6 @@ export class Vmix {
   }
 
   refresh() {
-    // console.log(this);
     this.ip && window.electron.vmix.reqXml();
   }
 

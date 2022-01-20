@@ -68,16 +68,13 @@ export class VideoReader {
 
   handleNewXmlData(data) {
     let jsonObj = this.parseXmlToJSON(data);
-    // console.log(jsonObj);
     this.rawXmlInputs = jsonObj.xml.vmix.inputs.input;
     this.activeInput = jsonObj.xml.vmix.active;
-    // console.log(this.pgmChannel);
 
     this.rawXmlInputs.forEach((input) => {
       let index = this.checkForInput(input.key);
       if (index == -1) {
         this.addInput(input);
-        // console.log('here');
       } else {
         let tallyArrayObj = toJS(this.tallyArray);
         this.updateInputXmlData(index, input, tallyArrayObj);
@@ -107,7 +104,6 @@ export class VideoReader {
     if (this.vmixInputs[this.mountedInputIndex]) {
       mountedKey = this.vmixInputs[this.mountedInputIndex].key;
     }
-    // console.log(mountedKey);
     if (mountedKey != pgm.key) {
       this.interval = 1000;
       this.mountedInputIndex = pgm.inputIndex;
@@ -123,7 +119,6 @@ export class VideoReader {
     if (inputPlayingStatus == '1') {
       isPlaying = true;
     }
-    // console.log(isPlaying);
     if (inputIndex == this.mountedInputIndex) {
       this.isMountedPlaying = isPlaying;
     }
@@ -133,7 +128,6 @@ export class VideoReader {
     let input = this.vmixInputs[pgm.inputIndex];
     let newInterval = (input.duration - input.position) / this.currentSeconds;
     this.interval = newInterval;
-    // console.log(newInterval);
   }
 
   checkTypeIsVideo(type) {
@@ -190,7 +184,6 @@ class Input {
     this.title = input.title;
     this.type = input.type;
     this.setIsVideo(input.type);
-    // console.log(this);
   }
 
   setIsVideo(type) {
@@ -251,8 +244,6 @@ class Input {
   }
 
   setIsOnPgm(input, tally) {
-    // console.log(input.number - 1);
-
     let status = tally[input.number - 1];
 
     if (status == '1') {
@@ -262,23 +253,3 @@ class Input {
     }
   }
 }
-
-let res = {
-  text: 'Video',
-  audiobusses: 'M',
-  balance: '0',
-  duration: '59426',
-  key: 'fc8b5d74-c66e-4a76-979a-a326ecfe6206',
-  loop: 'False',
-  meterF1: '0',
-  meterF2: '0',
-  muted: 'False',
-  number: '4',
-  position: '0',
-  shortTitle: 'Video',
-  solo: 'False',
-  state: 'Running',
-  title: 'Video',
-  type: 'Video',
-  volume: '100',
-};

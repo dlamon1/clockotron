@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import { formatTime } from '../utils/formatTime';
 import { StoreContext } from '../stores/store.context';
 
-const PlayPause = observer((props) => {
+const PlayPause = observer(() => {
   const { timer, clockotron } = useContext(StoreContext);
 
   const [buttonState, setButtonState] = useState('Start');
@@ -106,7 +106,6 @@ const PlayPause = observer((props) => {
   useEffect(() => {
     let x = Math.floor((timer.currentSeconds / speed) * 100);
     let formatedTime = formatTime(x, 3);
-    // console.log(formatedTime);
     setRealRemaining(formatedTime);
   }, [timer.currentSeconds]);
 

@@ -3,17 +3,15 @@ import { observer } from 'mobx-react';
 import isNumeric from 'validator/lib/isNumeric';
 
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import Checkbox from '@material-ui/core/Checkbox';
+import Switch from '@material-ui/core/Switch';
 
-import { StoreContext } from '../stores/store.context.jsx';
-import { useStyles } from '../utils/AppStyles.jsx';
+import { StoreContext } from '../stores/store.context';
 
-const ClockInput = observer((props) => {
-  const { vmix, timer, clockotron } = useContext(StoreContext);
-
-  const classes = useStyles();
+const ClockInput = observer(() => {
+  const { timer, clockotron } = useContext(StoreContext);
 
   const [clockStartValue, setClockStartValue] = useState('');
   const [inputSeconds, setInputSeconds] = useState(0);
@@ -24,6 +22,7 @@ const ClockInput = observer((props) => {
       (input % 100) +
       Math.floor((input / 100) % 100) * 60 +
       Math.floor(input / 10000) * 3600;
+    E;
     return formated;
   };
 
@@ -109,7 +108,7 @@ const ClockInput = observer((props) => {
   return (
     clockotron.tabValue === 0 && (
       <>
-        <Grid item xs={12} style={{ marginTop: 15 }}>
+        <Grid item xs={12} style={{ marginTop: 0 }}>
           <Grid
             container
             justifyContent="space-around"
@@ -119,34 +118,39 @@ const ClockInput = observer((props) => {
             <Box style={{ width: '85%', backgroundColor: '' }}>
               <Grid
                 container
-                justifyContent="space-between"
+                justifyContent="center"
                 alignItems="center"
                 style={{ backgroundColor: '' }}
               >
-                <TextField
-                  color="secondary"
-                  id="outlined-textarea"
-                  label="Enter a time"
-                  variant="outlined"
-                  margin="dense"
-                  value={clockStartValue}
-                  onChange={(e) => updateInputForm(e.target.value)}
-                  style={{ backgroundColor: '', width: '50%' }}
-                  focus="true"
-                  onKeyDown={handleKeyDown}
-                  InputProps={{
-                    classes: {
-                      notchedOutline: classes.notchedOutline,
-                    },
-                  }}
+                <Typography style={{ color: 'white' }}> UP</Typography>
+
+                <Switch
+                  checked={timer.isCountingDown}
+                  onChange={() =>
+                    timer.setIsCountingDown(!timer.isCountingDown)
+                  }
+                  name="checkedA"
                 />
-                <Button
-                  variant="contained"
-                  onClick={() => postClockGlobally(inputSeconds)}
-                  style={{ marginTop: 3 }}
-                >
-                  Set time
-                </Button>
+                <Typography style={{ color: 'white' }}>DOWN</Typography>
+              </Grid>
+              <Grid
+                container
+                justifyContent="center"
+                alignItems="center"
+                style={{ backgroundColor: '' }}
+              >
+                <Checkbox
+                  checked={timer.countUpAfterDownReachesZero}
+                  onChange={() =>
+                    timer.setCountUpAfterDownReachesZero(
+                      !timer.countUpAfterDownReachesZero
+                    )
+                  }
+                  inputProps={{ 'aria-label': 'primary checkbox' }}
+                />
+                <Typography style={{ color: 'white' }}>
+                  UP AFTER DOWN
+                </Typography>
               </Grid>
             </Box>
           </Grid>

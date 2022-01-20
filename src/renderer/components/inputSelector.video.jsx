@@ -12,7 +12,6 @@ import { StoreContext } from '../stores/store.context';
 const TextInputList = observer((props) => {
   const { i } = props;
   const { vmix, videoReader, clockotron } = useContext(StoreContext);
-  const input = videoReader.vmixInputs[i];
 
   const [inSelected, setInSelected] = useState('');
   const [textSelected, setTextSelected] = useState('');
