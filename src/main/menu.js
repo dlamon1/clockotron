@@ -238,7 +238,6 @@ export default class MenuBuilder {
                     this.toggleBetaFeatures();
                   },
                   enabled: false,
-                  // visible: false,
                 },
                 {
                   label: '&Reload',
@@ -265,6 +264,7 @@ export default class MenuBuilder {
                   click: () => {
                     this.toggleBetaFeatures();
                   },
+                  enabled: false,
                 },
                 {
                   label: '&Reload',
@@ -280,7 +280,7 @@ export default class MenuBuilder {
         label: 'Help',
         submenu: [
           {
-            label: 'Learn More',
+            label: 'How To',
             click() {
               shell.openExternal(
                 'https://www.youtube.com/playlist?list=PLmp58ureC93GrGy14z6HlSYHPQs5hfwp6'
