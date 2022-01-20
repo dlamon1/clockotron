@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { observer } from 'mobx-react';
-import { XMLParser } from 'fast-xml-parser';
 
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -8,7 +7,6 @@ import Grid from '@material-ui/core/Grid';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 
-import { options } from '../utils/options.jsx';
 import { StoreContext } from '../stores/store.context';
 
 const TextInputList = observer((props) => {
@@ -67,7 +65,7 @@ const TextInputList = observer((props) => {
   return (
     clockotron.tabValue === 1 && (
       <>
-        <Grid item xs={12} style={{ marginTop: 30 }}>
+        <Grid item xs={12} style={{ marginTop: 15 }}>
           <Grid container justifyContent="space-around" alignItems="center">
             <FormControl style={{ width: '85%' }}>
               <InputLabel id="demo-simple-select-label">Input</InputLabel>

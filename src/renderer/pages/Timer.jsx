@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 
 import { observer } from 'mobx-react-lite';
 
-import Refresh from 'renderer/components/Refresh.jsx';
 import TextInputList from '../components/inputSelector.timer.jsx';
 import ClockInput from '../components/ClockInput.jsx';
 import TimeUp from '../components/TimeUp.jsx';

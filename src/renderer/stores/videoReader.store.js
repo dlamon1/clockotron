@@ -1,8 +1,6 @@
 import { makeAutoObservable, toJS } from 'mobx';
 import { XMLParser } from 'fast-xml-parser';
 import { options } from '../utils/options';
-import { setDriftlessTimeout, clearDriftless } from 'driftless';
-import { formatedTime } from '../utils/formatTime';
 
 let videoTypes = ['Video', 'VideoList'];
 
@@ -69,8 +67,6 @@ export class VideoReader {
   }
 
   handleNewXmlData(data) {
-    console.log('XML');
-
     let jsonObj = this.parseXmlToJSON(data);
     // console.log(jsonObj);
     this.rawXmlInputs = jsonObj.xml.vmix.inputs.input;
@@ -93,8 +89,6 @@ export class VideoReader {
   // has input changed
   // is input video
   updateMountedInputIndex() {
-    console.log('Tally');
-
     let pgm = { isVideo: false, inputIndex: 0, isPlaying: false };
     this.inputsOnPgm.every((input) => {
       let isVideo = this.checkTypeIsVideo(this.vmixInputs[input].type);
@@ -123,8 +117,6 @@ export class VideoReader {
   }
 
   updateIsPlaying(data) {
-    console.log('ACTS');
-
     let inputIndex = parseInt(data.split(' ')[1]) - 1;
     let inputPlayingStatus = data.split(' ')[2];
     let isPlaying = false;
@@ -141,6 +133,7 @@ export class VideoReader {
     let input = this.vmixInputs[pgm.inputIndex];
     let newInterval = (input.duration - input.position) / this.currentSeconds;
     this.interval = newInterval;
+    // console.log(newInterval);
   }
 
   checkTypeIsVideo(type) {
@@ -154,15 +147,6 @@ export class VideoReader {
 
   setCurrentSeconds(time) {
     this.currentSeconds = time;
-  }
-
-  selectInputForClock() {
-    for (let i = 0; i < this.vmixInputs.length; i++) {
-      let input = this.vmixInputs[i];
-      if (input.isOnPgm && input.isVideo) {
-        return input;
-      }
-    }
   }
 
   parseXmlToJSON(data) {
@@ -195,13 +179,6 @@ class Input {
   title = '';
   isCountingDown = false;
   isOnPgm = false;
-  currentSeconds = 1000;
-  ref = null;
-  input = '';
-  text = '';
-  formatPositions = 3;
-  currentSeconds = 0;
-  formatedTime = '00:00:00';
   type = '';
   isVideo = false;
 
@@ -209,12 +186,9 @@ class Input {
     makeAutoObservable(this);
     this.inputNumber = parseInt(input.number);
     this.key = input.key;
-    this.duration = this.setDuration(input);
-    this.position = this.setPosition(input);
     this.isPlaying = this.setIsPlaying(input);
     this.title = input.title;
     this.type = input.type;
-    this.clock();
     this.setIsVideo(input.type);
     // console.log(this);
   }
@@ -238,20 +212,6 @@ class Input {
 
   setFormatedTime(time) {
     this.formatedTime = time;
-  }
-
-  setFormatPositions(num) {
-    if (this.formatPositions + num < 4 && this.formatPositions + num > 0) {
-      this.formatPositions = this.formatPositions + num;
-    }
-  }
-
-  clock() {
-    if (this.currentSeconds > 0) {
-      this.currentSeconds = this.currentSeconds - 1;
-
-      this.ref = setDriftlessTimeout(() => this.clock(), 1000);
-    }
   }
 
   setIsPlaying(input) {
@@ -284,7 +244,10 @@ class Input {
     this.position = this.setPosition(input);
     this.isPlaying = this.setIsPlaying(input);
     this.isOnPgm = this.setIsOnPgm(input, tally);
+    this.key = input.key;
     this.title = input.title;
+    this.type = input.type;
+    this.setIsVideo(input.type);
   }
 
   setIsOnPgm(input, tally) {

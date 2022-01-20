@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useEffect, useContext, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import { setDriftlessTimeout, clearDriftless } from 'driftless';
 
@@ -12,12 +12,13 @@ import ClockFormated from '../components/clock.formated.video.jsx';
 
 const Video = observer((props) => {
   const { videoReader } = useContext(StoreContext);
-  const [mounted, setMounted] = useState({ key: '09' });
 
   const timerRef = useRef(null);
-  const interval = useRef(1000);
+  const timerRef2 = useRef(null);
+  const timerRef3 = useRef(null);
 
   const timer = () => {
+    // console.log(timerRef);
     let input = videoReader.vmixInputs[videoReader.mountedInputIndex];
     window.electron.vmix.reqXmlToUpdateVideoPlayer();
 
@@ -49,30 +50,33 @@ const Video = observer((props) => {
       let remainder = timeleft % 1000;
       videoReader.setCurrentSeconds(rounded);
       if (input.isPlaying && input.isVideo) {
-        setDriftlessTimeout(
+        timerRef2.current = setDriftlessTimeout(
           videoReader.setCurrentSeconds(rounded - 1),
           remainder
         );
-        setDriftlessTimeout(timer, 1000);
+        timerRef3.current = setDriftlessTimeout(timer, 1000);
       } else {
         // THIS WILL NEVER HAPPEN, FIGURE OUT A WAY TO MAKE IT HAPPEN
         clearDriftless(timerRef.current);
         videoReader.setCurrentSeconds(rounded);
       }
     }
-    return () => clearDriftless(timerRef.current);
+    return () => {
+      clearDriftless(timerRef.current);
+      clearDriftless(timerRef2.current);
+      clearDriftless(timerRef3.current);
+    };
+    // }, [videoReader.mountedInputIndex]);
   }, [videoReader.mountedInputIndex, JSON.stringify(videoReader.vmixInputs)]);
 
   return (
-    <Grid style={{ width: '85vw' }}>
+    <Grid style={{ width: '100vw' }}>
       <InputSelector />
       <ClockFormated />
       <Typography
         align="center"
         style={{ marginTop: 15, color: 'white', fontSize: 20 }}
-      >
-        {mounted && mounted.title}
-      </Typography>
+      ></Typography>
     </Grid>
   );
 });

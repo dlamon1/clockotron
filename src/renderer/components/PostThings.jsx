@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { StoreContext } from '../stores/store.context';
 
 const PostThings = observer((props) => {
-  const { vmix, timer } = useContext(StoreContext);
+  const { vmix, timer, videoReader } = useContext(StoreContext);
 
   const postTimes = async (time, input, text) => {
     window.electron.vmix.vmixPostReq(
@@ -37,6 +37,20 @@ const PostThings = observer((props) => {
       console.log(err);
     }
   }, [timer.formatedTime, timer.text]);
+
+  useEffect(() => {
+    try {
+      vmix.ip && videoReader.input && videoReader.text && videoReader.color
+        ? postTimes(
+            videoReader.formatedTime,
+            videoReader.input,
+            videoReader.text
+          )
+        : null;
+    } catch (err) {
+      console.log(err);
+    }
+  }, [videoReader.formatedTime, videoReader.text]);
   return <></>;
 });
 

@@ -11,6 +11,9 @@ export function vmixSocket(mainWindow, connection) {
 
   let waitingForXmlFromTallyReq = false;
   let waitingForXmlFromActsReq = false;
+
+  // initialXmlReq is here to get the initial XML because
+  // we are calling for Tally upon IP being set
   let initialXmlReq = false;
 
   const connect = (address) => {
@@ -110,6 +113,7 @@ export function vmixSocket(mainWindow, connection) {
     }
     if (resType == 'TALLY') {
       waitingForXmlFromTallyReq = true;
+      waitingForXmlFromActsReq = false;
       // console.log(data);
       // handleIndividualActsLine(data);
       handleResType_TALLY(data);
@@ -127,10 +131,8 @@ export function vmixSocket(mainWindow, connection) {
     let domString = `<xml><vmix>${vmixNodeStringClean}</xml>`;
 
     if (waitingForXmlFromTallyReq && initialXmlReq) {
-      waitingForXmlFromTallyReq = false;
       mainWindow.webContents.send('handleXmlTallyData', domString);
     } else if (waitingForXmlFromActsReq && initialXmlReq) {
-      waitingForXmlFromActsReq = false;
       mainWindow.webContents.send('handleXmlActsData', domString);
     } else {
       initialXmlReq = true;
@@ -154,6 +156,7 @@ export function vmixSocket(mainWindow, connection) {
 
   const handleActType_INPUT_PLAYING = (data) => {
     waitingForXmlFromActsReq = true;
+    waitingForXmlFromTallyReq = false;
     mainWindow.webContents.send('inputPlayingData', data);
     connection.write('XML\r\n');
   };
