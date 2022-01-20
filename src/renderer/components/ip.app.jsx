@@ -23,7 +23,6 @@ const IpForm = observer(() => {
 
   useEffect(() => {
     window.electron.on('socket-connected', connected);
-    clockotron.enableBetaButton();
 
     return () => {
       window.electron.all();

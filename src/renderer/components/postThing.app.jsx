@@ -41,6 +41,16 @@ const PostThings = observer((props) => {
   useEffect(() => {
     try {
       vmix.ip && videoReader.input && videoReader.text && videoReader.color
+        ? postColor(videoReader.input, videoReader.text, videoReader.color)
+        : null;
+    } catch (err) {
+      console.log(err);
+    }
+  }, [videoReader.color, videoReader.text]);
+
+  useEffect(() => {
+    try {
+      vmix.ip && videoReader.input && videoReader.text && videoReader.color
         ? postTimes(
             videoReader.formatedTime,
             videoReader.input,

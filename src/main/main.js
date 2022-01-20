@@ -57,8 +57,7 @@ const getAssetPath = (...paths) => {
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 720,
-    // width: 360,
+    width: isDev ? 720 : 360,
     height: 1080,
     minWidth: 333,
     x: 0,
@@ -100,7 +99,6 @@ let betaFeaturesListener = () => {
     console.log('enable beta listener');
     menuBuilder.setBetaFeaturesEnabled();
     Menu.getApplicationMenu().getMenuItemById('betaFeatures').enabled = true;
-    Menu.getApplicationMenu().getMenuItemById('betaFeatures').visible = true;
   });
 };
 betaFeaturesListener();

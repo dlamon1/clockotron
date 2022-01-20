@@ -257,7 +257,7 @@ export default class MenuBuilder {
               ]
             : [
                 {
-                  id: 'betaEnabled',
+                  id: 'betaFeatures',
                   label: this.betaFeaturesEnabled
                     ? 'Disable Beta Features'
                     : 'Toggle Video TRT (beta)',
@@ -270,6 +270,9 @@ export default class MenuBuilder {
                   label: '&Reload',
                   accelerator: 'Ctrl+R',
                   click: () => {
+                    Menu.getApplicationMenu().getMenuItemById(
+                      'betaFeatures'
+                    ).enabled = false;
                     app.relaunch();
                     app.quit();
                   },

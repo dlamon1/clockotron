@@ -37,9 +37,11 @@ const Socket = observer(() => {
 
   const betaFeatures = (__, boolean) => {
     clockotron.setAreBetaFeaturesEnabled(boolean);
+    clockotron.setTabValue(1);
   };
 
   useEffect(() => {
+    clockotron.enableBetaButton();
     window.electron.on('betaFeatures', betaFeatures);
     window.electron.on('socket-error', socketError);
     window.electron.on('handleXmlData', handleXmlData);
