@@ -27,7 +27,7 @@ export function vmixSocket(mainWindow, connection) {
 
     connection.on('data', function (data) {
       console.log('*****new data*****');
-      splitOnNewLine(data.toString());
+      splitDataResponseByNewline(data.toString());
     });
 
     connection.on('error', function (e) {
@@ -87,7 +87,7 @@ export function vmixSocket(mainWindow, connection) {
     requestVideoData();
   };
 
-  const splitOnNewLine = (data) => {
+  const splitDataResponseByNewline = (data) => {
     if (data.includes('XML ')) {
       handleDataByResType(data);
       return;
@@ -98,7 +98,6 @@ export function vmixSocket(mainWindow, connection) {
     });
   };
 
-  //
   const handleDataByResType = (data) => {
     const resType = data.split(' ')[0];
     console.log(resType);
@@ -112,14 +111,15 @@ export function vmixSocket(mainWindow, connection) {
       handleResType_ACTS(data);
     }
     if (resType == 'TALLY') {
-      waitingForXmlFromTallyReq = true;
-      waitingForXmlFromActsReq = false;
       // console.log(data);
       // handleIndividualActsLine(data);
       handleResType_TALLY(data);
     }
   };
 
+  // 1
+  // 1
+  // Response from XML
   const handleActType_XML = (data) => {
     let vmixNodeString = data.split('<vmix>')[1];
     if (!vmixNodeString) {
@@ -140,9 +140,24 @@ export function vmixSocket(mainWindow, connection) {
     }
   };
 
+  // 2
+  // 2
+  // Response from TALLY
   const handleResType_TALLY = (line) => {
+    waitingForXmlFromTallyReq = true;
+    waitingForXmlFromActsReq = false;
     let tallyString = line.split(' ')[2];
     mainWindow.webContents.send('videoTallyData', tallyString);
+    connection.write('XML\r\n');
+  };
+
+  // 3
+  // 3
+  // Response from INPUT PLAYING
+  const handleActType_INPUT_PLAYING = (data) => {
+    waitingForXmlFromActsReq = true;
+    waitingForXmlFromTallyReq = false;
+    mainWindow.webContents.send('inputPlayingData', data);
     connection.write('XML\r\n');
   };
 
@@ -152,13 +167,6 @@ export function vmixSocket(mainWindow, connection) {
     if (action === 'InputPlaying') {
       handleActType_INPUT_PLAYING(fullInputPlayingDataString);
     }
-  };
-
-  const handleActType_INPUT_PLAYING = (data) => {
-    waitingForXmlFromActsReq = true;
-    waitingForXmlFromTallyReq = false;
-    mainWindow.webContents.send('inputPlayingData', data);
-    connection.write('XML\r\n');
   };
 
   const createArraySplitByNewLine = (data) => {

@@ -66,7 +66,6 @@ const Video = observer((props) => {
       clearDriftless(timerRef2.current);
       clearDriftless(timerRef3.current);
     };
-    // }, [videoReader.mountedInputIndex]);
   }, [videoReader.mountedInputIndex, JSON.stringify(videoReader.vmixInputs)]);
 
   return (

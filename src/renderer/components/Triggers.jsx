@@ -74,7 +74,13 @@ const Triggers = observer((props) => {
             <Button
               variant="outlined"
               onClick={() => timer.addTrigger()}
-              style={{ marginTop: 15, marginBottom: 15, paddingInline: 65 }}
+              style={{
+                width: '85%',
+                height: 48,
+                // marginTop: 15,
+                marginBottom: 15,
+                paddingInline: 65,
+              }}
             >
               Add Trigger
             </Button>
