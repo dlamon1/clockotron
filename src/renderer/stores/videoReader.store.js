@@ -10,8 +10,8 @@ export class VideoReader {
   vmixInputsInPgm = [];
   tallyArray = [];
   inputsOnPgm = [];
-  input = '';
   rawXmlInputs = [];
+  input = '';
   text = '';
   formatPositions = 3;
   currentSeconds = 0;
@@ -19,14 +19,11 @@ export class VideoReader {
   color = '#ff0000';
   downColor = '#00FF50';
   downFontColor = '#000';
-  runClock = false;
-  activeInput = 0;
-  inputOnPgm;
   allActiveInputs = [];
   mountedTimer = 0;
-  firstVideoOnPgm;
   mountedInputIndex;
   isMountedPlaying = false;
+  isMountedInputAVideo = false;
   interval = 1000;
 
   constructor() {
@@ -71,7 +68,6 @@ export class VideoReader {
   handleNewXmlData(data) {
     let jsonObj = this.parseXmlToJSON(data);
     this.rawXmlInputs = jsonObj.xml.vmix.inputs.input;
-    this.activeInput = jsonObj.xml.vmix.active;
 
     this.rawXmlInputs.forEach((input) => {
       let index = this.checkForInput(input.key);
@@ -94,6 +90,7 @@ export class VideoReader {
       if (isVideo) {
         pgm.isVideo = true;
         pgm.inputIndex = input;
+        this.isMountedInputAVideo = true;
         return false;
       }
       return true;
@@ -106,12 +103,15 @@ export class VideoReader {
     if (this.vmixInputs[this.mountedInputIndex]) {
       mountedKey = this.vmixInputs[this.mountedInputIndex].key;
     }
+    // console.log(mountedKey);
+    // console.log(pgm.key);
     if (mountedKey != pgm.key) {
       this.interval = 1000;
       this.mountedInputIndex = pgm.inputIndex;
     } else {
       this.updateInterval(pgm);
     }
+    // console.log(this.mountedInputIndex);
   }
 
   updateIsPlaying(data) {

@@ -18,6 +18,7 @@ const Socket = observer(() => {
   };
 
   const handleXmlTallyData = (__, data) => {
+    // console.log(data);
     videoReader.handleNewXmlData(data);
     vmix.updateInputList(data);
     videoReader.updateMountedInputIndex();
@@ -25,6 +26,7 @@ const Socket = observer(() => {
 
   const handleXmlActsData = (__, data) => {
     videoReader.handleNewXmlData(data);
+    videoReader.updateMountedInputIndex();
   };
 
   const handleTallyData = (__, data) => {
