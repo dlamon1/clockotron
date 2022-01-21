@@ -13,13 +13,20 @@ export class StoreListeners {
     this.setListener = () => {
       ipcMain.handle('store-set', (__, key, value) => {
         this.store.set(key, value);
-        console.log(key, this.store.get(key));
+      });
+    };
+    this.getListener = () => {
+      ipcMain.handle('store-get', (__, key) => {
+        let value = this.store.set(key);
+        return value;
       });
     };
     this.setListener();
+    this.getListener();
   }
 
   removeListeners() {
     ipcMain.removeListener('store-set', this.setListener);
+    ipcMain.removeListener('store-get', this.getListener);
   }
 }

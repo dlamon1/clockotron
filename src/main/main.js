@@ -43,8 +43,6 @@ if (process.platform === 'win32') {
   app.commandLine.appendSwitch('force-device-scale-factor', '1');
 }
 
-// require('electron-debug')();
-
 const RESOURCES_PATH = app.isPackaged
   ? path.join(process.resourcesPath, 'assets')
   : path.join(__dirname, '../../assets');
@@ -125,6 +123,7 @@ app.on('activate', () => {
 
 app.on('before-quit', () => {
   ipcMain.removeHandler('betaFeatures', betaFeaturesListener);
+  storeListeners.removeListeners();
   connection && connection.destroy();
   connection && connection.clearAllListeners();
 });
