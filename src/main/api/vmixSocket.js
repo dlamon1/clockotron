@@ -100,6 +100,7 @@ export function vmixSocket(mainWindow, connection) {
 
   const handleDataByResType = (data) => {
     const resType = data.split(' ')[0];
+    console.log(resType);
     if (resType == 'XML') {
       handleActType_XML(data);
     }
@@ -126,8 +127,12 @@ export function vmixSocket(mainWindow, connection) {
 
     if (waitingForXmlFromTallyReq && initialXmlReq) {
       mainWindow.webContents.send('handleXmlTallyData', domString);
+      waitingForXmlFromTallyReq = false;
+      waitingForXmlFromActsReq = false;
     } else if (waitingForXmlFromActsReq && initialXmlReq) {
       mainWindow.webContents.send('handleXmlActsData', domString);
+      waitingForXmlFromTallyReq = false;
+      waitingForXmlFromActsReq = false;
     } else {
       initialXmlReq = true;
       mainWindow.webContents.send('handleXmlData', domString);
