@@ -5,6 +5,7 @@ export class ClockotronState {
   // 1 = video reader
   tabValue = 0;
   areBetaFeaturesEnabled = false;
+  hasNewFeaturesDialogBeenSeen = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -20,5 +21,14 @@ export class ClockotronState {
 
   enableBetaButton() {
     window.electron.enableBetaButton();
+  }
+
+  setHasNewFeaturesDialogBeenSeen(boolean) {
+    this.hasNewFeaturesDialogBeenSeen = boolean;
+    window.electron.store.set('hasNewFeaturesBeenSeen', true);
+  }
+
+  storeSet(key, value) {
+    window.electron.store.set(key, value);
   }
 }

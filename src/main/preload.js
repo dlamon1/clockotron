@@ -24,6 +24,15 @@ contextBridge.exposeInMainWorld('electron', {
       ipcRenderer.invoke('socket-shutdown');
     },
   },
+  store: {
+    set: (key, value) => {
+      ipcRenderer.invoke('store-set', key, value);
+    },
+    get: async (key) => {
+      let res = await ipcRenderer.invoke('store-get', key);
+      return res;
+    },
+  },
   on(eventName, callback) {
     messages.indexOf(eventName) >= 0
       ? ipcRenderer.on(eventName, callback)
@@ -81,4 +90,5 @@ messages = [
   'inputPlayingData',
   'handleXmlActsData',
   'betaFeatures',
+  'newFeaturesHaveBeenSeen',
 ];

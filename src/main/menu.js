@@ -13,10 +13,8 @@ export default class MenuBuilder {
   }
 
   toggleBetaFeatures() {
-    console.log(this.betaFeaturesEnabled);
     this.betaFeaturesEnabled = !this.betaFeaturesEnabled;
     this.mainWindow.webContents.send('betaFeatures', this.betaFeaturesEnabled);
-    console.log(this.betaFeaturesEnabled);
   }
 
   buildMenu() {

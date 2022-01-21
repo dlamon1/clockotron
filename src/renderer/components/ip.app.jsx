@@ -21,8 +21,13 @@ const IpForm = observer(() => {
     vmix.connected();
   };
 
+  const newFeatures = (_, value) => {
+    clockotron.setHasNewFeaturesDialogBeenSeen(value);
+  };
+
   useEffect(() => {
     window.electron.on('socket-connected', connected);
+    window.electron.on('newFeaturesHaveBeenSeen', newFeatures);
 
     return () => {
       window.electron.all();
@@ -72,6 +77,20 @@ const IpForm = observer(() => {
                 }}
               >
                 Set
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() =>
+                  clockotron.storeSet('hasNewFeaturesBeenSeen', null)
+                }
+                style={{
+                  marginTop: 10,
+                  marginBottom: 15,
+                  paddingLeft: 30,
+                  paddingRight: 30,
+                }}
+              >
+                Store
               </Button>
               <Version />
             </Grid>

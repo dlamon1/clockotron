@@ -2,22 +2,20 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
-import {
-  app,
-  BrowserWindow,
-  ipcMain,
-  webContents,
-  Menu,
-  Notification,
-} from 'electron';
+import { app, BrowserWindow, ipcMain, Menu } from 'electron';
 import path from 'path';
-import url from 'url';
 import { updater } from './updater';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import { runNetConnections } from './api';
 import dotenv from 'dotenv';
+import Store from 'electron-store';
+import { StoreListeners } from './storeClass';
+
 dotenv.config();
+const store = new Store();
+const storeListeners = new StoreListeners(store);
+storeListeners.mountListeners();
 
 let mainWindow;
 let menuBuilder;
@@ -78,6 +76,11 @@ function createWindow() {
   mainWindow.once('did-finish-load', () => console.log('did finish'));
 
   mainWindow.once('ready-to-show', () => {
+    let hasNewFeaturesBeenSeen = store.get('hasNewFeaturesBeenSeen');
+    mainWindow.webContents.send(
+      'newFeaturesHaveBeenSeen',
+      hasNewFeaturesBeenSeen
+    );
     mainWindow.webContents.send('version', app.getVersion());
 
     updater(isDev, mainWindow);
@@ -96,7 +99,6 @@ function createWindow() {
 
 let betaFeaturesListener = () => {
   ipcMain.handle('enableBetaButton', (__) => {
-    console.log('enable beta listener');
     menuBuilder.setBetaFeaturesEnabled();
     Menu.getApplicationMenu().getMenuItemById('betaFeatures').enabled = true;
   });

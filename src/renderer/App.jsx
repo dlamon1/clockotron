@@ -12,6 +12,7 @@ import Toast from './components/toast.app.jsx';
 import PostThings from './components/postThing.app.jsx';
 import { PageTab } from './components/tabs.component.jsx';
 import Refresh from './components/refresh.app';
+import { NewFeaturesDialog } from './components/newFeatures.dialog';
 
 import Timer from './pages/timer.app';
 import Video from './pages/video.app';
@@ -29,7 +30,6 @@ const App = observer(() => {
         backgroundColor: '',
         overflow: 'hidden',
         height: '100%',
-        marginTop: 15,
       }}
       direction="row"
       justifyContent="space-around"
@@ -41,6 +41,7 @@ const App = observer(() => {
           <IpInput />
         ) : (
           <>
+            <NewFeaturesDialog />
             <PageTab />
             <Refresh />
             <PostThings />
