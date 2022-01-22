@@ -21,12 +21,13 @@ export class Timer {
   upColor = '#FF0000';
   downFontColor = '#000';
   upFontColor = '#000';
-
+  interval = 1000;
+  directionIsDown = true;
 
   constructor(alertStore) {
     const id = uuidv4();
     this.id = id;
-    this.alertStore = alertStore
+    this.alertStore = alertStore;
     this.addColor('#00FF50', 100000000, true);
     this.addColor('#FF0000', 100000000, false);
     makeAutoObservable(this);
@@ -107,9 +108,41 @@ export class Timer {
 
   setIsCountingDown(boolean) {
     this.isCountingDown = boolean;
+    window.electron.timer.direction('timer', this.isCountingDown);
   }
 
   setCountUpAfterDownReachesZero(boolean) {
     this.countUpAfterDownReachesZero = boolean;
+    window.electron.timer.upAfterDown(
+      'timer',
+      this.countUpAfterDownReachesZero
+    );
+  }
+
+  startMainThreadTimer() {
+    window.electron.timer.start(
+      'timer',
+      this.currentSeconds,
+      this.interval,
+      this.isCountingDown
+    );
+  }
+
+  stopMainThreadTimer() {
+    window.electron.timer.stop('timer');
+  }
+
+  directionMainThreadTimer() {
+    window.electron.timer.direction('timer', this.isCountingDown);
+  }
+
+  updateInterval(x) {
+    if (x == 1) {
+      this.interval = 1000;
+      setSpeed(this.interval / 10);
+    } else {
+      this.interval = this.interval * x;
+      setSpeed(Math.round(100000 / this.interval));
+    }
   }
 }

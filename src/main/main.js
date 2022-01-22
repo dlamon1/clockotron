@@ -11,6 +11,7 @@ import { runNetConnections } from './api';
 import dotenv from 'dotenv';
 import Store from 'electron-store';
 import { StoreListeners } from './storeClass';
+import { Timers } from './timers';
 
 dotenv.config();
 const store = new Store();
@@ -74,6 +75,10 @@ function createWindow() {
   mainWindow.once('did-finish-load', () => console.log('did finish'));
 
   mainWindow.once('ready-to-show', () => {
+    const timers = new Timers(mainWindow);
+    timers.timer.startListener();
+    // timer.start();
+
     let hasNewFeaturesBeenSeen = store.get('hasNewFeaturesBeenSeen');
     mainWindow.webContents.send(
       'newFeaturesHaveBeenSeen',

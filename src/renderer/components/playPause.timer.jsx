@@ -16,8 +16,6 @@ const PlayPause = observer(() => {
   const [speed, setSpeed] = useState(100);
   const [realRemaing, setRealRemaining] = useState('');
 
-  const timerRef = useRef(null);
-  const interval = useRef(1000);
   const directionRef = useRef(-1);
 
   let start = () => {
@@ -27,50 +25,21 @@ const PlayPause = observer(() => {
     toggle();
   };
   let slower = () => {
-    setInt(1.01);
+    timer.setInt(1.01);
   };
   let normal = () => {
-    setInt(1);
+    timer.setInt(1);
   };
   let faster = () => {
-    setInt(0.99);
+    timer.setInt(0.99);
   };
   let resetApi = () => {
     reset();
   };
 
-  function clockTime() {
-    if (timer.currentSeconds + directionRef.current > -1) {
-      timer.setCurrentSeconds(timer.currentSeconds + directionRef.current);
-
-      function scheduleFrame() {
-        timerRef.current = setDriftlessTimeout(
-          () => clockTime(),
-          interval.current
-        );
-      }
-
-      scheduleFrame();
-    } else {
-      if (timer.countUpAfterDownReachesZero) {
-        directionRef.current = 1;
-        timer.setIsCountingDown(false);
-        clockTime();
-      } else {
-        timer.setIsRunning(false);
-        clearDriftless(timerRef.current);
-        setButtonState('start');
-      }
-    }
-  }
-
-  function setInt(x) {
-    if (x == 1) {
-      interval.current = 1000;
-      setSpeed(interval.current / 10);
-    } else {
-      interval.current = interval.current * x;
-      setSpeed(Math.round(100000 / interval.current));
+  function timerDataFromMainThread(__, id, currentSeconds) {
+    if (id == 'timer') {
+      timer.setCurrentSeconds(currentSeconds);
     }
   }
 
@@ -82,17 +51,17 @@ const PlayPause = observer(() => {
 
   function reset() {
     stopClock();
-    timer.setCurrentSeconds(timer.resetSeconds);
+    timer.setCurrentSeconds(0);
   }
 
   function startClock() {
-    clockTime();
+    timer.startMainThreadTimer(timer.interval);
     timer.setIsRunning(true);
     setButtonState('pause');
   }
 
   function stopClock() {
-    clearDriftless(timerRef.current);
+    timer.stopMainThreadTimer();
     timer.setIsRunning(false);
     setButtonState('start');
   }
@@ -110,6 +79,7 @@ const PlayPause = observer(() => {
   }, [timer.currentSeconds]);
 
   useEffect(() => {
+    window.electron.on('timer-res', timerDataFromMainThread);
     window.electron.on('start', start);
     window.electron.on('stop', stop);
     window.electron.on('slower', slower);

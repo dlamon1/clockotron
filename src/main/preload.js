@@ -24,6 +24,20 @@ contextBridge.exposeInMainWorld('electron', {
       ipcRenderer.invoke('socket-shutdown');
     },
   },
+  timer: {
+    start: (id, currentSeconds, interval) => {
+      ipcRenderer.invoke('timer-start', id, currentSeconds, interval);
+    },
+    stop: (id) => {
+      ipcRenderer.invoke('timer-stop', id);
+    },
+    direction: (id, directionIsDown) => {
+      ipcRenderer.invoke('timer-direction', id, directionIsDown);
+    },
+    upAfterDown: (id, upAfterDown) => {
+      ipcRenderer.invoke('timer-upAfterDown', id, upAfterDown);
+    },
+  },
   store: {
     set: (key, value) => {
       ipcRenderer.invoke('store-set', key, value);
@@ -91,4 +105,5 @@ messages = [
   'handleXmlActsData',
   'betaFeatures',
   'newFeaturesHaveBeenSeen',
+  'timer-res',
 ];
