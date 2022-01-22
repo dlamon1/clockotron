@@ -19,7 +19,6 @@ export class Timer {
   }
 
   start() {
-    console.log('here');
     if (this.directionIsDown) {
       this.sendTimerData(this.id, this.currentSeconds - 1);
       this.currentSeconds += -1;
@@ -43,7 +42,6 @@ export class Timer {
 
     let drift = Date.now() - this.expected;
     if (drift > this.interval) {
-      //figure this out, probably just reset to original interval
       drift = 0;
       clearTimeout(this.timeout);
       console.log('error drive > this.interval');
@@ -86,7 +84,6 @@ export class Timer {
     ipcMain.handle(
       'timer-start',
       (__, id, currentSeconds, interval, isCountingDown) => {
-        console.log('here');
         if (id == this.id) {
           this.currentSeconds = currentSeconds;
           this.interval = interval;
