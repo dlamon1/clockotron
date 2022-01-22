@@ -15,24 +15,9 @@
     "start": "node -r @babel/register ./.erb/scripts/check-port-in-use.js && yarn start:renderer",
     "start:main": "cross-env NODE_ENV=development electron -r ./.erb/scripts/babel-register ./src/main/main.js",
     "start:renderer": "cross-env NODE_ENV=development webpack serve --config ./.erb/configs/webpack.config.renderer.dev.babel.js",
-    "test": "jest",
     "major": "yarn version --major && yarn run publish",
     "minor": "yarn version --minor && yarn run publish",
     "patch": "yarn version --patch && yarn run publish"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "cross-env NODE_ENV=development eslint --cache"
-    ],
-    "*.json,.{babelrc,eslintrc,prettierrc}": [
-      "prettier --ignore-path .eslintignore --parser json --write"
-    ],
-    "*.{css,scss}": [
-      "prettier --ignore-path .eslintignore --single-quote --write"
-    ],
-    "*.{html,md,yml}": [
-      "prettier --ignore-path .eslintignore --single-quote --write"
-    ]
   },
   "build": {
     "productName": "Clockotron",
@@ -110,27 +95,6 @@
     }
   ],
   "license": "MIT",
-  "jest": {
-    "testURL": "http://localhost/",
-    "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/.erb/mocks/fileMock.js",
-      "\\.(css|less|sass|scss)$": "identity-obj-proxy"
-    },
-    "moduleFileExtensions": [
-      "js",
-      "jsx",
-      "ts",
-      "tsx",
-      "json"
-    ],
-    "moduleDirectories": [
-      "node_modules",
-      "build/app/node_modules"
-    ],
-    "setupFiles": [
-      "./.erb/scripts/check-build-exists.js"
-    ]
-  },
   "devDependencies": {
     "@babel/core": "^7.14.8",
     "@babel/plugin-proposal-class-properties": "^7.14.5",
@@ -159,19 +123,6 @@
     "@teamsupercell/typings-for-css-modules-loader": "^2.5.1",
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^11.2.7",
-    "@types/enzyme": "^3.10.9",
-    "@types/enzyme-adapter-react-16": "^1.0.6",
-    "@types/history": "4.7.8",
-    "@types/jest": "^26.0.24",
-    "@types/node": "15.0.2",
-    "@types/react": "^17.0.9",
-    "@types/react-dom": "^17.0.9",
-    "@types/react-router": "^5.1.14",
-    "@types/react-router-dom": "^5.1.6",
-    "@types/react-test-renderer": "^17.0.1",
-    "@types/webpack-env": "^1.16.0",
-    "@typescript-eslint/eslint-plugin": "^4.22.1",
-    "@typescript-eslint/parser": "^4.22.1",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.1.0",
     "babel-loader": "^8.2.2",
@@ -236,8 +187,7 @@
     "sass-loader": "^12.4.0",
     "uuid": "^8.3.2",
     "validator": "^13.6.0",
-    "xmldom": "^0.6.0",
-    "xpath": "^0.0.32"
+    "xmldom": "^0.6.0"
   },
   "devEngines": {
     "node": ">=10.x",
@@ -259,10 +209,5 @@
       }
     ],
     "singleQuote": true
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   }
 }
