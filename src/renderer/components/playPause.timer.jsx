@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { observer } from 'mobx-react';
-import { setDriftlessTimeout, clearDriftless } from 'driftless';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -25,13 +24,13 @@ const PlayPause = observer(() => {
     toggle();
   };
   let slower = () => {
-    timer.setInt(1.01);
+    timer.updateInterval(1.01);
   };
   let normal = () => {
-    timer.setInt(1);
+    timer.updateInterval(1);
   };
   let faster = () => {
-    timer.setInt(0.99);
+    timer.updateInterval(0.99);
   };
   let resetApi = () => {
     reset();
@@ -41,6 +40,15 @@ const PlayPause = observer(() => {
     if (id == 'timer') {
       timer.setCurrentSeconds(currentSeconds);
     }
+  }
+
+  function mainThreadTimerStopped() {
+    timer.setIsRunning(false);
+    setButtonState('start');
+  }
+
+  function mainThreadTimeDirectionChange(__, id, directionIsDown) {
+    if (id == 'timer') timer.setIsCountingDown(directionIsDown);
   }
 
   function toggle() {
@@ -67,6 +75,11 @@ const PlayPause = observer(() => {
   }
 
   useEffect(() => {
+    timer.intervalMainThreadTimer();
+    setSpeed(Math.round(100000 / timer.interval));
+  }, [timer.interval]);
+
+  useEffect(() => {
     timer.isCountingDown
       ? (directionRef.current = -1)
       : (directionRef.current = 1);
@@ -79,7 +92,9 @@ const PlayPause = observer(() => {
   }, [timer.currentSeconds]);
 
   useEffect(() => {
+    window.electron.on('timer-directionChange', mainThreadTimeDirectionChange);
     window.electron.on('timer-res', timerDataFromMainThread);
+    window.electron.on('timer-stopped', mainThreadTimerStopped);
     window.electron.on('start', start);
     window.electron.on('stop', stop);
     window.electron.on('slower', slower);
@@ -133,19 +148,19 @@ const PlayPause = observer(() => {
         <Grid item xs={12} style={{ marginTop: 0 }}>
           <Grid container justifyContent="center" alignItems="center">
             <Button
-              onClick={() => setInt(1.05)}
+              onClick={() => timer.updateInterval(1.05)}
               style={{ marginLeft: 5, marginRight: 5 }}
             >
               slower
             </Button>
             <Button
-              onClick={() => setInt(1)}
+              onClick={() => timer.updateInterval(1)}
               style={{ marginLeft: 5, marginRight: 5 }}
             >
               normal
             </Button>
             <Button
-              onClick={() => setInt(0.95)}
+              onClick={() => timer.updateInterval(0.95)}
               style={{ marginLeft: 5, marginRight: 5 }}
             >
               faster

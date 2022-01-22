@@ -25,8 +25,14 @@ contextBridge.exposeInMainWorld('electron', {
     },
   },
   timer: {
-    start: (id, currentSeconds, interval) => {
-      ipcRenderer.invoke('timer-start', id, currentSeconds, interval);
+    start: (id, currentSeconds, interval, isCountingDown) => {
+      ipcRenderer.invoke(
+        'timer-start',
+        id,
+        currentSeconds,
+        interval,
+        isCountingDown
+      );
     },
     stop: (id) => {
       ipcRenderer.invoke('timer-stop', id);
@@ -36,6 +42,9 @@ contextBridge.exposeInMainWorld('electron', {
     },
     upAfterDown: (id, upAfterDown) => {
       ipcRenderer.invoke('timer-upAfterDown', id, upAfterDown);
+    },
+    interval: (id, interval) => {
+      ipcRenderer.invoke('timer-interval', id, interval);
     },
   },
   store: {
@@ -106,4 +115,6 @@ messages = [
   'betaFeatures',
   'newFeaturesHaveBeenSeen',
   'timer-res',
+  'timer-stopped',
+  'timer-directionChange',
 ];

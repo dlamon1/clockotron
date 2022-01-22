@@ -108,6 +108,10 @@ export class Timer {
 
   setIsCountingDown(boolean) {
     this.isCountingDown = boolean;
+  }
+
+  setIsCountingDownToMainThread(boolean) {
+    this.isCountingDown = boolean;
     window.electron.timer.direction('timer', this.isCountingDown);
   }
 
@@ -136,13 +140,15 @@ export class Timer {
     window.electron.timer.direction('timer', this.isCountingDown);
   }
 
+  intervalMainThreadTimer() {
+    window.electron.timer.interval('timer', this.interval);
+  }
+
   updateInterval(x) {
     if (x == 1) {
       this.interval = 1000;
-      setSpeed(this.interval / 10);
     } else {
       this.interval = this.interval * x;
-      setSpeed(Math.round(100000 / this.interval));
     }
   }
 }

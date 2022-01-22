@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { observer } from 'mobx-react';
-import isNumeric from 'validator/lib/isNumeric';
 
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -12,6 +11,10 @@ import { StoreContext } from '../stores/store.context';
 
 const DirectionOptions = observer(() => {
   const { timer, clockotron } = useContext(StoreContext);
+
+  useEffect(() => {
+    window.electron.timer.direction('timer', true);
+  }, []);
 
   return (
     clockotron.tabValue === 0 && (
@@ -35,7 +38,7 @@ const DirectionOptions = observer(() => {
                 <Switch
                   checked={timer.isCountingDown}
                   onChange={() =>
-                    timer.setIsCountingDown(!timer.isCountingDown)
+                    timer.setIsCountingDownToMainThread(!timer.isCountingDown)
                   }
                   name="checkedA"
                 />
