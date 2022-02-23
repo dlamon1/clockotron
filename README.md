@@ -4,7 +4,7 @@ Clockotron provides the ability to manipulate the time of a countdown timer. It 
 
 ## Installation
 
-==> Download an install file from the Releases tab, link: https://github.com/dlamon1/clockotron/releases/tag/v0.7.3
+==> Download an install file from the Releases tab, link: https://github.com/dlamon1/clockotron/releases/
 
 or
 
