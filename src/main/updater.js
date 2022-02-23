@@ -1,7 +1,7 @@
 import { app, Notification, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 
-export function updater(isDev, mainWindow) {
+export function updater(isDev, mainWindow, store) {
   if (!isDev) {
     autoUpdater.checkForUpdates();
 
@@ -31,6 +31,7 @@ export function updater(isDev, mainWindow) {
     };
 
     autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+      store.set('hasNewFeaturesBeenSeen', false);
       const dialogOpts = {
         type: 'info',
         buttons: ['Restart', 'Later'],

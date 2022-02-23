@@ -85,7 +85,7 @@ function createWindow() {
     );
     mainWindow.webContents.send('version', app.getVersion());
 
-    updater(isDev, mainWindow);
+    updater(isDev, mainWindow, store);
 
     mainWindow.show();
 

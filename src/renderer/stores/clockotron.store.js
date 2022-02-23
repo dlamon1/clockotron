@@ -3,9 +3,9 @@ import { makeAutoObservable } from 'mobx';
 export class ClockotronState {
   // 0 = timer
   // 1 = video reader
-  tabValue = 2;
+  tabValue = 0;
   areBetaFeaturesEnabled = false;
-  hasNewFeaturesDialogBeenSeen = true;
+  hasNewFeaturesDialogBeenSeen = false;
   colors = [
     '#FF0000',
     '#DB3E00',

@@ -38,7 +38,7 @@ export const NewFeaturesDialog = observer(() => {
               fontSize: 24,
             }}
           >
-            Video TRT Clock
+            Custom Colors
           </Typography>
           <Typography
             // noWrap
@@ -49,10 +49,8 @@ export const NewFeaturesDialog = observer(() => {
               fontWeight: 700,
             }}
           >
-            Included in this release is a Video TRT Clock. It will grab the time
-            data from any video that is Active/On Program, regardless of layer.
-            As it has not been fully tested, this feature is disabled by
-            default.
+            Custom colors can be set via the settings tab. Please submit a bug
+            report for any bugs encountered.
           </Typography>
           <Typography
             // noWrap
@@ -64,8 +62,8 @@ export const NewFeaturesDialog = observer(() => {
               fontWeight: 700,
             }}
           >
-            To enable it, navigate to the menu bar, click View, then click
-            Toggle Video TRT.
+            {/* To enable it, navigate to the menu bar, click View, then click
+            Toggle Video TRT. */}
           </Typography>
           <Button
             onClick={close}
