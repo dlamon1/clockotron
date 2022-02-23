@@ -3,9 +3,19 @@ import { makeAutoObservable } from 'mobx';
 export class ClockotronState {
   // 0 = timer
   // 1 = video reader
-  tabValue = 0;
+  tabValue = 2;
   areBetaFeaturesEnabled = false;
-  hasNewFeaturesDialogBeenSeen = false;
+  hasNewFeaturesDialogBeenSeen = true;
+  colors = [
+    '#FF0000',
+    '#DB3E00',
+    '#FCCB00',
+    '#00FF50',
+    '#1B46F2',
+    '#5300EB',
+    '#FFFFFF',
+    '#000000',
+  ];
 
   constructor() {
     makeAutoObservable(this);
@@ -30,5 +40,14 @@ export class ClockotronState {
 
   storeSet(key, value) {
     window.electron.store.set(key, value);
+  }
+
+  setColor(i, newHexValue) {
+    this.colors[i] = newHexValue;
+  }
+
+  indexOfColorInColors(oldHexValue) {
+    let i = this.colors.indexOf(oldHexValue.toUpperCase());
+    return i;
   }
 }

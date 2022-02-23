@@ -70,10 +70,12 @@ export class Timer {
 
   setCurrentSeconds(time) {
     if (this.currentSeconds + time >= 0) {
+      console.log(time);
       this.currentSeconds = time;
     } else {
       this.isRunning(false);
     }
+    window.electron.timer.updateCurrentSeconds('timer', this.currentSeconds);
   }
 
   setFormatedTime(time) {

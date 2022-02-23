@@ -37,6 +37,9 @@ contextBridge.exposeInMainWorld('electron', {
     stop: (id) => {
       ipcRenderer.invoke('timer-stop', id);
     },
+    updateCurrentSeconds: (id, seconds) => {
+      ipcRenderer.invoke('timer-UpdateCurrentSeconds', id, seconds);
+    },
     direction: (id, directionIsDown) => {
       ipcRenderer.invoke('timer-direction', id, directionIsDown);
     },

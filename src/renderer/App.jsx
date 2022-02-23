@@ -14,6 +14,7 @@ import { PageTab } from './components/tabs.component.jsx';
 import Refresh from './components/refresh.app';
 import { NewFeaturesDialog } from './components/newFeatures.dialog';
 
+import Settings from './pages/settings.app.jsx';
 import Timer from './pages/timer.app';
 import Video from './pages/video.app';
 
@@ -46,6 +47,7 @@ const App = observer(() => {
             <Refresh />
             <PostThings />
             <Socket />
+            <Settings />
             <Timer />
             {clockotron.areBetaFeaturesEnabled && <Video />}
           </>

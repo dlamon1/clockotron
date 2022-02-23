@@ -44,6 +44,11 @@ export const PageTab = observer(() => {
           aria-label="simple tabs example"
         >
           <Tab
+            label="Settings"
+            value={2}
+            style={{ color: 'white', marginInline: 15 }}
+          />
+          <Tab
             label="Timer"
             value={0}
             style={{ color: 'white', marginInline: 15 }}

@@ -55,7 +55,7 @@ const BaseColors = observer((props) => {
                       <Grid container style={{ minWidth: 250 }}>
                         <GithubPicker
                           onChangeComplete={(e) => timer.setDownColor(e.hex)}
-                          colors={colors}
+                          colors={clockotron.colors}
                           triangle="hide"
                         />
                       </Grid>
@@ -99,7 +99,7 @@ const BaseColors = observer((props) => {
                       <Grid container style={{ minWidth: 250 }}>
                         <GithubPicker
                           onChangeComplete={(e) => timer.setUpColor(e.hex)}
-                          colors={colors}
+                          colors={clockotron.colors}
                           triangle="hide"
                         />
                       </Grid>

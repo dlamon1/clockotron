@@ -2,7 +2,7 @@
   "name": "clockotron",
   "productName": "Clockotron",
   "description": "Clockotron talks time directly to vMix text inputs",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "scripts": {
     "build": "concurrently \"yarn build:main\" \"yarn build:renderer\"",
     "build:main": "cross-env NODE_ENV=production webpack --config ./.erb/configs/webpack.config.main.prod.babel.js",
@@ -15,9 +15,9 @@
     "start": "node -r @babel/register ./.erb/scripts/check-port-in-use.js && yarn start:renderer",
     "start:main": "cross-env NODE_ENV=development electron -r ./.erb/scripts/babel-register ./src/main/main.js",
     "start:renderer": "cross-env NODE_ENV=development webpack serve --config ./.erb/configs/webpack.config.renderer.dev.babel.js",
-    "major": "yarn version --major && yarn run publish",
-    "minor": "yarn version --minor && yarn run publish",
-    "patch": "yarn version --patch && yarn run publish"
+    "major": "node ./version/major",
+    "minor": "node ./version/minor",
+    "patch": "node ./version/patch"
   },
   "build": {
     "productName": "Clockotron",

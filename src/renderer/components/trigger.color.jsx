@@ -12,7 +12,7 @@ import { StoreContext } from '../stores/store.context';
 
 const ColorTrigger = observer((props) => {
   let { triggerId, colorId } = props;
-  const { timer } = useContext(StoreContext);
+  const { timer, clockotron } = useContext(StoreContext);
   let trigger = timer.triggers.filter((x) => x.id === triggerId)[0];
   let color = trigger.colors.filter((x) => x.id === colorId)[0];
 
@@ -38,7 +38,7 @@ const ColorTrigger = observer((props) => {
             <Grid container justifyContent="space-around" alignItems="center">
               <GithubPicker
                 onChangeComplete={(e) => pickColor(e.hex)}
-                colors={colors}
+                colors={clockotron.colors}
                 triangle="hide"
               />
             </Grid>

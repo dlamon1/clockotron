@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 const Refresh = observer(() => {
-  const { vmix } = useContext(StoreContext);
+  const { vmix, clockotron } = useContext(StoreContext);
 
   const timeout = () => {
     setTimeout(() => {
@@ -23,13 +23,16 @@ const Refresh = observer(() => {
   // timeout();
 
   return (
-    <Grid
-      container
-      justifyContent="center"
-      style={{ marginTop: 10, width: '100%' }}
-    >
-      <Button onClick={refresh}>Refresh Input List</Button>
-    </Grid>
+    clockotron.tabValue === 2 ||
+    (clockotron.tabValue === 2 && (
+      <Grid
+        container
+        justifyContent="center"
+        style={{ marginTop: 10, width: '100%' }}
+      >
+        <Button onClick={refresh}>Refresh Input List</Button>
+      </Grid>
+    ))
   );
 });
 

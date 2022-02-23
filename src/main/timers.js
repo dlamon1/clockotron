@@ -59,6 +59,8 @@ export class Timer {
       return;
     }
 
+    console.log(this.currentSeconds);
+
     this.expected += this.interval;
 
     this.timeout = setTimeout(this.session.bind(this), this.interval - drift);
@@ -110,6 +112,11 @@ export class Timer {
     ipcMain.handle('timer-interval', (__, id, interval) => {
       if (id == this.id) {
         this.interval = interval;
+      }
+    });
+    ipcMain.handle('timer-UpdateCurrentSeconds', (__, id, currentSeconds) => {
+      if (id == this.id) {
+        this.currentSeconds = currentSeconds;
       }
     });
   }
