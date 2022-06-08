@@ -1,9 +1,23 @@
 export const formatTime = (time, positions) => {
   let timeArray = [];
-  timeArray.push(Math.floor(time / 3600));
-  timeArray.push(Math.floor((time / 60) % 60));
-  timeArray.push(time % 60);
+  if (positions == 3) {
+    timeArray.push(Math.floor(time / 3600));
+    timeArray.push(Math.floor((time / 60) % 60));
+    timeArray.push(time % 60);
+  }
+  if (positions == 2) {
+    timeArray.push(Math.floor(time / 3600)); //hours
+    timeArray.push(Math.floor((time / 60) % 60) + timeArray[0] * 60); //minutes
+    timeArray.push(time % 60); //seconds
+  }
+  if (positions == 1) {
+    timeArray.push(Math.floor(time / 3600)); // hours
+    timeArray.push(Math.floor((time / 60) % 60) + timeArray[0] * 60); //minutes
+    timeArray.push((time % 60) + timeArray[1] * 60); //seconds
+  }
+
   let formatedTime = '';
+
   if (positions >= 3) {
     formatedTime = formatedTime + add0(timeArray[0]) + ':';
   }
@@ -24,10 +38,8 @@ export const formatTime = (time, positions) => {
       case 1:
         y = '0' + String(time);
         break;
-      case 2:
-        y = String(time);
-        break;
       default:
+        y = String(time);
         break;
     }
     return y;
