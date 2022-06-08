@@ -38,7 +38,7 @@ export const NewFeaturesDialog = observer(() => {
               fontSize: 24,
             }}
           >
-            Update 1.2.0
+            Update 1.0.2
           </Typography>
           <Typography
             // noWrap
