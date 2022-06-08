@@ -38,7 +38,7 @@ export const NewFeaturesDialog = observer(() => {
               fontSize: 24,
             }}
           >
-            Video TRT Clock
+            Update 1.2.0
           </Typography>
           <Typography
             // noWrap
@@ -49,12 +49,12 @@ export const NewFeaturesDialog = observer(() => {
               fontWeight: 700,
             }}
           >
-            Included in this release is a Video TRT Clock. It will grab the time
-            data from any video that is Active/On Program, regardless of layer.
-            As it has not been fully tested, this feature is disabled by
-            default.
+            The formated time now reflects the total remaining time when
+            adjusting the timer positions. Ex/ a one minute and 15 second timer
+            with one position will show 75 seconds. Please report any bugs you
+            find. Thanks!
           </Typography>
-          <Typography
+          {/* <Typography
             // noWrap
             align="center"
             style={{
@@ -66,7 +66,7 @@ export const NewFeaturesDialog = observer(() => {
           >
             To enable it, navigate to the menu bar, click View, then click
             Toggle Video TRT.
-          </Typography>
+          </Typography> */}
           <Button
             onClick={close}
             style={{ background: 'black', marginTop: 10 }}
