@@ -148,7 +148,10 @@ const PlayPause = observer(() => {
 
         <Grid item xs={12} style={{ marginTop: 15 }}>
           <Grid container justifyContent="center" alignItems="center">
-            <Typography color="primary" style={{ fontSize: 18 }}>
+            <Typography
+              color="primary"
+              style={{ fontSize: 18, userSelect: 'none' }}
+            >
               Clock Speed: {speed} %
             </Typography>
           </Grid>

@@ -6,14 +6,14 @@ export const formatTime = (time, positions) => {
     timeArray.push(time % 60);
   }
   if (positions == 2) {
-    timeArray.push(Math.floor(time / 3600)); //hours
-    timeArray.push(Math.floor((time / 60) % 60) + timeArray[0] * 60); //minutes
-    timeArray.push(time % 60); //seconds
+    timeArray.push(Math.floor(time / 3600));
+    timeArray.push(Math.floor((time / 60) % 60) + timeArray[0] * 60);
+    timeArray.push(time % 60);
   }
   if (positions == 1) {
-    timeArray.push(Math.floor(time / 3600)); // hours
-    timeArray.push(Math.floor((time / 60) % 60) + timeArray[0] * 60); //minutes
-    timeArray.push((time % 60) + timeArray[1] * 60); //seconds
+    timeArray.push(Math.floor(time / 3600));
+    timeArray.push(Math.floor((time / 60) % 60) + timeArray[0] * 60);
+    timeArray.push((time % 60) + timeArray[1] * 60);
   }
 
   let formatedTime = '';

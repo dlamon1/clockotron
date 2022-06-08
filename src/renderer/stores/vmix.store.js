@@ -4,7 +4,7 @@ import { options } from '../utils/options';
 
 export class Vmix {
   unconfirmedIp = '';
-  ip = '';
+  ip = '1';
   xmlRaw = '';
   isSocketConnected = false;
   connectionTimeout;
