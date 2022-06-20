@@ -38,7 +38,7 @@ export const NewFeaturesDialog = observer(() => {
               fontSize: 24,
             }}
           >
-            Custom Colors
+            Update 1.0.2
           </Typography>
           <Typography
             // noWrap
@@ -49,10 +49,12 @@ export const NewFeaturesDialog = observer(() => {
               fontWeight: 700,
             }}
           >
-            Custom colors can be set via the settings tab. Please submit a bug
-            report for any bugs encountered.
+            The formated time now reflects the total remaining time when
+            adjusting the timer positions. Ex/ a one minute and 15 second timer
+            with one position will show 75 seconds. Please report any bugs you
+            find. Thanks!
           </Typography>
-          <Typography
+          {/* <Typography
             // noWrap
             align="center"
             style={{
@@ -62,9 +64,9 @@ export const NewFeaturesDialog = observer(() => {
               fontWeight: 700,
             }}
           >
-            {/* To enable it, navigate to the menu bar, click View, then click
-            Toggle Video TRT. */}
-          </Typography>
+            To enable it, navigate to the menu bar, click View, then click
+            Toggle Video TRT.
+          </Typography> */}
           <Button
             onClick={close}
             style={{ background: 'black', marginTop: 10 }}

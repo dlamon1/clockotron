@@ -1,7 +1,6 @@
-/* html {
-  overflow: scroll;
-  overflow-x: hidden;
-} */
+html {
+  user-select: none;
+}
 ::-webkit-scrollbar {
   width: 0; /* Remove scrollbar space */
   background: transparent;
